@@ -1,6 +1,7 @@
 import { initMap } from './googleMap';
 import { readDocsTab } from './readDocsTab';
 import { vehicleTab } from './vehicleTab';
+import { routesTab } from './routesTab';
 initMap();
 
 //Toggle menu
@@ -24,12 +25,12 @@ const allTabs = document.querySelectorAll('.tab');
 
 allTabs.forEach((singleTab) => {
   singleTab.addEventListener('click', () => {
-    // Remove the 'active-box' class from all boxes
     allTabs.forEach((e) => {
       e.classList.remove('menu-active-tab');
     });
 
-    // Add the 'active-box' class to the clicked box
+    document.querySelector('.menu-tab-body').innerHTML = '';
+
     singleTab.classList.add('menu-active-tab');
 
     if (singleTab.classList[0] === 'read-doc-tab') {
@@ -38,6 +39,10 @@ allTabs.forEach((singleTab) => {
 
     if (singleTab.classList[0] === 'vehicle-tab') {
       vehicleTab();
+    }
+
+    if (singleTab.classList[0] === 'routes-tab') {
+      routesTab();
     }
   });
 });

@@ -23,7 +23,7 @@ export const readDocsTab = () => {
   draggableInput.setAttribute('id', 'droppable-area');
   draggableInput.addEventListener('drop', handleDrop);
   draggableInput.addEventListener('dragover', handleDragOver);
-  draggableInput.innerHTML = 'Drop files here';
+  draggableInput.innerHTML = 'Drag your file here';
 
   menuTabBody.appendChild(draggableInput);
 };

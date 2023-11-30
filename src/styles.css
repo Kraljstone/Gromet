@@ -65,7 +65,7 @@ body {
 }
 
 .menu-active-tab {
-  border-bottom: 2px solid blue;
+  border-bottom: 3px solid blue;
 }
 
 .menu-tab-body {
@@ -88,7 +88,7 @@ body {
   align-items: center;
 }
 
-#vehicleTable td {
+#vehicleTable th {
   width: 100%;
   text-align: center;
   display: flex;
@@ -100,6 +100,17 @@ body {
 }
 
 #addVehicleBtn {
+  width: 120px;
+  text-align: center;
   border: 1px solid gainsboro;
-  color: gainsboro;
+  color: rgb(143, 143, 143);
+  margin-top: 24px;
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+#addVehicleBtn:hover{
+  background-color: #b9b9b9;
+  color: white;
+  cursor: pointer;
 }

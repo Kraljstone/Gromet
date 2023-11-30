@@ -3,25 +3,25 @@ export const vehicleTab = () => {
   const tbl = document.createElement('table');
   const tr = document.createElement('tr');
 
-  const vehicle = document.createElement('td');
+  const vehicle = document.createElement('th');
   vehicle.innerHTML = 'Vozilo';
 
-  const kg = document.createElement('td');
+  const kg = document.createElement('th');
   kg.innerHTML = 'Kg';
 
-  const m3 = document.createElement('td');
+  const m3 = document.createElement('th');
   m3.innerHTML = 'm³';
 
-  const cost = document.createElement('td');
+  const cost = document.createElement('th');
   cost.innerHTML = 'trošak';
 
-  const highwayCost = document.createElement('td');
+  const highwayCost = document.createElement('th');
   highwayCost.innerHTML = 'Putarina';
 
-  const averageSpeed = document.createElement('td');
+  const averageSpeed = document.createElement('th');
   averageSpeed.innerHTML = 'Pročna brzina (km/h)';
 
-  const deliveryTime = document.createElement('td');
+  const deliveryTime = document.createElement('th');
   deliveryTime.innerHTML = 'Vreme istovara';
 
   tr.appendChild(vehicle);
@@ -37,7 +37,14 @@ export const vehicleTab = () => {
 
   menuTabBody.appendChild(table);
 
-  const addVehicleBtn = document.createElement('div')
-  addVehicleBtn.innerHTML = 'Dodaj vozilo +'
-  addVehicleBtn.setAttribute('id', 'addVehicleBtn')
+  const addVehicleBtn = document.createElement('div');
+  addVehicleBtn.innerHTML = 'Dodaj vozilo +';
+  addVehicleBtn.setAttribute('id', 'addVehicleBtn');
+
+  const addVehicleFn = () => {
+    document
+  };
+
+  addVehicleBtn.addEventListener('click', addVehicleFn);
+  menuTabBody.appendChild(addVehicleBtn);
 };
