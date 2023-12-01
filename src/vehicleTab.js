@@ -1,3 +1,5 @@
+import { loadVehiclesFromLocalStorage } from './loadVehiclesFromLocalStorage';
+
 export const vehicleTab = () => {
   const menuTabBody = document.querySelector('.menu-tab-body');
   const tbl = document.createElement('table');
@@ -41,17 +43,45 @@ export const vehicleTab = () => {
   menuTabBody.appendChild(table);
 
   // TABLE CONTENT
-  const createInputElement = (type) => {
+  let rowIndex = 0;
+
+  const createInputElement = (type, name) => {
     const input = document.createElement('input');
     input.setAttribute('type', type);
+    input.setAttribute('name', name);
     input.addEventListener('blur', function () {
       input.setAttribute('disabled', 'disabled');
+      // Save input values to local storage on blur
+      saveVehiclesToLocalStorage();
     });
     return input;
   };
 
+  const saveVehiclesToLocalStorage = () => {
+    const vehicles = [];
+
+    const rows = document.querySelectorAll('.vehicleRow');
+    rows.forEach((row, index) => {
+      const inputs = row.querySelectorAll('input[name]');
+      const vehicleData = {};
+
+      inputs.forEach((input) => {
+        vehicleData[input.name] = input.value;
+      });
+
+      vehicles.push(vehicleData);
+    });
+
+    localStorage.setItem('vehiclesData', JSON.stringify(vehicles));
+  };
+
+  loadVehiclesFromLocalStorage(rowIndex, createInputElement);
+
   const addVehicleFn = () => {
     const trBody = document.createElement('tr');
+    trBody.classList.add('vehicleRow');
+    trBody.setAttribute('data-row-index', rowIndex);
+
     const vehicleBody = document.createElement('td');
     vehicleBody.setAttribute('id', 'vehicleBody');
 
@@ -60,16 +90,13 @@ export const vehicleTab = () => {
     i.setAttribute('class', 'gg-trash');
     deleteBtn.appendChild(i);
 
-    const vehicle = createInputElement('text');
-    const kg = createInputElement('number');
-    const m3 = createInputElement('number');
-    const cost = createInputElement('number');
-    const highwayCost = createInputElement('number');
-    const averageSpeed = createInputElement('text');
-    const deliveryTime = createInputElement('text');
-
-    // Disable the vehicle input on blur
-    
+    const vehicle = createInputElement('text', 'vehicle');
+    const kg = createInputElement('number', 'kg');
+    const m3 = createInputElement('number', 'm3');
+    const cost = createInputElement('number', 'cost');
+    const highwayCost = createInputElement('number', 'highwayCost');
+    const averageSpeed = createInputElement('text', 'averageSpeed');
+    const deliveryTime = createInputElement('text', 'deliveryTime');
 
     vehicleBody.appendChild(deleteBtn);
     vehicleBody.appendChild(vehicle);
@@ -84,6 +111,10 @@ export const vehicleTab = () => {
     const table = tbl.appendChild(trBody);
     table.setAttribute('id', 'vehicleTable');
     menuTabBody.insertBefore(table, addVehicleBtn);
+
+    rowIndex++;
+
+    saveVehiclesToLocalStorage();
   };
 
   // ADD VEHICLES BTN
