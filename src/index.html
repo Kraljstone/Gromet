@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/css.gg@2.0.0/icons/css/trash.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
     <script defer>
       ((g) => {
@@ -52,11 +56,14 @@
       <div class="container">
         <div class="menu">
           <div class="menu-tabs">
-            <h3 class="read-doc-tab tab">Učitaj dokument</h3>
+            <h3 class="read-doc-tab tab menu-active-tab">Učitaj dokument</h3>
             <h3 class="vehicle-tab tab">Uredi Vozila</h3>
             <h3 class="routes-tab tab">Kreiraj rute</h3>
           </div>
-          <div class="menu-tab-body"></div>
+          <div class="menu-tab-body">
+            <input type="file" />
+            <div id="droppable-area">Drag your file here</div>
+          </div>
         </div>
         <div id="map"></div>
       </div>

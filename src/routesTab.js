@@ -27,4 +27,9 @@ export const routesTab = () => {
   table.setAttribute('id', 'vehicleTable');
 
   menuTabBody.appendChild(table);
+
+  const resetButton = document.createElement('div');
+  resetButton.innerHTML = 'Resetuj sve rute';
+  resetButton.setAttribute('id', 'resetRoutesBtn')
+  menuTabBody.appendChild(resetButton);
 };
