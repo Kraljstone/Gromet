@@ -101,6 +101,31 @@ body {
   height: 40px;
   padding: 16px 6px;
 }
+#routesTable {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#routesTable th,
+#routesTable div,
+#routesTable input {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid gainsboro;
+  height: 40px;
+  padding: 16px 0px;
+}
+
+#routesTable th:last-child,
+#routesTable div:last-child {
+  width: 250%;
+  display: flex;
+  align-items: center;
+}
 
 #addVehicleBtn {
   width: 120px;
@@ -149,4 +174,49 @@ body {
 .gg-trash:hover {
   cursor: pointer;
   color: red !important;
+}
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-input {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none !important;
+  position: absolute;
+  top: 60px;
+  z-index: 1;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.033);
+  border-radius: 4px;
+  width: 150px !important;
+}
+
+.dropdown-content label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  cursor: pointer;
+}
+
+.dropdown-content input {
+  margin-right: 8px;
+  height: 15px !important;
+  width: 20px !important;
+  margin: 0;
+}
+
+.dropdown-content label:hover {
+  background-color: #ddd;
+}
+
+.dropdown-container.open .dropdown-content {
+  display: block !important;
 }
