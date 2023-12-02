@@ -1,4 +1,7 @@
-import { loadVehiclesFromLocalStorage } from './loadVehiclesFromLocalStorage';
+import {
+  loadVehiclesFromStorage,
+  saveVehiclesToStorage,
+} from './loadSaveAndDeleteVehicles';
 
 export const vehicleTab = () => {
   const menuTabBody = document.querySelector('.menu-tab-body');
@@ -18,7 +21,7 @@ export const vehicleTab = () => {
   m3.innerHTML = 'm³';
 
   const cost = document.createElement('th');
-  cost.innerHTML = 'trošak';
+  cost.innerHTML = 'Trošak';
 
   const highwayCost = document.createElement('th');
   highwayCost.innerHTML = 'Putarina';
@@ -52,30 +55,12 @@ export const vehicleTab = () => {
     input.addEventListener('blur', function () {
       input.setAttribute('disabled', 'disabled');
       // Save input values to local storage on blur
-      saveVehiclesToLocalStorage();
+      saveVehiclesToStorage();
     });
     return input;
   };
 
-  const saveVehiclesToLocalStorage = () => {
-    const vehicles = [];
-
-    const rows = document.querySelectorAll('.vehicleRow');
-    rows.forEach((row, index) => {
-      const inputs = row.querySelectorAll('input[name]');
-      const vehicleData = {};
-
-      inputs.forEach((input) => {
-        vehicleData[input.name] = input.value;
-      });
-
-      vehicles.push(vehicleData);
-    });
-
-    localStorage.setItem('vehiclesData', JSON.stringify(vehicles));
-  };
-
-  loadVehiclesFromLocalStorage(rowIndex, createInputElement);
+  loadVehiclesFromStorage(rowIndex, createInputElement);
 
   const addVehicleFn = () => {
     const trBody = document.createElement('tr');
@@ -114,7 +99,7 @@ export const vehicleTab = () => {
 
     rowIndex++;
 
-    saveVehiclesToLocalStorage();
+    saveVehiclesToStorage();
   };
 
   // ADD VEHICLES BTN

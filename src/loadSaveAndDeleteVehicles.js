@@ -1,4 +1,22 @@
-export const loadVehiclesFromLocalStorage = (rowIndex, createInputElement) => {
+export const saveVehiclesToStorage = () => {
+  const vehicles = [];
+
+  const rows = document.querySelectorAll('.vehicleRow');
+  rows.forEach((row, index) => {
+    const inputs = row.querySelectorAll('input[name]');
+    const vehicleData = {};
+
+    inputs.forEach((input) => {
+      vehicleData[input.name] = input.value;
+    });
+
+    vehicles.push(vehicleData);
+  });
+
+  localStorage.setItem('vehiclesData', JSON.stringify(vehicles));
+};
+
+export const loadVehiclesFromStorage = (rowIndex, createInputElement) => {
   const tableHead = document.querySelector('#vehicleTable');
   const menuTabBody = document.querySelector('.menu-tab-body');
   const tbl = document.createElement('table');
@@ -49,5 +67,32 @@ export const loadVehiclesFromLocalStorage = (rowIndex, createInputElement) => {
     menuTabBody.insertBefore(table, tableHead.nextSibling);
 
     rowIndex++;
+
+    deleteBtn.addEventListener('click', (e) => {
+      const rowIndex =
+        e.target.parentElement.parentElement.parentElement.getAttribute(
+          'data-row-index'
+        );
+      deleteRow(rowIndex);
+    });
   });
+};
+
+const deleteRow = (rowIndex) => {
+  const rows = document.querySelectorAll('.vehicleRow');
+
+  rows.forEach((row) => {
+    if (row.getAttribute('data-row-index') == rowIndex) {
+      row.remove();
+    }
+  });
+
+  // Remove entry from local storage
+  const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData')) || [];
+  const reversedIndex = storedVehicles.length - 1 - rowIndex;
+
+  const updatedVehicles = storedVehicles.filter(
+    (_, index) => index !== reversedIndex
+  );
+  localStorage.setItem('vehiclesData', JSON.stringify(updatedVehicles));
 };
