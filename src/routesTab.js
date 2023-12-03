@@ -3,26 +3,18 @@ export const routesTab = () => {
   const tbl = document.createElement('table');
 
   // TABLE MARKUPS
+  const createTableHeader = (text) => {
+    const th = document.createElement('th');
+    th.innerHTML = text;
+    return th;
+  };
+
   const trHeading = document.createElement('tr');
-  const route = document.createElement('th');
-  route.innerHTML = 'Naziv rute';
-
-  const invoiceNumber = document.createElement('th');
-  invoiceNumber.innerHTML = 'Unesi broj naloga';
-
-  const vehicle = document.createElement('th');
-  vehicle.innerHTML = 'Vozilo';
-
-  const highwayCost = document.createElement('th');
-  highwayCost.innerHTML = 'Unesi putarinu';
-
-  const empty = document.createElement('th');
-
-  trHeading.appendChild(route);
-  trHeading.appendChild(invoiceNumber);
-  trHeading.appendChild(vehicle);
-  trHeading.appendChild(highwayCost);
-  trHeading.appendChild(empty);
+  trHeading.appendChild(createTableHeader('Naziv rute'));
+  trHeading.appendChild(createTableHeader('Unesi broj naloga'));
+  trHeading.appendChild(createTableHeader('Vozilo'));
+  trHeading.appendChild(createTableHeader('Unesi putarinu'));
+  trHeading.appendChild(createTableHeader(''));
 
   const tableHeading = tbl.appendChild(trHeading);
   tableHeading.setAttribute('id', 'routesTable');
