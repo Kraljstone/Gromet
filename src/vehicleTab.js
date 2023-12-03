@@ -8,41 +8,18 @@ export const vehicleTab = () => {
   const tbl = document.createElement('table');
 
   // TABLE MARKUPS
+  const headings = ['','Vozilo','Kg','m³','Trošak','Putarina','Pročna brzina (km/h)','Vreme istovara',];
+
   const trHeading = document.createElement('tr');
-  const emptyEl = document.createElement('th');
-
-  const vehicle = document.createElement('th');
-  vehicle.innerHTML = 'Vozilo';
-
-  const kg = document.createElement('th');
-  kg.innerHTML = 'Kg';
-
-  const m3 = document.createElement('th');
-  m3.innerHTML = 'm³';
-
-  const cost = document.createElement('th');
-  cost.innerHTML = 'Trošak';
-
-  const highwayCost = document.createElement('th');
-  highwayCost.innerHTML = 'Putarina';
-
-  const averageSpeed = document.createElement('th');
-  averageSpeed.innerHTML = 'Pročna brzina (km/h)';
-
-  const deliveryTime = document.createElement('th');
-  deliveryTime.innerHTML = 'Vreme istovara';
-
-  trHeading.appendChild(emptyEl);
-  trHeading.appendChild(vehicle);
-  trHeading.appendChild(kg);
-  trHeading.appendChild(m3);
-  trHeading.appendChild(cost);
-  trHeading.appendChild(highwayCost);
-  trHeading.appendChild(averageSpeed);
-  trHeading.appendChild(deliveryTime);
-
   const table = tbl.appendChild(trHeading);
   table.setAttribute('id', 'vehicleTable');
+
+  headings.forEach((headingText) => {
+    const th = document.createElement('th');
+    th.innerHTML = headingText;
+    table.appendChild(th);
+  });
+
   menuTabBody.appendChild(table);
 
   // TABLE CONTENT
