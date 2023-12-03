@@ -29,7 +29,6 @@ export const routesTab = () => {
   menuTabBody.appendChild(tableHeading);
 
   // TABLE CONTENT
-
   const trBody = document.createElement('tr');
   const routesBody = document.createElement('td');
   routesBody.setAttribute('id', 'vehicleBody');
@@ -89,15 +88,30 @@ export const routesTab = () => {
   highwayCostBody.setAttribute('type', 'number');
 
   const inputsBody = document.createElement('div');
+  const applyBtn = document.createElement('button');
+  applyBtn.innerHTML = 'Primeni';
+  applyBtn.setAttribute('id', 'applyBtn');
+  const lockBtn = document.createElement('p');
+  lockBtn.setAttribute('class', 'lock ');
+  lockBtn.addEventListener('click', () => {
+    const routesTableBody = document.getElementById('routesTableBody');
+    const inputs = routesTableBody.querySelectorAll('input');
+    inputs.forEach((input) => {
+      input.disabled = !input.disabled;
+    });
+  });
 
   trBody.appendChild(routeName);
   trBody.appendChild(invoiceNumberBody);
   trBody.appendChild(vehicleBody);
   trBody.appendChild(highwayCostBody);
+  inputsBody.appendChild(applyBtn);
+  inputsBody.appendChild(lockBtn);
   trBody.appendChild(inputsBody);
 
   const tableBody = tbl.appendChild(trBody);
-  tableBody.setAttribute('id', 'routesTable');
+  tableBody.setAttribute('id', 'routesTableBody');
+
   menuTabBody.appendChild(tableBody);
 
   const resetButton = document.createElement('div');
