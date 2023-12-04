@@ -8,7 +8,16 @@ export const vehicleTab = () => {
   const tbl = document.createElement('table');
 
   // TABLE MARKUPS
-  const headings = ['','Vozilo','Kg','m³','Trošak','Putarina','Pročna brzina (km/h)','Vreme istovara',];
+  const headings = [
+    '',
+    'Vozilo',
+    'Kg',
+    'm³',
+    'Trošak',
+    'Putarina',
+    'Pročna brzina (km/h)',
+    'Vreme istovara',
+  ];
 
   const trHeading = document.createElement('tr');
   const table = tbl.appendChild(trHeading);
@@ -32,7 +41,7 @@ export const vehicleTab = () => {
     input.addEventListener('blur', function () {
       input.setAttribute('disabled', 'disabled');
       // Save input values to local storage on blur
-      saveVehiclesToStorage();
+      saveVehiclesToStorage('.vehicleRow', 'vehiclesData');
     });
     return input;
   };
@@ -75,8 +84,6 @@ export const vehicleTab = () => {
     menuTabBody.insertBefore(table, addVehicleBtn);
 
     rowIndex++;
-
-    saveVehiclesToStorage();
   };
 
   // ADD VEHICLES BTN

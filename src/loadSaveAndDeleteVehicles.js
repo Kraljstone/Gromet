@@ -1,19 +1,20 @@
-export const saveVehiclesToStorage = () => {
+export const saveVehiclesToStorage = (selector, data) => {
   const vehicles = [];
 
-  const rows = document.querySelectorAll('.vehicleRow');
-  rows.forEach((row, index) => {
+  const rows = document.querySelectorAll(selector);
+
+  rows.forEach((row) => {
     const inputs = row.querySelectorAll('input[name]');
-    const vehicleData = {};
+    const data = {};
 
     inputs.forEach((input) => {
-      vehicleData[input.name] = input.value;
+      data[input.name] = input.value;
     });
 
-    vehicles.push(vehicleData);
+    vehicles.push(data);
   });
 
-  localStorage.setItem('vehiclesData', JSON.stringify(vehicles));
+  localStorage.setItem(data, JSON.stringify(vehicles));
 };
 
 export const loadVehiclesFromStorage = (rowIndex, createInputElement) => {
@@ -76,6 +77,30 @@ export const loadVehiclesFromStorage = (rowIndex, createInputElement) => {
       deleteRow(rowIndex);
     });
   });
+};
+
+export const loadRoutesFromStorage = (selector, data) => {
+  const storedData = localStorage.getItem(data);
+
+  if (storedData) {
+    const vehicles = JSON.parse(storedData);
+
+    const rows = document.querySelectorAll(selector);
+
+    rows.forEach((row, rowIndex) => {
+      const inputs = row.querySelectorAll('input[name]');
+
+      inputs.forEach((input) => {
+        const inputName = input.name;
+        const inputData = vehicles[rowIndex][inputName];
+
+        // Check if the data for the input exists
+        if (inputData !== undefined) {
+          input.value = inputData;
+        }
+      });
+    });
+  }
 };
 
 const deleteRow = (rowIndex) => {
