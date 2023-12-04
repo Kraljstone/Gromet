@@ -58,17 +58,19 @@ export const routesTab = () => {
     vehicleBodySelect.setAttribute('disabled', 'disabled');
 
     const vehicleBodyOptionOne = document.createElement('option');
-    vehicleBodyOptionOne.innerHTML = 'Kombi';
-    vehicleBodyOptionOne.setAttribute('value', 'Kombi');
-
-    const vehicleBodyOptionTwo = document.createElement('option');
-    vehicleBodyOptionTwo.innerHTML = 'Auto';
-    vehicleBodyOptionTwo.setAttribute('value', 'Auto');
-
+    vehicleBodyOptionOne.innerHTML = 'Odaberi Vozilo';
     vehicleBodySelect.appendChild(vehicleBodyOptionOne);
-    vehicleBodySelect.appendChild(vehicleBodyOptionTwo);
-    vehicleBody.appendChild(vehicleBodySelect);
 
+    const storedData = JSON.parse(localStorage.getItem('vehiclesData'));
+
+    storedData.forEach((data) => {
+      const otherVehicleBodyOptions = document.createElement('option');
+      otherVehicleBodyOptions.innerHTML = data.vehicle;
+      otherVehicleBodyOptions.setAttribute('value', data.vehicle);
+      vehicleBodySelect.appendChild(otherVehicleBodyOptions);
+    });
+
+    vehicleBody.appendChild(vehicleBodySelect);
     const highwayCostBody = createInputElement('number', 'highwayCost');
     const inputsBody = document.createElement('div');
     const applyBtn = document.createElement('button');

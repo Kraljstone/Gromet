@@ -128,7 +128,7 @@ body {
 #routesTable div:last-child,
 #routesTableBody th:last-child,
 #routesTableBody div:last-child {
-  width: 250%;
+  width: 200%;
   display: flex;
   align-items: center;
 }
