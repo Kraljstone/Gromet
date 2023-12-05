@@ -61,7 +61,7 @@ export const routesTab = () => {
     vehicleBodySelect.appendChild(vehicleBodyOptionOne);
 
     vehicleBodySelect.addEventListener('change', (e) => {
-      vehicleBodySelect.setAttribute('value', e.target.value);
+      saveRoutesToStorage('#routesTableBody', 'routesData');
     });
 
     const storedData = JSON.parse(localStorage.getItem('vehiclesData'));
