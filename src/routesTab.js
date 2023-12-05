@@ -1,13 +1,11 @@
 import {
   loadRoutesFromStorage,
   saveRoutesToStorage,
-} from './loadSaveAndDeleteVehicles';
+} from './vehiclesAndRoutes';
 
 export const routesTab = () => {
-  // Get the container for the routes tab
   const menuTabBody = document.querySelector('.menu-tab-body');
 
-  // Create a table element
   const tbl = document.createElement('table');
 
   // Function to create table header cell
@@ -36,7 +34,6 @@ export const routesTab = () => {
     input.setAttribute('name', name);
     input.setAttribute('disabled', 'disabled');
     input.addEventListener('blur', function () {
-      // Save input values to local storage on blur
       saveRoutesToStorage('#routesTableBody', 'routesData');
     });
     return input;

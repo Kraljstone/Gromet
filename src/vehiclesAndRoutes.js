@@ -18,7 +18,7 @@ export const saveVehiclesToStorage = (selector, storageKey) => {
 };
 
 export const saveRoutesToStorage = (selector, storageKey) => {
-  const vehicles = [];
+  const routes = [];
 
   const rows = document.querySelectorAll(selector);
 
@@ -38,7 +38,7 @@ export const saveRoutesToStorage = (selector, storageKey) => {
       data[Object.keys(data)[2]] = selectElement.value;
     }
 
-    vehicles.push(data);
+    routes.push(data);
   });
 
   localStorage.setItem(storageKey, JSON.stringify(vehicles));
