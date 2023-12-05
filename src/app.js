@@ -2,6 +2,7 @@ import { initMap } from './googleMap';
 import { readDocsTab } from './readDocsTab';
 import { vehicleTab } from './vehicleTab';
 import { routesTab } from './routesTab';
+import { card } from './card';
 initMap();
 
 //Toggle menu
@@ -18,6 +19,8 @@ const menuWrap = () => {
 };
 
 menuBtn.addEventListener('click', menuWrap);
+
+card();
 
 //Active Tab functionality
 

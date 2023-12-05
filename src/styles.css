@@ -18,6 +18,10 @@ body {
   display: flex;
   flex-direction: column;
 }
+.nav-bar {
+  display: flex;
+  align-items: center;
+}
 
 .nav-bar-btn {
   border: none;
@@ -27,8 +31,8 @@ body {
   margin: 0;
   cursor: default;
   width: 50px;
-  margin-top: -10px;
   user-select: none;
+  margin-top: 10px;
 }
 
 .nav-bar-btn:hover {
@@ -240,4 +244,39 @@ input:disabled {
   width: 15px;
   height: 27px;
   border-radius: 35px 35px 0 0;
+}
+
+#card {
+  background: rgba(0, 217, 0, 0.837);
+  width: 140px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  position: relative;
+}
+
+#card:hover {
+  cursor: pointer;
+}
+
+#card h2 {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+#card p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#cardContent {
+  display: none;
+  height: 150px;
+  width: 200px;
+  background-color: white;
+  position: absolute;
+  top: 90px;
+  z-index: 100;
+  border: 1px solid rgb(184, 184, 184);
 }
