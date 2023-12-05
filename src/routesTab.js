@@ -1,6 +1,6 @@
 import {
   loadRoutesFromStorage,
-  saveVehiclesToStorage,
+  saveRoutesToStorage,
 } from './loadSaveAndDeleteVehicles';
 
 export const routesTab = () => {
@@ -37,7 +37,7 @@ export const routesTab = () => {
     input.setAttribute('disabled', 'disabled');
     input.addEventListener('blur', function () {
       // Save input values to local storage on blur
-      saveVehiclesToStorage('#routesTableBody', 'routesData');
+      saveRoutesToStorage('#routesTableBody', 'routesData');
     });
     return input;
   };
@@ -50,16 +50,19 @@ export const routesTab = () => {
     // Create cells for each column
     const routeName = createInputElement('text', 'routeName');
     const invoiceNumberBody = createInputElement('number', 'invoiceNumberBody');
-    const vehicleBody = document.createElement('div');
-    vehicleBody.setAttribute('class', 'dropdown-container');
 
     const vehicleBodySelect = document.createElement('select');
     vehicleBodySelect.setAttribute('class', 'dropdown-input');
+    vehicleBodySelect.setAttribute('name', 'selectedField');
     vehicleBodySelect.setAttribute('disabled', 'disabled');
 
     const vehicleBodyOptionOne = document.createElement('option');
     vehicleBodyOptionOne.innerHTML = 'Odaberi Vozilo';
     vehicleBodySelect.appendChild(vehicleBodyOptionOne);
+
+    vehicleBodySelect.addEventListener('change', (e) => {
+      vehicleBodySelect.setAttribute('value', e.target.value);
+    });
 
     const storedData = JSON.parse(localStorage.getItem('vehiclesData'));
 
@@ -70,7 +73,6 @@ export const routesTab = () => {
       vehicleBodySelect.appendChild(otherVehicleBodyOptions);
     });
 
-    vehicleBody.appendChild(vehicleBodySelect);
     const highwayCostBody = createInputElement('number', 'highwayCost');
     const inputsBody = document.createElement('div');
     const applyBtn = document.createElement('button');
@@ -96,7 +98,7 @@ export const routesTab = () => {
     // Append elements to the table row
     trBody.appendChild(routeName);
     trBody.appendChild(invoiceNumberBody);
-    trBody.appendChild(vehicleBody);
+    trBody.appendChild(vehicleBodySelect);
     trBody.appendChild(highwayCostBody);
     inputsBody.appendChild(applyBtn);
     inputsBody.appendChild(lockBtn);

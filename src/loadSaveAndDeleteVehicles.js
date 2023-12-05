@@ -1,4 +1,4 @@
-export const saveVehiclesToStorage = (selector, data) => {
+export const saveVehiclesToStorage = (selector, storageKey) => {
   const vehicles = [];
 
   const rows = document.querySelectorAll(selector);
@@ -14,7 +14,34 @@ export const saveVehiclesToStorage = (selector, data) => {
     vehicles.push(data);
   });
 
-  localStorage.setItem(data, JSON.stringify(vehicles));
+  localStorage.setItem(storageKey, JSON.stringify(vehicles));
+};
+
+export const saveRoutesToStorage = (selector, storageKey) => {
+  const vehicles = [];
+
+  const rows = document.querySelectorAll(selector);
+
+  rows.forEach((row) => {
+    const inputs = row.querySelectorAll('input[name], select[name]');
+    const data = {};
+
+    inputs.forEach((input) => {
+      data[input.name] = input.value;
+    });
+
+    const selectElement = Array.from(inputs).find(
+      (input) => input.nodeName.toLowerCase() === 'select'
+    );
+
+    if (selectElement) {
+      data[Object.keys(data)[2]] = selectElement.value;
+    }
+
+    vehicles.push(data);
+  });
+
+  localStorage.setItem(storageKey, JSON.stringify(vehicles));
 };
 
 export const loadVehiclesFromStorage = (rowIndex, createInputElement) => {
@@ -88,15 +115,25 @@ export const loadRoutesFromStorage = (selector, data) => {
     const rows = document.querySelectorAll(selector);
 
     rows.forEach((row, rowIndex) => {
-      const inputs = row.querySelectorAll('input[name]');
+      const inputs = row.querySelectorAll('input[name], select[name]');
 
       inputs.forEach((input) => {
         const inputName = input.name;
-        const inputData = vehicles[rowIndex][inputName];
+        const inputData = vehicles?.[rowIndex]?.[inputName];
 
         // Check if the data for the input exists
         if (inputData !== undefined) {
-          input.value = inputData;
+          // Handle select elements separately
+          if (input.nodeName.toLowerCase() === 'select') {
+            // Ensure the option exists before setting the value
+            if (
+              [...input.options].some((option) => option.value === inputData)
+            ) {
+              input.value = inputData;
+            }
+          } else {
+            input.value = inputData;
+          }
         }
       });
     });
