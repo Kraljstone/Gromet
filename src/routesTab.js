@@ -81,7 +81,7 @@ export const routesTab = () => {
     lockBtn.setAttribute('class', 'lock ');
 
     // Event listener for the lock button
-    lockBtn.addEventListener('click', () => {
+    lockBtn.addEventListener('click', (e) => {
       const tr = lockBtn.closest('tr');
       const disableDropdown = tr.querySelector('.dropdown-input');
       disableDropdown.disabled = !disableDropdown.disabled;
@@ -89,6 +89,8 @@ export const routesTab = () => {
       const inputs = tr.querySelectorAll('input');
       inputs.forEach((input) => {
         input.disabled = !input.disabled;
+        const resetRoutesBtn = document.querySelector('#resetRoutesBtn');
+        resetRoutesBtn.removeAttribute('disabled', 'disabled');
       });
     });
 
@@ -117,6 +119,7 @@ export const routesTab = () => {
   const resetButton = document.createElement('button');
   resetButton.innerHTML = 'Resetuj sve rute';
   resetButton.setAttribute('id', 'resetRoutesBtn');
+  resetButton.setAttribute('disabled', 'disabled');
   resetButton.addEventListener('click', () => {
     const rows = document.querySelectorAll('#routesTableBody');
 

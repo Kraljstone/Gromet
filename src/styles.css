@@ -50,7 +50,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 45%;
+  width: 40%;
   height: 100%;
   padding: 0 16px;
   z-index: 10;
@@ -271,7 +271,7 @@ input:disabled {
 }
 
 #cardContent {
-  display: block;
+  display: none;
   width: 250px;
   background-color: white;
   position: absolute;
@@ -302,4 +302,11 @@ input:disabled {
   margin-bottom: 0;
   margin-top: 0;
   padding: 10px 0;
+}
+
+#resetRoutesBtn:disabled {
+  background: #ececec;
+  color: #a2a2a2;
+  cursor: default;
+  box-shadow: none;
 }
