@@ -303,7 +303,3 @@ input:disabled {
   margin-top: 0;
   padding: 10px 0;
 }
-
-#infoCard div p:last-child {
-  border-bottom: none;
-}
