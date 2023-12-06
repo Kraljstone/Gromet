@@ -12,20 +12,27 @@ const menuBtn = document.querySelector('.nav-bar-btn');
 const menuWrap = () => {
   const menu = document.querySelector('.menu');
 
-  if (menu.style.display === 'none') {
+  if (menu.style.display === 'none' || !menu.style.display) {
+    readDocsTab();
     return (menu.style.display = 'block');
   }
+  const menuBody = document.querySelector('.menu-tab-body');
+  menuBody.innerHTML = '';
   menu.style.display = 'none';
 };
 
 menuBtn.addEventListener('click', menuWrap);
 
-card();
+const routesData = JSON.parse(localStorage.getItem('routesData'));
+routesData.forEach((data) => {
+  if (data.routeName !== '') {
+    card(data);
+  }
+});
 
 //Active Tab functionality
 
 const allTabs = document.querySelectorAll('.tab');
-
 allTabs.forEach((singleTab) => {
   singleTab.addEventListener('click', () => {
     allTabs.forEach((e) => {

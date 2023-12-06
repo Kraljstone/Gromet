@@ -46,7 +46,7 @@ export const routesTab = () => {
 
     // Create cells for each column
     const routeName = createInputElement('text', 'routeName');
-    const invoiceNumberBody = createInputElement('number', 'invoiceNumberBody');
+    const invoiceNumberBody = createInputElement('text', 'invoiceNumberBody');
 
     const vehicleBodySelect = document.createElement('select');
     vehicleBodySelect.setAttribute('class', 'dropdown-input');

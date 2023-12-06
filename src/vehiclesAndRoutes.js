@@ -41,7 +41,7 @@ export const saveRoutesToStorage = (selector, storageKey) => {
     routes.push(data);
   });
 
-  localStorage.setItem(storageKey, JSON.stringify(vehicles));
+  localStorage.setItem(storageKey, JSON.stringify(routes));
 };
 
 export const loadVehiclesFromStorage = (rowIndex, createInputElement) => {

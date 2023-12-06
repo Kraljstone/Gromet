@@ -1,11 +1,16 @@
-export const card = () => {
+export const card = ({
+  highwayCost,
+  invoiceNumberBody,
+  routeName,
+  selectedField,
+}) => {
   const nav = document.querySelector('.nav-bar');
   const card = document.createElement('div');
   card.setAttribute('id', 'card');
   const heading = document.createElement('h2');
-  heading.innerHTML = 'SU1';
+  heading.innerHTML = routeName;
   const vehicle = document.createElement('p');
-  vehicle.innerHTML = 'Kombi';
+  vehicle.innerHTML = selectedField;
 
   const cardContent = document.createElement('div');
   cardContent.setAttribute('id', 'cardContent');

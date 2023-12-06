@@ -3,11 +3,20 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
+    "script": "nodemon ./src/fileConvert.js",
+    "dev": "concurrently \"npm run start\" \"npm run script\"",
     "build": "parcel build"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.4",
     "@babel/core": "^7.23.5",
     "parcel": "^2.10.3"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "xlsx": "^0.18.5"
   }
 }

@@ -46,6 +46,7 @@ body {
 }
 
 .menu {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -250,8 +251,7 @@ input:disabled {
   background: rgba(0, 217, 0, 0.837);
   width: 140px;
   text-align: center;
-  margin-top: 10px;
-  margin-bottom: 5px;
+  margin: 10px 15px;
   border-radius: 10px;
   position: relative;
 }
