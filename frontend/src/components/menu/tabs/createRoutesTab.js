@@ -1,9 +1,9 @@
 import {
   loadRoutesFromStorage,
   saveRoutesToStorage,
-} from '../../../vehiclesAndRoutes';
+} from '../../../store/routesStore';
 
-export const routesTab = () => {
+export const createRoutesTab = () => {
   const menuTabBody = document.querySelector('.menu-tab-body');
 
   const tbl = document.createElement('table');

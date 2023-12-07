@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const uploadController = require('../controller/uploadController.js');
+const processExcelFileController = require('../controller/processExcelFileController.js');
 
-router.post('/upload', uploadController);
+router.post('/upload', processExcelFileController);
 
 module.exports = router;

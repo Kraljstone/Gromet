@@ -1,6 +1,6 @@
 import { readDocsTab } from './tabs/readDocsTab';
 import { vehicleTab } from './tabs/vehicleTab/vehicleTab';
-import { routesTab } from './tabs/routesTab';
+import { createRoutesTab } from './tabs/createRoutesTab';
 
 const allTabs = document.querySelectorAll('.tab');
 
@@ -26,7 +26,7 @@ export const menuTabs = () => {
       }
 
       if (singleTab.classList[0] === 'routes-tab') {
-        routesTab();
+        createRoutesTab();
       }
     });
   });
