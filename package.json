@@ -3,7 +3,7 @@
   "source": "frontend/index.html",
   "scripts": {
     "start": "parcel",
-    "script": "nodemon server/fileConvert.js",
+    "script": "nodemon backend/server.js",
     "dev": "concurrently \"npm run start\" \"npm run script\"",
     "build": "parcel build"
   },

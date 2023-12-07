@@ -8,7 +8,7 @@ menu();
 
 const routesData = JSON.parse(localStorage.getItem('routesData'));
 
-routesData.forEach((data) => {
+routesData?.forEach((data) => {
   if (data.routeName !== '') {
     navCard(data);
   }

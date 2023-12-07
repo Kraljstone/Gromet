@@ -63,7 +63,7 @@ export const routesTab = () => {
 
     const storedData = JSON.parse(localStorage.getItem('vehiclesData'));
 
-    storedData.forEach((data) => {
+    storedData?.forEach((data) => {
       const otherVehicleBodyOptions = document.createElement('option');
       otherVehicleBodyOptions.innerHTML = data.vehicle;
       otherVehicleBodyOptions.setAttribute('value', data.vehicle);
