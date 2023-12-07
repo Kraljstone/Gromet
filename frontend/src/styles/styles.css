@@ -78,7 +78,7 @@ body {
   max-width: 1100px;
 }
 
-#droppable-area {
+.droppable-area {
   width: 400px;
   height: 200px;
   border: 2px dashed #ccc;
@@ -88,15 +88,15 @@ body {
   margin: 20px 0;
 }
 
-#vehicleTable {
+.vehicleTable {
   width: 100%;
   display: flex;
   align-items: center;
 }
 
-#vehicleTable th,
-#vehicleTable div,
-#vehicleTable input {
+.vehicleTable th,
+.vehicleTable div,
+.vehicleTable input {
   width: 100%;
   text-align: center;
   display: flex;
@@ -106,19 +106,19 @@ body {
   height: 40px;
   padding: 16px 6px;
 }
-#routesTable,
-#routesTableBody {
+.routesTable,
+.routesTableBody {
   width: 100%;
   display: flex;
   align-items: center;
 }
 
-#routesTable th,
-#routesTable div,
-#routesTable input,
-#routesTableBody th,
-#routesTableBody div,
-#routesTableBody input {
+.routesTable th,
+.routesTable div,
+.routesTable input,
+.routesTableBody th,
+.routesTableBody div,
+.routesTableBody input {
   width: 100%;
   text-align: center;
   display: flex;
@@ -129,16 +129,16 @@ body {
   padding: 16px 0px;
 }
 
-#routesTable th:last-child,
-#routesTable div:last-child,
-#routesTableBody th:last-child,
-#routesTableBody div:last-child {
+.routesTable th:last-child,
+.routesTable div:last-child,
+.routesTableBody th:last-child,
+.routesTableBody div:last-child {
   width: 200%;
   display: flex;
   align-items: center;
 }
 
-#addVehicleBtn {
+.addVehicleBtn {
   width: 120px;
   text-align: center;
   border: 1px solid gainsboro;
@@ -148,19 +148,19 @@ body {
   border-radius: 6px;
 }
 
-#addVehicleBtn:hover {
+.addVehicleBtn:hover {
   background-color: #b9b9b9;
   color: white;
   cursor: pointer;
 }
 
-#resetButtonContainer {
+.resetButtonContainer {
   width: 100%;
   display: flex;
   justify-content: end;
 }
 
-#resetRoutesBtn {
+.resetRoutesBtn {
   border: 1px solid black;
   background: rgb(0, 0, 131);
   color: white;
@@ -172,14 +172,14 @@ body {
   font-size: 18px;
 }
 
-#resetRoutesBtn:hover {
+.resetRoutesBtn:hover {
   background-color: rgb(0, 0, 168);
   color: white;
   cursor: pointer;
   box-shadow: 2px 2px 2px rgb(133, 133, 133);
 }
 
-#vehicleBody {
+.vehicleBody {
   display: flex;
 }
 
@@ -199,7 +199,7 @@ body {
   border: 1px solid #dcdcdc;
 }
 
-#applyBtn {
+.applyBtn {
   color: white;
   background-color: rgb(0, 160, 255);
   font-size: 14px;
@@ -207,11 +207,11 @@ body {
   padding: 6px 12px;
 }
 
-#applyBtn:hover {
+.applyBtn:hover {
   cursor: pointer;
   background-color: rgb(0, 175, 255);
 }
-#applyBtn:disabled {
+.applyBtn:disabled {
   cursor: default;
   background-color: rgb(236, 236, 236);
   color: #a2a2a2;
@@ -247,7 +247,7 @@ input:disabled {
   border-radius: 35px 35px 0 0;
 }
 
-#card {
+.card {
   background: rgba(0, 217, 0, 0.837);
   width: 140px;
   text-align: center;
@@ -256,21 +256,21 @@ input:disabled {
   position: relative;
 }
 
-#card:hover {
+.card:hover {
   cursor: pointer;
 }
 
-#card h2 {
+.card h2 {
   margin-bottom: 0;
   margin-top: 10px;
 }
 
-#card p {
+.card p {
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-#cardContent {
+.cardContent {
   display: none;
   width: 250px;
   background-color: white;
@@ -280,22 +280,22 @@ input:disabled {
   border: 1px solid rgb(184, 184, 184);
 }
 
-#infoCard {
+.infoCard {
   display: flex;
   justify-content: center;
 }
 
-#infoCard div:first-child {
+.infoCard div:first-child {
   border-right: 1px solid rgb(217, 217, 217);
   width: 100%;
 }
 
-#infoCard div {
+.infoCard div {
   width: 100%;
   height: 100%;
 }
 
-#infoCard div p {
+.infoCard div p {
   border-bottom: 1px solid rgb(217, 217, 217);
   width: 100%;
   font-size: 20px;
@@ -304,7 +304,7 @@ input:disabled {
   padding: 10px 0;
 }
 
-#resetRoutesBtn:disabled {
+.resetRoutesBtn:disabled {
   background: #ececec;
   color: #a2a2a2;
   cursor: default;

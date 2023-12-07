@@ -1,7 +1,7 @@
 import {
   loadRoutesFromStorage,
   saveRoutesToStorage,
-} from './vehiclesAndRoutes';
+} from '../../../vehiclesAndRoutes';
 
 export const routesTab = () => {
   const menuTabBody = document.querySelector('.menu-tab-body');
@@ -25,7 +25,7 @@ export const routesTab = () => {
 
   // Add the table header row to the table
   const tableHeading = tbl.appendChild(trHeading);
-  tableHeading.setAttribute('id', 'routesTable');
+  tableHeading.setAttribute('class', 'routesTable');
   menuTabBody.appendChild(tableHeading);
 
   const createInputElement = (type, name) => {
@@ -34,7 +34,7 @@ export const routesTab = () => {
     input.setAttribute('name', name);
     input.setAttribute('disabled', 'disabled');
     input.addEventListener('blur', function () {
-      saveRoutesToStorage('#routesTableBody', 'routesData');
+      saveRoutesToStorage('.routesTableBody', 'routesData');
     });
     return input;
   };
@@ -58,7 +58,7 @@ export const routesTab = () => {
     vehicleBodySelect.appendChild(vehicleBodyOptionOne);
 
     vehicleBodySelect.addEventListener('change', (e) => {
-      saveRoutesToStorage('#routesTableBody', 'routesData');
+      saveRoutesToStorage('.routesTableBody', 'routesData');
     });
 
     const storedData = JSON.parse(localStorage.getItem('vehiclesData'));
@@ -74,7 +74,7 @@ export const routesTab = () => {
     const inputsBody = document.createElement('div');
     const applyBtn = document.createElement('button');
     applyBtn.innerHTML = 'Primeni';
-    applyBtn.setAttribute('id', 'applyBtn');
+    applyBtn.setAttribute('class', 'applyBtn');
     applyBtn.setAttribute('disabled', 'disabled');
 
     const lockBtn = document.createElement('p');
@@ -89,7 +89,7 @@ export const routesTab = () => {
       const inputs = tr.querySelectorAll('input');
       inputs.forEach((input) => {
         input.disabled = !input.disabled;
-        const resetRoutesBtn = document.querySelector('#resetRoutesBtn');
+        const resetRoutesBtn = document.querySelector('.resetRoutesBtn');
         resetRoutesBtn.removeAttribute('disabled', 'disabled');
       });
     });
@@ -105,23 +105,23 @@ export const routesTab = () => {
 
     // Add the table row to the table
     const tableBody = tbl.appendChild(trBody);
-    tableBody.setAttribute('id', 'routesTableBody');
+    tableBody.setAttribute('class', 'routesTableBody');
     tableBody.setAttribute('data-row-index', i);
 
     // Add the table row to the routes tab container
     menuTabBody.appendChild(tableBody);
   }
-  loadRoutesFromStorage('#routesTableBody', 'routesData');
+  loadRoutesFromStorage('.routesTableBody', 'routesData');
 
   // Create a "Reset All Routes" button
   const resetButtonContainer = document.createElement('div');
-  resetButtonContainer.setAttribute('id', 'resetButtonContainer');
+  resetButtonContainer.setAttribute('class', 'resetButtonContainer');
   const resetButton = document.createElement('button');
   resetButton.innerHTML = 'Resetuj sve rute';
-  resetButton.setAttribute('id', 'resetRoutesBtn');
+  resetButton.setAttribute('class', 'resetRoutesBtn');
   resetButton.setAttribute('disabled', 'disabled');
   resetButton.addEventListener('click', () => {
-    const rows = document.querySelectorAll('#routesTableBody');
+    const rows = document.querySelectorAll('.routesTableBody');
 
     rows.forEach((row) => {
       const inputs = row.querySelectorAll('input[name]');

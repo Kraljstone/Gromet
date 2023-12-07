@@ -45,7 +45,7 @@ export const saveRoutesToStorage = (selector, storageKey) => {
 };
 
 export const loadVehiclesFromStorage = (rowIndex, createInputElement) => {
-  const tableHead = document.querySelector('#vehicleTable');
+  const tableHead = document.querySelector('.vehicleTable');
   const menuTabBody = document.querySelector('.menu-tab-body');
   const tbl = document.createElement('table');
 
@@ -92,7 +92,7 @@ export const loadVehiclesFromStorage = (rowIndex, createInputElement) => {
 
     const table = tbl.appendChild(trBody);
     table.setAttribute('id', 'vehicleTable');
-    menuTabBody.insertBefore(table, tableHead.nextSibling);
+    menuTabBody.insertBefore(table, tableHead?.nextSibling);
 
     rowIndex++;
 
