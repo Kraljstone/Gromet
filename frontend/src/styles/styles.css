@@ -88,15 +88,15 @@ body {
   margin: 20px 0;
 }
 
-.vehicleTable {
+#vehicleTable {
   width: 100%;
   display: flex;
   align-items: center;
 }
 
-.vehicleTable th,
-.vehicleTable div,
-.vehicleTable input {
+#vehicleTable th,
+#vehicleTable div,
+#vehicleTable input {
   width: 100%;
   text-align: center;
   display: flex;
@@ -179,7 +179,7 @@ body {
   box-shadow: 2px 2px 2px rgb(133, 133, 133);
 }
 
-.vehicleBody {
+#vehicleBody {
   display: flex;
 }
 
