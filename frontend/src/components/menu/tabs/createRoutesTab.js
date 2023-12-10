@@ -2,6 +2,7 @@ import {
   loadRoutesFromStorage,
   saveRoutesToStorage,
 } from '../../../store/routesStore';
+import { clearDirections } from '../../../api/googleMap/directions/directions';
 
 export const createRoutesTab = () => {
   const menuTabBody = document.querySelector('.menu-tab-body');
@@ -128,7 +129,7 @@ export const createRoutesTab = () => {
     const rows = document.querySelectorAll('.routesTableBody');
 
     rows.forEach((row) => {
-      const inputs = row.querySelectorAll('input[name]');
+      const inputs = row.querySelectorAll('input[name], select[name]');
 
       inputs.forEach((input) => {
         input.value = '';
@@ -136,6 +137,7 @@ export const createRoutesTab = () => {
     });
 
     localStorage.removeItem('routesData');
+    clearDirections();
   });
 
   resetButton.innerHTML = 'Resetuj sve rute';

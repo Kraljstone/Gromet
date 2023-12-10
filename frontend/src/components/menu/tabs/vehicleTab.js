@@ -1,7 +1,7 @@
 import {
   loadVehiclesFromStorage,
   saveVehiclesToStorage,
-} from '../../../../store/vehicleStore';
+} from '../../../store/vehicleStore';
 
 export const vehicleTab = () => {
   const menuTabBody = document.querySelector('.menu-tab-body');

@@ -1,17 +1,25 @@
-export function connectPins(
+let directionsRenderer;
+
+export function directions(
   map,
   markerPositions,
   pinNumbersToConnect,
-  color
+  color,
+  thickness = 5
 ) {
   // Check if markerPositions is an array and not empty
   if (Array.isArray(markerPositions) && markerPositions.length > 0) {
     // Check if pinNumbersToConnect is an array and not empty
     if (Array.isArray(pinNumbersToConnect) && pinNumbersToConnect.length > 0) {
+      // If directionsRenderer is already defined, clear the existing directions
+      if (directionsRenderer) {
+        directionsRenderer.setMap(null);
+      }
+
       const directionsService = new google.maps.DirectionsService();
-      const directionsRenderer = new google.maps.DirectionsRenderer({
+      directionsRenderer = new google.maps.DirectionsRenderer({
         map,
-        polylineOptions: { strokeColor: color, strokeWeight: 5 },
+        polylineOptions: { strokeColor: color, strokeWeight: thickness },
       });
 
       const waypoints = pinNumbersToConnect.map((pinNumber) => ({
@@ -21,14 +29,16 @@ export function connectPins(
 
       directionsService.route(
         {
-          origin: markerPositions[pinNumbersToConnect[0]], // Use the LatLng directly
-          destination: markerPositions[pinNumbersToConnect[pinNumbersToConnect.length - 1]],
+          origin: markerPositions[pinNumbersToConnect[0]],
+          destination:
+            markerPositions[
+              pinNumbersToConnect[pinNumbersToConnect.length - 1]
+            ],
           waypoints: waypoints.slice(1, -1),
           travelMode: 'DRIVING',
         },
         (response, status) => {
           if (status === 'OK') {
-            const distance = computeTotalDistance(response);
             directionsRenderer.setDirections(response);
           } else {
             window.alert('Directions request failed due to ' + status);
@@ -44,12 +54,8 @@ export function connectPins(
 }
 
 
-// Helper function to compute total distance
-function computeTotalDistance(directionsResult) {
-  let totalDistance = 0;
-  const legs = directionsResult.routes[0].legs;
-  for (let i = 0; i < legs.length; i++) {
-    totalDistance += legs[i].distance.value;
+export function clearDirections() {
+  if (directionsRenderer) {
+    directionsRenderer.setMap(null);
   }
-  return totalDistance / 1000; // Convert meters to kilometers
 }

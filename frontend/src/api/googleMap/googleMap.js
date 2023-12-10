@@ -1,4 +1,4 @@
-import { connectPins } from './connectPins';
+import { applyDirections } from './directions/applyDirections';
 import { getInfoWindowContent } from './getInfoWindowContent';
 
 export async function initMap() {
@@ -65,31 +65,8 @@ export async function initMap() {
 
       markerPositions.push(position);
     }
-    const directionalPinNumbers = [0, 2];
-    const directionalPinColor = 'blue';
-    connectPins(
-      map,
-      markerPositions,
-      directionalPinNumbers,
-      directionalPinColor
-    );
 
-    const storedData = JSON.parse(localStorage.getItem('routesData'));
-
-    storedData?.forEach((data) => {
-      let pinNumbersToConnect = [];
-      if (data.invoiceNumberBody) {
-        pinNumbersToConnect = data.invoiceNumberBody.split(',').map(Number);
-      }
-      if (pinNumbersToConnect.length > 0) {
-        connectPins(
-          map,
-          markerPositions,
-          pinNumbersToConnect,
-          data.randomColor
-        );
-      }
-    });
+    applyDirections(map, markerPositions);
   } else {
     // Handle the case where there is no data in the array
     console.error('No data available.');
