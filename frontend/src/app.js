@@ -1,4 +1,4 @@
-import { initMap } from './api/googleMap';
+import { initMap } from './api/googleMap/googleMap';
 import { navCard } from './components/navCard/navCard';
 import { menu } from './components/menu/menu';
 initMap();

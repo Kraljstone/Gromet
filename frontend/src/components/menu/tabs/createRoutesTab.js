@@ -33,9 +33,6 @@ export const createRoutesTab = () => {
     input.setAttribute('type', type);
     input.setAttribute('name', name);
     input.setAttribute('disabled', 'disabled');
-    input.addEventListener('blur', function () {
-      saveRoutesToStorage('.routesTableBody', 'routesData');
-    });
     return input;
   };
   // Generate table content for each row
@@ -45,7 +42,15 @@ export const createRoutesTab = () => {
     const trBody = document.createElement('tr');
 
     // Create cells for each column
+    const routeAndColor = document.createElement('div');
+    routeAndColor.setAttribute('class', 'routeAndColor');
     const routeName = createInputElement('text', 'routeName');
+    const color = document.createElement('p');
+    color.innerHTML = 'a';
+    color.setAttribute('class', 'pinConnectColor');
+
+    routeAndColor.appendChild(routeName);
+    routeAndColor.appendChild(color);
     const invoiceNumberBody = createInputElement('text', 'invoiceNumberBody');
 
     const vehicleBodySelect = document.createElement('select');
@@ -56,10 +61,6 @@ export const createRoutesTab = () => {
     const vehicleBodyOptionOne = document.createElement('option');
     vehicleBodyOptionOne.innerHTML = 'Odaberi Vozilo';
     vehicleBodySelect.appendChild(vehicleBodyOptionOne);
-
-    vehicleBodySelect.addEventListener('change', (e) => {
-      saveRoutesToStorage('.routesTableBody', 'routesData');
-    });
 
     const storedData = JSON.parse(localStorage.getItem('vehiclesData'));
 
@@ -76,6 +77,9 @@ export const createRoutesTab = () => {
     applyBtn.innerHTML = 'Primeni';
     applyBtn.setAttribute('class', 'applyBtn');
     applyBtn.setAttribute('disabled', 'disabled');
+    applyBtn.addEventListener('click', () => {
+      saveRoutesToStorage('.routesTableBody', 'routesData');
+    });
 
     const lockBtn = document.createElement('p');
     lockBtn.setAttribute('class', 'lock ');
@@ -95,7 +99,7 @@ export const createRoutesTab = () => {
     });
 
     // Append elements to the table row
-    trBody.appendChild(routeName);
+    trBody.appendChild(routeAndColor);
     trBody.appendChild(invoiceNumberBody);
     trBody.appendChild(vehicleBodySelect);
     trBody.appendChild(highwayCostBody);

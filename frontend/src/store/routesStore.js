@@ -1,3 +1,5 @@
+import { generateRandomColor } from '../utils/generateRandomColor';
+
 export const saveRoutesToStorage = (selector, storageKey) => {
   const routes = [];
 
@@ -19,6 +21,8 @@ export const saveRoutesToStorage = (selector, storageKey) => {
       data[Object.keys(data)[2]] = selectElement.value;
     }
 
+    data['randomColor'] = generateRandomColor();
+
     routes.push(data);
   });
 
@@ -29,16 +33,17 @@ export const loadRoutesFromStorage = (selector, data) => {
   const storedData = localStorage.getItem(data);
 
   if (storedData) {
-    const vehicles = JSON.parse(storedData);
+    const routes = JSON.parse(storedData);
 
     const rows = document.querySelectorAll(selector);
 
     rows.forEach((row, rowIndex) => {
       const inputs = row.querySelectorAll('input[name], select[name]');
+      const colorElement = row.querySelector('.pinConnectColor');
 
       inputs.forEach((input) => {
         const inputName = input.name;
-        const inputData = vehicles?.[rowIndex]?.[inputName];
+        const inputData = routes?.[rowIndex]?.[inputName];
 
         // Check if the data for the input exists
         if (inputData !== undefined) {
@@ -55,6 +60,12 @@ export const loadRoutesFromStorage = (selector, data) => {
           }
         }
       });
+
+      // Check if color data exists and set the color element content
+      const colorData = routes?.[rowIndex]?.randomColor;
+      if (colorData !== undefined) {
+        colorElement.style.backgroundColor = colorData;
+      }
     });
   }
 };

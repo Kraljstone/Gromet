@@ -137,6 +137,16 @@ body {
   display: flex;
   align-items: center;
 }
+.routeAndColor {
+  height: 100%;
+  width: 100%;
+}
+
+.pinConnectColor {
+  width: 20px;
+  height: 100%;
+  color: transparent;
+}
 
 .addVehicleBtn {
   width: 120px;
