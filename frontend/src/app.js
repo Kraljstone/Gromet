@@ -1,15 +1,10 @@
 import { initMap } from './api/googleMap/googleMap';
 import { navCard } from './components/navCard/navCard';
 import { menu } from './components/menu/menu';
+import { showNavCard } from './components/navCard/showNavCard';
 initMap();
 
 //Side Menu
 menu();
 
-const routesData = JSON.parse(localStorage.getItem('routesData'));
-
-routesData?.forEach((data) => {
-  if (data.routeName !== '') {
-    navCard(data);
-  }
-});
+showNavCard();

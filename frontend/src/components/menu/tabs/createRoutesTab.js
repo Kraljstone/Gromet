@@ -138,6 +138,8 @@ export const createRoutesTab = () => {
 
     localStorage.removeItem('routesData');
     clearDirections();
+    const card = document.querySelector('.card');
+    card.style.display = 'none';
   });
 
   resetButton.innerHTML = 'Resetuj sve rute';

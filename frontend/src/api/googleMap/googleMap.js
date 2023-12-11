@@ -1,5 +1,6 @@
-import { applyDirections } from './directions/applyDirections';
 import { getInfoWindowContent } from './getInfoWindowContent';
+import { directions } from './directions/directions';
+import { applyDirections } from './directions/applyDirections';
 
 export async function initMap() {
   const mapLocation = await fetch('http://localhost:3000/api/mapLocation');
@@ -22,9 +23,14 @@ export async function initMap() {
     const { Map } = await google.maps.importLibrary('maps');
     const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
 
+    const defaultLocation = mapLocationData[0];
+    const defaultAddress = await getCoordinates(
+      `${defaultLocation.ULICA},${defaultLocation.GRAD}`
+    );
+
     let map = new Map(document.getElementById('map'), {
-      zoom: 10,
-      center: { lat: 40.787197, lng: 18.457273 },
+      zoom: 8,
+      center: defaultAddress,
       mapId: '3eecad6d62fb1776',
     });
 
@@ -55,6 +61,7 @@ export async function initMap() {
       });
       // Add event listeners for mouseover and mouseout to show/hide the InfoWindow
       infoWindow.open(map, marker);
+
       marker.addListener('click', () => {
         infoWindow.open(map, marker);
       });
@@ -65,6 +72,17 @@ export async function initMap() {
 
       markerPositions.push(position);
     }
+    const storedData = JSON.parse(localStorage.getItem('routesData'));
+
+    storedData?.forEach((data) => {
+      let pinNumbersToConnect = [];
+      if (data.invoiceNumberBody) {
+        pinNumbersToConnect = data.invoiceNumberBody.split(',').map(Number);
+      }
+      if (pinNumbersToConnect.length > 0) {
+        directions(map, markerPositions, pinNumbersToConnect, data.randomColor);
+      }
+    });
 
     applyDirections(map, markerPositions);
   } else {

@@ -1,17 +1,8 @@
 import { directions } from './directions';
+import { showNavCard } from '../../../components/navCard/showNavCard';
 
 export const applyDirections = (map, markerPositions) => {
   const storedData = JSON.parse(localStorage.getItem('routesData'));
-
-  storedData?.forEach((data) => {
-    let pinNumbersToConnect = [];
-    if (data.invoiceNumberBody) {
-      pinNumbersToConnect = data.invoiceNumberBody.split(',').map(Number);
-    }
-    if (pinNumbersToConnect.length > 0) {
-      directions(map, markerPositions, pinNumbersToConnect, data.randomColor);
-    }
-  });
 
   const routesTabBody = document.querySelector('.menu-tab-body');
 
@@ -36,7 +27,6 @@ export const applyDirections = (map, markerPositions) => {
         randomColor,
         // Add other properties as needed
       };
-
       // Connect pins for the current row's data
       directions(
         map,
@@ -44,6 +34,8 @@ export const applyDirections = (map, markerPositions) => {
         data.invoiceNumberBody.split(',').map(Number),
         randomColor
       );
+
+      showNavCard();
     }
   });
 };
