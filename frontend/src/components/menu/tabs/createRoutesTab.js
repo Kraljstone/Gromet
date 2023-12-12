@@ -82,6 +82,17 @@ export const createRoutesTab = () => {
       saveRoutesToStorage('.routesTableBody', 'routesData');
     });
 
+    const datePickContainer = document.createElement('div');
+    datePickContainer.classList = 'datePickerContainer';
+    const datePickerIcon = document.createElement('i');
+    datePickerIcon.setAttribute('class', 'fas fa-solid fa-calendar');
+
+    const datePicker = createInputElement('date', 'datePicker');
+    datePicker.setAttribute('class', 'datePicker');
+
+    datePickContainer.appendChild(datePicker);
+    datePickContainer.appendChild(datePickerIcon);
+
     const lockBtn = document.createElement('p');
     lockBtn.setAttribute('class', 'lock ');
 
@@ -96,6 +107,11 @@ export const createRoutesTab = () => {
         input.disabled = !input.disabled;
         const resetRoutesBtn = document.querySelector('.resetRoutesBtn');
         resetRoutesBtn.removeAttribute('disabled', 'disabled');
+        if (!input.disabled) {
+          datePickerIcon.style.color = '#00005e';
+        } else {
+          datePickerIcon.style.color = 'gray';
+        }
       });
     });
 
@@ -105,6 +121,7 @@ export const createRoutesTab = () => {
     trBody.appendChild(vehicleBodySelect);
     trBody.appendChild(highwayCostBody);
     inputsBody.appendChild(applyBtn);
+    inputsBody.appendChild(datePickContainer);
     inputsBody.appendChild(lockBtn);
     trBody.appendChild(inputsBody);
 

@@ -320,3 +320,97 @@ input:disabled {
   cursor: default;
   box-shadow: none;
 }
+
+.datePickerContainer {
+  position: relative;
+  width: 50px !important;
+  border: none !important;
+  margin-left: 6px;
+  margin-right: -10px;
+}
+
+.datePickerContainer i {
+  position: absolute;
+  top: 17px;
+  font-size: 35px;
+  color: gray;
+}
+
+.datePicker {
+  position: absolute;
+  border: none !important;
+  margin: 0 8px;
+  width: 30px !important;
+  background: transparent;
+  z-index: 2;
+}
+
+.datePicker:focus {
+  outline: none;
+}
+
+.datePicker::-webkit-calendar-picker-indicator {
+  width: 50px !important;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-btn-container {
+  display: flex;
+  align-items: end;
+}
+
+.nav-btn {
+  display: flex;
+  height: 85px;
+  width: 180px;
+  justify-content: space-between;
+  flex-direction: column;
+  margin: 0 16px;
+}
+
+.nav-btn button {
+  height: 40px;
+  background-color: rgb(74, 179, 245);
+  color: white;
+  border: 1px solid rgb(171, 171, 171);
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.nav-btn button:hover {
+  background-color: rgb(0, 152, 247);
+  cursor: pointer;
+}
+
+.bigCard {
+  background: rgb(150, 251, 150);
+  margin: 16px;
+  width: 160px;
+  height: 100%;
+  padding: 16px;
+}
+
+.bigCard h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.bigCard p {
+  margin: 6px 0;
+}
+
+.bigInfoCard {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cardHeadings {
+  border-bottom: 1px solid black;
+  font-style: italic;
+}

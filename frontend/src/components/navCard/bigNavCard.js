@@ -1,30 +1,25 @@
 const nav = document.querySelector('.nav-bar');
-
-export const navCard = ({
-  highwayCost,
-  invoiceNumberBody,
-  routeName,
-  selectedField,
-}) => {
+export const bigNavCard = (date) => {
   const card = document.createElement('div');
-  card.setAttribute('class', 'card');
+  card.setAttribute('class', 'bigCard');
   const heading = document.createElement('h2');
-  heading.innerHTML = routeName;
-  const vehicle = document.createElement('p');
-  vehicle.innerHTML = selectedField;
+  heading.innerHTML = `Ruta ${date.routeName} (${date.selectedField})`;
+  const day = document.createElement('p');
+  const dateParts = date.datePicker.split('-');
+  day.innerHTML = date.datePicker ? `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}` : 'Nema Datuma';
 
   const cardContent = document.createElement('div');
-  cardContent.setAttribute('class', 'cardContent');
+  cardContent.setAttribute('class', 'bigCardContent');
   const cardInner = document.createElement('div');
-  cardInner.setAttribute('class', 'infoCard');
+  cardInner.setAttribute('class', 'bigInfoCard');
 
   const leftTable = document.createElement('div');
   const rightTable = document.createElement('div');
 
   const profitabilityPercentageContainer = document.createElement('div');
   const criteria = document.createElement('p');
+  criteria.classList = 'cardHeadings'
   criteria.innerHTML = 'kriterijumi';
-  criteria.classList = 'cardHeadings';
   const profitabilityPercentage = document.createElement('p');
   profitabilityPercentage.innerHTML = '90%';
   profitabilityPercentageContainer.appendChild(criteria);
@@ -45,7 +40,7 @@ export const navCard = ({
   const totalDistanceContainer = document.createElement('div');
   const info = document.createElement('p');
   info.innerHTML = 'info';
-  info.classList = 'cardHeadings';
+  info.classList = 'cardHeadings'
   const totalDistance = document.createElement('p');
   totalDistance.innerHTML = '230km';
   totalDistanceContainer.appendChild(info);
@@ -68,15 +63,8 @@ export const navCard = ({
 
   cardContent.appendChild(cardInner);
 
-  card.addEventListener('mouseenter', () => {
-    cardContent.style.display = 'block';
-  });
-  card.addEventListener('mouseleave', () => {
-    cardContent.style.display = 'none';
-  });
-
   card.appendChild(heading);
-  card.appendChild(vehicle);
+  card.appendChild(day);
   card.appendChild(cardContent);
   nav.appendChild(card);
 };
