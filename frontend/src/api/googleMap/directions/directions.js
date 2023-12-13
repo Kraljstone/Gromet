@@ -11,6 +11,7 @@ export function directions(map, markerPositions, pinNumbersToConnect, color) {
       const directionsRenderer = new google.maps.DirectionsRenderer({
         map,
         polylineOptions: { strokeColor: color, strokeWeight: 5 },
+        suppressMarkers: true,
       });
 
       directionsRenderers.push(directionsRenderer);
@@ -19,7 +20,6 @@ export function directions(map, markerPositions, pinNumbersToConnect, color) {
         location: markerPositions[pinNumber - 1],
         stopover: true,
       }));
-
       directionsService.route(
         {
           origin: markerPositions[pinNumbersToConnect[0]],

@@ -54,10 +54,9 @@ export async function initMap() {
         position,
         content: pinGlyph.element,
       });
-
       // Create an InfoWindow for each marker
       const infoWindow = new google.maps.InfoWindow({
-        content: getInfoWindowContent(mapLocationData[i]),
+        content: getInfoWindowContent(mapLocationData, address),
       });
       // Add event listeners for mouseover and mouseout to show/hide the InfoWindow
       infoWindow.open(map, marker);
