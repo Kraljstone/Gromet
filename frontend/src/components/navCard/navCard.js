@@ -1,11 +1,6 @@
 const nav = document.querySelector('.nav-bar');
 
-export const navCard = ({
-  highwayCost,
-  invoiceNumberBody,
-  routeName,
-  selectedField,
-}) => {
+export const navCard = ({ routeName, selectedField }) => {
   const card = document.createElement('div');
   card.setAttribute('class', 'card');
   const heading = document.createElement('h2');

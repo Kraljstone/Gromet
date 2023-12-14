@@ -25,11 +25,10 @@ export async function initMap() {
 
     const defaultLocation = mapLocationData[0];
     const defaultAddress = await getCoordinates(
-      `${defaultLocation.ULICA},${defaultLocation.GRAD}`
+      `${'defaultLocation.ULICA'},${defaultLocation.GRAD}`
     );
-
     let map = new Map(document.getElementById('map'), {
-      zoom: 8,
+      zoom: 10,
       center: defaultAddress,
       mapId: '3eecad6d62fb1776',
     });
@@ -59,7 +58,6 @@ export async function initMap() {
         content: getInfoWindowContent(mapLocationData, address),
       });
       // Add event listeners for mouseover and mouseout to show/hide the InfoWindow
-      infoWindow.open(map, marker);
 
       marker.addListener('click', () => {
         infoWindow.open(map, marker);
