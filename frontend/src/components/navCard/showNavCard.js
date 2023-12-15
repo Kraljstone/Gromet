@@ -19,6 +19,10 @@ export const showNavCard = () => {
   }
 
   const bigCard = () => {
+    const cardBig = document.querySelectorAll('.bigCard');
+    cardBig.forEach((card) => {
+      card.remove();
+    });
     routesData?.forEach((data) => {
       if (data.routeName !== '') {
         bigNavCard(data);
@@ -33,6 +37,9 @@ export const showNavCard = () => {
     const cardBig = document.querySelectorAll('.bigCard');
     if (!toggle) {
       toggle = !toggle;
+      card.forEach((card) => {
+        card.remove();
+      });
       cardBig.forEach((card) => {
         card.remove();
       });

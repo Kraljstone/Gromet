@@ -3,6 +3,7 @@ import {
   saveRoutesToStorage,
 } from '../../../store/routesStore';
 import { clearDirections } from '../../../api/googleMap/directions/directions';
+import { showNavCard } from '../../navCard/showNavCard';
 
 export const createRoutesTab = () => {
   const menuTabBody = document.querySelector('.menu-tab-body');
@@ -80,6 +81,14 @@ export const createRoutesTab = () => {
     applyBtn.setAttribute('disabled', 'disabled');
     applyBtn.addEventListener('click', () => {
       saveRoutesToStorage('.routesTableBody', 'routesData');
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card) => {
+        card.remove();
+      });
+
+      clearDirections();
+      loadRoutesFromStorage('routesData');
+      showNavCard();
     });
 
     const datePickContainer = document.createElement('div');
