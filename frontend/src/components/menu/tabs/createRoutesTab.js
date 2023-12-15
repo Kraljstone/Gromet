@@ -93,8 +93,9 @@ export const createRoutesTab = () => {
     datePickContainer.appendChild(datePicker);
     datePickContainer.appendChild(datePickerIcon);
 
-    const lockBtn = document.createElement('p');
-    lockBtn.setAttribute('class', 'lock ');
+    const lockBtn = document.createElement('i');
+    let locked = 'true';
+    lockBtn.setAttribute('class', 'fas fa-solid fa-lock');
 
     // Event listener for the lock button
     lockBtn.addEventListener('click', (e) => {
@@ -102,17 +103,29 @@ export const createRoutesTab = () => {
       const disableDropdown = tr.querySelector('.dropdown-input');
       disableDropdown.disabled = !disableDropdown.disabled;
       applyBtn.disabled = !applyBtn.disabled;
+      if (locked) {
+        lockBtn.setAttribute('class', 'fas fa-solid fa-lock-open');
+        locked = !locked;
+      } else {
+        lockBtn.setAttribute('class', 'fas fa-solid fa-lock');
+        locked = !locked;
+      }
+      const resetRoutesBtn = document.querySelector('.resetRoutesBtn');
       const inputs = tr.querySelectorAll('input');
+
       inputs.forEach((input) => {
         input.disabled = !input.disabled;
-        const resetRoutesBtn = document.querySelector('.resetRoutesBtn');
-        resetRoutesBtn.removeAttribute('disabled', 'disabled');
-        if (!input.disabled) {
-          datePickerIcon.style.color = '#00005e';
-        } else {
-          datePickerIcon.style.color = 'gray';
-        }
       });
+
+      const locks = document.querySelectorAll('.fa-lock-open');
+
+      if (e.target.classList.contains('fa-lock-open')) {
+        resetRoutesBtn.removeAttribute('disabled', 'disabled');
+        return (datePickerIcon.style.color = '#00005e');
+      }
+
+      resetRoutesBtn.setAttribute('disabled', 'disabled');
+      datePickerIcon.style.color = 'gray';
     });
 
     // Append elements to the table row
@@ -159,7 +172,6 @@ export const createRoutesTab = () => {
     card.forEach((card) => (card.style.display = 'none'));
   });
 
-  resetButton.innerHTML = 'Resetuj sve rute';
   resetButtonContainer.appendChild(resetButton);
   menuTabBody.appendChild(resetButtonContainer);
 };

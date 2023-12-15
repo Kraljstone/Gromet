@@ -1,8 +1,14 @@
 import { directions } from './directions';
+import { navCard } from '../../../components/navCard/navCard';
 
 export const applyDirections = (map, markerPositions) => {
   const storedData = JSON.parse(localStorage.getItem('routesData'));
   const routesTabBody = document.querySelector('.menu-tab-body');
+
+  let newData = {
+    routeName: '',
+    selectedField: 'Odaberi Vozilo',
+  };
 
   routesTabBody.addEventListener('click', (event) => {
     const target = event.target;
@@ -25,7 +31,17 @@ export const applyDirections = (map, markerPositions) => {
         );
       });
 
-      navCard({ routeName, selectedField });
+      if (routeName !== '' && selectedField !== 'Odaberi Vozilo') {
+        if (
+          routeName !== newData.routeName &&
+          selectedField !== newData.selectedField
+        ) {
+          newData.routeName = routeName;
+          newData.selectedField = selectedField;
+
+          navCard({ routeName, selectedField });
+        }
+      }
     }
   });
 };
