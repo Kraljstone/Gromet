@@ -377,7 +377,7 @@ input:disabled {
 .bigCard {
   background: rgb(150, 251, 150);
   margin: 16px;
-  width: 160px;
+  width: 200px;
   height: 100%;
   padding: 16px;
 }
@@ -399,4 +399,9 @@ input:disabled {
 .cardHeadings {
   border-bottom: 1px solid black;
   font-style: italic;
+}
+.dateBackground {
+  width: 100%;
+  padding: 4px 0;
+  background-color: orange;
 }

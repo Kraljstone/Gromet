@@ -1,28 +1,52 @@
 export function getInfoWindowContent(mapLocationData, pinAddress) {
   // Filter data based on matching address
   const matchingData = mapLocationData.filter((data) => {
-    const dataAddress = `${data.ULICA},${data.GRAD}`;
+    const dataAddress = `${data.Adresa},${data.Mesto}`;
     return pinAddress === dataAddress;
   });
+
+  const isMoreThanTwoWeeksAgo = (dateString) => {
+    const parts = dateString.split('/');
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const year = 2000 + parseInt(parts[2], 10);
+
+
+    const inputDate = new Date(year, month, day);
+    const currentDate = new Date();
+
+
+    const timeDifference = currentDate - inputDate;
+
+
+    const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+
+    return daysDifference > 14;
+  };
 
   const content = matchingData
     .map(
       (data, index) => `
     <div key=${index}>
-      <strong>Broj Paketa:</strong> ${data['BROJ PAKETA']}<br>
-      <strong>Grad:</strong> ${data['GRAD']}<br>
-      <strong>Naziv Firme:</strong> ${data['NAZIV FIRME']}<br>
-      <strong>Potpis:</strong> ${data['POTPIS']}<br>
-      <strong>Radno Vreme:</strong> ${data['RADNO VREME']}<br>
-      <strong>Redni Br istovara:</strong> ${data['REDNI BROJ ISTOVARA']}<br>
-      <strong>Kontakt:</strong> ${data['TELEFON']}<br>
-      <strong>Ulica:</strong> ${data['ULICA']}<br><br>
+    <br>
+    <div class=${
+      isMoreThanTwoWeeksAgo(data['Datum_naloga']) && 'dateBackground'
+    }><strong>Datum:</strong> ${data['Datum_naloga']}</div>
+      <strong>Naziv kupca:</strong> ${data['Naziv kupca']}<br>
+      <strong>Vrednost naloga:</strong> ${data['Vrednost naloga']} rsd <br>
+      <strong>Težina:</strong> ${data['Težina_kg']} kg<br>
+      <strong>Gabarit:</strong> ${data['Gabarit_m3']}<br>
+      <strong>Radno Vreme:</strong> ${data['Radno_vreme']}<br>
+      <strong>Prioritet:</strong> ${data['Prioritet']}<br>
+      <strong>Gabarit Upozorenja:</strong> ${data['Gabarit_upozorenja']}<br>
     </div>
   `
     )
     .join('');
 
-  const containerStyle = matchingData.length > 1 ? 'max-height: 135px; overflow-y: auto;' : '';
+  const containerStyle =
+    matchingData.length > 1 ? 'max-height: 135px; overflow-y: auto;' : '';
 
   return `<div style="${containerStyle}">${content}</div>`;
 }

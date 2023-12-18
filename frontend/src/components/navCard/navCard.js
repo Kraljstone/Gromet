@@ -1,66 +1,51 @@
 const nav = document.querySelector('.nav-bar');
 
 export const navCard = ({ routeName, selectedField }) => {
-  const card = document.createElement('div');
-  card.setAttribute('class', 'card');
-  const heading = document.createElement('h2');
-  heading.innerHTML = routeName;
-  const vehicle = document.createElement('p');
-  vehicle.innerHTML = selectedField;
+  const createCardElement = (elementType, className) => {
+    const element = document.createElement(elementType);
+    if (className) {
+      element.classList.add(className);
+    }
+    return element;
+  };
 
-  const cardContent = document.createElement('div');
-  cardContent.setAttribute('class', 'cardContent');
-  const cardInner = document.createElement('div');
-  cardInner.setAttribute('class', 'infoCard');
+  const createTextElement = (elementType, text, className) => {
+    const element = createCardElement(elementType, className);
+    element.textContent = text;
+    return element;
+  };
 
-  const leftTable = document.createElement('div');
-  const rightTable = document.createElement('div');
+  const createTable = (leftContent, rightContent) => {
+    const leftTable = createCardElement('div');
+    const rightTable = createCardElement('div');
 
-  const profitabilityPercentageContainer = document.createElement('div');
-  const criteria = document.createElement('p');
-  criteria.innerHTML = 'kriterijumi';
-  criteria.classList = 'cardHeadings';
-  const profitabilityPercentage = document.createElement('p');
-  profitabilityPercentage.innerHTML = '90%';
-  profitabilityPercentageContainer.appendChild(criteria);
-  profitabilityPercentageContainer.appendChild(profitabilityPercentage);
+    leftTable.appendChild(leftContent);
+    rightTable.appendChild(rightContent);
 
-  const valueToProfitability = document.createElement('p');
-  valueToProfitability.innerHTML = '-102.000';
+    return [leftTable, rightTable];
+  };
 
-  const goodsWeight = document.createElement('p');
-  goodsWeight.innerHTML = '350kg';
+  const card = createCardElement('div', 'card');
+  const heading = createTextElement('h2', routeName);
+  const vehicle = createTextElement('p', selectedField);
 
-  const goodsM3 = document.createElement('p');
-  goodsM3.innerHTML = '16m3';
+  const [leftTable, rightTable] = createTable(
+    createTextElement('p', '90%', 'cardHeadings'),
+    createTextElement('p', '230km')
+  );
 
-  const coefficientOfValue = document.createElement('p');
-  coefficientOfValue.innerHTML = 7;
+  leftTable.appendChild(createTextElement('p', '-102.000'));
+  leftTable.appendChild(createTextElement('p', '350kg'));
+  leftTable.appendChild(createTextElement('p', '16m3'));
+  leftTable.appendChild(createTextElement('p', '7'));
 
-  const totalDistanceContainer = document.createElement('div');
-  const info = document.createElement('p');
-  info.innerHTML = 'info';
-  info.classList = 'cardHeadings';
-  const totalDistance = document.createElement('p');
-  totalDistance.innerHTML = '230km';
-  totalDistanceContainer.appendChild(info);
-  totalDistanceContainer.appendChild(totalDistance);
+  rightTable.appendChild(createTextElement('p', 'Pr:1'));
 
-  const priorityCustomer = document.createElement('p');
-  priorityCustomer.innerHTML = 'Pr:1';
-
-  leftTable.appendChild(profitabilityPercentageContainer);
-  leftTable.appendChild(valueToProfitability);
-  leftTable.appendChild(goodsWeight);
-  leftTable.appendChild(goodsM3);
-  leftTable.appendChild(coefficientOfValue);
-
-  rightTable.appendChild(totalDistanceContainer);
-  rightTable.appendChild(priorityCustomer);
-
+  const cardInner = createCardElement('div', 'infoCard');
   cardInner.appendChild(leftTable);
   cardInner.appendChild(rightTable);
 
+  const cardContent = createCardElement('div', 'cardContent');
   cardContent.appendChild(cardInner);
 
   card.addEventListener('mouseenter', () => {
@@ -73,5 +58,6 @@ export const navCard = ({ routeName, selectedField }) => {
   card.appendChild(heading);
   card.appendChild(vehicle);
   card.appendChild(cardContent);
+
   nav.appendChild(card);
 };

@@ -1,6 +1,6 @@
 import { readDocsTab } from './tabs/readDocsTab';
 import { vehicleTab } from './tabs/vehicleTab';
-import { createRoutesTab } from './tabs/createRoutesTab';
+import { createRoutesTab } from './tabs/createRoutesTab/createRoutesTab';
 
 const allTabs = document.querySelectorAll('.tab');
 
