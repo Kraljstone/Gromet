@@ -36,7 +36,6 @@ export const createRoutesTab = () => {
     routeAndColor.appendChild(routeName);
     routeAndColor.appendChild(color);
     const invoiceNumberBody = createInputElement('text', 'invoiceNumberBody');
-
     const vehicleBodySelect = document.createElement('select');
     vehicleBodySelect.setAttribute('class', 'dropdown-input');
     vehicleBodySelect.setAttribute('name', 'selectedField');

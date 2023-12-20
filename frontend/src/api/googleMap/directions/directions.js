@@ -1,6 +1,7 @@
 const directionsRenderers = [];
 const infoWindows = [];
 
+export let distanceArr = [];
 export function directions(map, markerPositions, pinNumbersToConnect, color) {
   if (!Array.isArray(markerPositions) || markerPositions.length === 0) {
     console.error('markerPositions should be a non-empty array.');
@@ -38,6 +39,7 @@ export function directions(map, markerPositions, pinNumbersToConnect, color) {
         const distance = computeTotalDistance(response);
         renderDirections(directionsRenderer, response);
         showInfoWindow(map, response, distance);
+        distanceHelper(distance);
       } else {
         window.alert(`Directions request failed due to ${status}`);
       }
@@ -85,10 +87,15 @@ export function clearDirections() {
   directionsRenderers.forEach((renderer) => {
     renderer.setMap(null);
   });
-  directionsRenderers.length = 0; 
+  directionsRenderers.length = 0;
 
   infoWindows.forEach((infoWindow) => {
     infoWindow.close();
   });
-  infoWindows.length = 0; 
+  infoWindows.length = 0;
 }
+
+const distanceHelper = async (distance) => {
+  const waitedDistance = await distance;
+  distanceArr.push(waitedDistance);
+};

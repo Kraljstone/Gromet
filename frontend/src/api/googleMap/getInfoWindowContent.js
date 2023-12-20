@@ -11,16 +11,12 @@ export function getInfoWindowContent(mapLocationData, pinAddress) {
     const month = parseInt(parts[1], 10) - 1;
     const year = 2000 + parseInt(parts[2], 10);
 
-
     const inputDate = new Date(year, month, day);
     const currentDate = new Date();
 
-
     const timeDifference = currentDate - inputDate;
 
-
     const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-
 
     return daysDifference > 14;
   };
@@ -29,7 +25,6 @@ export function getInfoWindowContent(mapLocationData, pinAddress) {
     .map(
       (data, index) => `
     <div key=${index}>
-    <br>
     <div class=${
       isMoreThanTwoWeeksAgo(data['Datum_naloga']) && 'dateBackground'
     }><strong>Datum:</strong> ${data['Datum_naloga']}</div>
@@ -39,7 +34,11 @@ export function getInfoWindowContent(mapLocationData, pinAddress) {
       <strong>Gabarit:</strong> ${data['Gabarit_m3']}<br>
       <strong>Radno Vreme:</strong> ${data['Radno_vreme']}<br>
       <strong>Prioritet:</strong> ${data['Prioritet']}<br>
-      <strong>Gabarit Upozorenja:</strong> ${data['Gabarit_upozorenja']}<br>
+      ${
+        data['Gabarit_upozorenja'] !== '/'
+          ? '<span class="overweight"><i class="fas fa-solid fa-weight-hanging"></i></span>'
+          : ''
+      }<br>
     </div>
   `
     )
