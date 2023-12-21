@@ -1,4 +1,10 @@
 import { directions } from './directions';
+import {
+  saveRoutesToStorage,
+  loadRoutesFromStorage,
+} from '../../../store/routesStore';
+import { showNavCard } from '../../../components/navCard/showNavCard';
+import { generateRandomColor } from '../../../utils/generateRandomColor';
 
 export const applyDirections = async (map, markerPositions) => {
   const storedData = JSON.parse(localStorage.getItem('routesData'));
@@ -6,8 +12,8 @@ export const applyDirections = async (map, markerPositions) => {
 
   storedData?.forEach((data) => {
     let pinNumbersToConnect = [];
-    if (data.invoiceNumberBody) {
-      pinNumbersToConnect = data.invoiceNumberBody.split(',').map(Number);
+    if (data.locationMapping) {
+      pinNumbersToConnect = data.locationMapping.split(',').map(Number);
     }
     if (pinNumbersToConnect.length > 0) {
       directions(map, markerPositions, pinNumbersToConnect, data.randomColor);
@@ -19,18 +25,47 @@ export const applyDirections = async (map, markerPositions) => {
     if (target.classList.contains('applyBtn')) {
       const tr = target.closest('tr');
       const invoiceNumber = tr.querySelector(
-        'input[name="invoiceNumberBody"]'
+        'input[name="locationMapping"]'
       ).value;
-      // Iterate over storedData and connect pins for each row's data
-
-      storedData?.forEach(({ randomColor }) => {
-        directions(
-          map,
-          markerPositions,
-          invoiceNumber.split(',').map(Number),
-          randomColor
-        );
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card) => {
+        card.remove();
       });
+
+      const routeColor =
+        event.target.parentElement.parentElement.firstChild.lastChild;
+      const color = generateRandomColor();
+      routeColor.style.background = color;
+
+      const distancePromises = new Promise(async (resolve, reject) => {
+        try {
+          const distance = await directions(
+            map,
+            markerPositions,
+            invoiceNumber.split(',').map(Number),
+            color
+          );
+          resolve(distance);
+        } catch (error) {
+          console.error(error);
+          reject(error);
+        }
+      });
+
+      distancePromises
+        .then((distances) => {
+          saveRoutesToStorage(
+            '.routesTableBody',
+            'routesData',
+            distances,
+            color
+          );
+          loadRoutesFromStorage('routesData');
+          showNavCard();
+        })
+        .catch((error) => {
+          console.error('Error calculating distances:', error);
+        });
     }
   });
 };

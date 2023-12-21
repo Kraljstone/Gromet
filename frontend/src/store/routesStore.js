@@ -1,11 +1,20 @@
-import { generateRandomColor } from '../utils/generateRandomColor';
-import { distanceArr } from '../api/googleMap/directions/directions';
+const distanceArr = [];
+const colorArr = [];
 
-export const saveRoutesToStorage = (selector, storageKey) => {
+const storedData = JSON.parse(localStorage.getItem('routesData'));
+storedData?.forEach((savedDistance) => {
+  if (savedDistance.distance) {
+    distanceArr.push(savedDistance.distance);
+  }
+});
+
+export const saveRoutesToStorage = (selector, storageKey, distance, color) => {
+  distanceArr.push(distance);
+  colorArr.push(color);
   const routes = [];
-
   const rows = document.querySelectorAll(selector);
 
+  // Query all rows based on the provided CSS selector.
   rows.forEach((row, index) => {
     const inputs = row.querySelectorAll('input[name], select[name]');
     const data = {};
@@ -22,11 +31,12 @@ export const saveRoutesToStorage = (selector, storageKey) => {
       data[Object.keys(data)[2]] = selectElement.value;
     }
 
-    data['randomColor'] = generateRandomColor();
-
-    if (data.routeName.trim() !== '' && index < distanceArr.length) {
-      data.distance = distanceArr[index];
+    if (data['routeName'] !== '') {
+      data['distance'] = distance;
+      data['randomColor'] = color;
     }
+    data.distance = distanceArr[index];
+    data.color = colorArr[index];
 
     routes.push(data);
   });

@@ -4,7 +4,8 @@ export function getInfoWindowContent(mapLocationData, pinAddress) {
     const dataAddress = `${data.Adresa},${data.Mesto}`;
     return pinAddress === dataAddress;
   });
-
+  
+  //Check if Invoice is from 2 weeks ago
   const isMoreThanTwoWeeksAgo = (dateString) => {
     const parts = dateString.split('/');
     const day = parseInt(parts[0], 10);

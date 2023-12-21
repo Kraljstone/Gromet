@@ -1,9 +1,4 @@
-import {
-  loadRoutesFromStorage,
-  saveRoutesToStorage,
-} from '../../../../store/routesStore';
-import { clearDirections } from '../../../../api/googleMap/directions/directions';
-import { showNavCard } from '../../../navCard/showNavCard';
+import { loadRoutesFromStorage } from '../../../../store/routesStore';
 import { routesReset } from './routesReset';
 import { routesHead } from './routesHead';
 
@@ -35,7 +30,7 @@ export const createRoutesTab = () => {
 
     routeAndColor.appendChild(routeName);
     routeAndColor.appendChild(color);
-    const invoiceNumberBody = createInputElement('text', 'invoiceNumberBody');
+    const locationMapping = createInputElement('text', 'locationMapping');
     const vehicleBodySelect = document.createElement('select');
     vehicleBodySelect.setAttribute('class', 'dropdown-input');
     vehicleBodySelect.setAttribute('name', 'selectedField');
@@ -60,17 +55,6 @@ export const createRoutesTab = () => {
     applyBtn.innerHTML = 'Primeni';
     applyBtn.setAttribute('class', 'applyBtn');
     applyBtn.setAttribute('disabled', 'disabled');
-    applyBtn.addEventListener('click', () => {
-      saveRoutesToStorage('.routesTableBody', 'routesData');
-      const cards = document.querySelectorAll('.card');
-      cards.forEach((card) => {
-        card.remove();
-      });
-
-      clearDirections();
-      loadRoutesFromStorage('routesData');
-      showNavCard();
-    });
 
     const datePickContainer = document.createElement('div');
     datePickContainer.classList = 'datePickerContainer';
@@ -120,7 +104,7 @@ export const createRoutesTab = () => {
 
     // Append elements to the table row
     trBody.appendChild(routeAndColor);
-    trBody.appendChild(invoiceNumberBody);
+    trBody.appendChild(locationMapping);
     trBody.appendChild(vehicleBodySelect);
     trBody.appendChild(highwayCostBody);
     inputsBody.appendChild(applyBtn);

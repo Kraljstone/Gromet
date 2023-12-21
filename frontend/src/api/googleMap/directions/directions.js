@@ -1,7 +1,7 @@
+import { computeTotalDistance } from './computeTotalDistance';
 const directionsRenderers = [];
 const infoWindows = [];
 
-export let distanceArr = [];
 export function directions(map, markerPositions, pinNumbersToConnect, color) {
   if (!Array.isArray(markerPositions) || markerPositions.length === 0) {
     console.error('markerPositions should be a non-empty array.');
@@ -14,7 +14,14 @@ export function directions(map, markerPositions, pinNumbersToConnect, color) {
   }
 
   const directionsService = new google.maps.DirectionsService();
+  const createDirectionsRenderer = (map, color) =>
+    new google.maps.DirectionsRenderer({
+      map,
+      polylineOptions: { strokeColor: color, strokeWeight: 5 },
+      suppressMarkers: true,
+    });
   const directionsRenderer = createDirectionsRenderer(map, color);
+
   directionsRenderers.push(directionsRenderer);
 
   const waypoints = pinNumbersToConnect.slice(1, -1).map((pinNumber) => {
@@ -25,38 +32,35 @@ export function directions(map, markerPositions, pinNumbersToConnect, color) {
       stopover: true,
     };
   });
+  return new Promise((resolve, reject) => {
+    directionsService.route(
+      {
+        origin: markerPositions[pinNumbersToConnect[0]],
+        destination:
+          markerPositions[pinNumbersToConnect[pinNumbersToConnect.length - 1]],
+        waypoints,
+        travelMode: 'DRIVING',
+      },
+      (response, status) => {
+        if (status === 'OK') {
+          const distance = computeTotalDistance(response);
 
-  directionsService.route(
-    {
-      origin: markerPositions[pinNumbersToConnect[0]],
-      destination:
-        markerPositions[pinNumbersToConnect[pinNumbersToConnect.length - 1]],
-      waypoints,
-      travelMode: 'DRIVING',
-    },
-    (response, status) => {
-      if (status === 'OK') {
-        const distance = computeTotalDistance(response);
-        renderDirections(directionsRenderer, response);
-        showInfoWindow(map, response, distance);
-        distanceHelper(distance);
-      } else {
-        window.alert(`Directions request failed due to ${status}`);
+          const renderDirections = (directionsRenderer, response) => {
+            directionsRenderer.setDirections(response);
+          };
+
+          renderDirections(directionsRenderer, response);
+
+          showInfoWindow(map, response, distance);
+          resolve(distance);
+        } else {
+          window.alert(`Directions request failed due to ${status}`);
+          reject(new Error(`Directions request failed: ${status}`));
+        }
       }
-    }
-  );
-}
-
-const createDirectionsRenderer = (map, color) =>
-  new google.maps.DirectionsRenderer({
-    map,
-    polylineOptions: { strokeColor: color, strokeWeight: 5 },
-    suppressMarkers: true,
+    );
   });
-
-const renderDirections = (directionsRenderer, response) => {
-  directionsRenderer.setDirections(response);
-};
+}
 
 const showInfoWindow = (map, response, distance) => {
   const infoWindow = new google.maps.InfoWindow();
@@ -72,17 +76,6 @@ const showInfoWindow = (map, response, distance) => {
   infoWindows.push(infoWindow);
 };
 
-const computeTotalDistance = (directionsResult) => {
-  let totalDistance = 0;
-  const legs = directionsResult.routes[0].legs;
-
-  for (let i = 0; i < legs.length; i++) {
-    totalDistance += legs[i].distance.value;
-  }
-
-  return totalDistance / 1000 + totalDistance / 2000;
-};
-
 export function clearDirections() {
   directionsRenderers.forEach((renderer) => {
     renderer.setMap(null);
@@ -94,8 +87,3 @@ export function clearDirections() {
   });
   infoWindows.length = 0;
 }
-
-const distanceHelper = async (distance) => {
-  const waitedDistance = await distance;
-  distanceArr.push(waitedDistance);
-};

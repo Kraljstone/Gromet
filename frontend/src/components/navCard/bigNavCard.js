@@ -37,12 +37,12 @@ export const bigNavCard = ({
   routeName,
   selectedField,
   distance,
-  invoiceNumberBody,
+  locationMapping,
   datePicker,
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
   const mapLocationData = data;
-  const startingPin = invoiceNumberBody.split(',');
+  const startingPin = locationMapping.split(',');
   const card = createElement('div', 'bigCard');
   const heading = createElement(
     'h2',
@@ -96,16 +96,16 @@ export const bigNavCard = ({
     card.style.background = '#FF3636';
   }
 
-  const [leftTable, rightTable] = createTable(
+  const [leftColumn, rightColumn] = createTable(
     createElement('p', 'cardHeadings', 'kriterijumi'),
     createElement('p', 'cardHeadings', 'info')
   );
 
-  leftTable.appendChild(createElement('p', null, `${valueToProfitability}`));
-  leftTable.appendChild(loadWeightElement);
-  leftTable.appendChild(createGaugeElement('p', null, `${profitabilityRatio}`));
+  leftColumn.appendChild(createElement('p', null, `${valueToProfitability}`));
+  leftColumn.appendChild(loadWeightElement);
+  leftColumn.appendChild(createGaugeElement('p', null, `${profitabilityRatio}`));
 
-  rightTable.appendChild(
+  rightColumn.appendChild(
     createTable(
       createElement('p', null, `${profitabilityPercentage}%`),
       createElement('p', null, `${Math.round(distance)} km`)
@@ -115,9 +115,9 @@ export const bigNavCard = ({
     }, createElement('div'))
   );
 
-  rightTable.appendChild(createElement('p', null, `Pr:${routePriorities}`));
+  rightColumn.appendChild(createElement('p', null, `Pr:${routePriorities}`));
 
-  const cardInner = createTable(leftTable, rightTable).reduce(
+  const cardInner = createTable(leftColumn, rightColumn).reduce(
     (table, element) => {
       table.appendChild(element);
       return table;

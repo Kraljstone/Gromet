@@ -3,7 +3,6 @@ import { createTable } from '../../utils/createTable';
 import data from '../../../../mapLocations.json';
 const nav = document.querySelector('.nav-bar');
 
-
 const createIcon = (iconClassList) => {
   const icon = createElement('i');
   icon.classList.add(...iconClassList);
@@ -30,11 +29,11 @@ export const navCard = ({
   routeName,
   selectedField,
   distance,
-  invoiceNumberBody,
+  locationMapping,
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
   const mapLocationData = data;
-  const startingPin = invoiceNumberBody.split(',');
+  const startingPin = locationMapping.split(',');
   const locationInvoice = mapLocationData.filter((data) => {
     const pinValues = startingPin.map((pinValue) => +pinValue + 1);
     return pinValues.includes(+data['RB naloga']);
@@ -58,6 +57,7 @@ export const navCard = ({
   const profitabilityPercentage = Math.round(
     (routeInvoiceSum / (routeCost / 0.02)) * 100
   );
+
   const valueToProfitability = Math.round(
     routeInvoiceSum - routeCost / 0.02
   ).toLocaleString('en-GB');
@@ -100,22 +100,22 @@ export const navCard = ({
   const heading = createElement('h2', null, routeName);
   const vehicleText = createElement('p', null, selectedField);
 
-  const [leftTable, rightTable] = createTable(
+  const [leftColumn, rightColum] = createTable(
     createElement('p', 'cardHeadings', 'Kriterijumi'),
     createElement('p', 'cardHeadings', 'Info')
   );
 
-  leftTable.appendChild(
+  leftColumn.appendChild(
     createElement('p', 'cardHeadings', `${profitabilityPercentage}%`)
   );
-  leftTable.appendChild(createElement('p', null, `${valueToProfitability}`));
+  leftColumn.appendChild(createElement('p', null, `${valueToProfitability}`));
 
-  leftTable.appendChild(
-    createLoadWeightElement(
-      routeVehicle.kg,
-      +routeVehicle.kg,
-      ['fas', 'fa-solid', 'fa-weight-hanging']
-    )
+  leftColumn.appendChild(
+    createLoadWeightElement(routeVehicle.kg, +routeVehicle.kg, [
+      'fas',
+      'fa-solid',
+      'fa-weight-hanging',
+    ])
   );
 
   const gauge = createElement('p', null, `${routeVehicle.m3} m3 `);
@@ -124,20 +124,22 @@ export const navCard = ({
     gauge.appendChild(gaugeIcon);
   }
 
-  leftTable.appendChild(gauge);
-  leftTable.appendChild(createElement('p', null, `${profitabilityRatio}`));
+  leftColumn.appendChild(gauge);
+  leftColumn.appendChild(createElement('p', null, `${profitabilityRatio}`));
 
-  rightTable.appendChild(
+  rightColum.appendChild(
     createElement(
       'p',
       null,
       `${routeDuration[0].hours}h ${routeDuration[0].minutes}min`
     )
   );
-  rightTable.appendChild(createElement('p', null, `${Math.round(distance)} km`));
-  rightTable.appendChild(createElement('p', null, `Pr:${routePriorities}`));
+  rightColum.appendChild(
+    createElement('p', null, `${Math.round(distance)} km`)
+  );
+  rightColum.appendChild(createElement('p', null, `Pr:${routePriorities}`));
 
-  const cardInner = createTable(leftTable, rightTable).reduce(
+  const cardInner = createTable(leftColumn, rightColum).reduce(
     (table, element) => {
       table.appendChild(element);
       return table;

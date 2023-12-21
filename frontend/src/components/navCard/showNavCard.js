@@ -3,7 +3,6 @@ import { bigNavCard } from './bigNavCard';
 
 export const showNavCard = () => {
   const routesData = JSON.parse(localStorage.getItem('routesData'));
-
   let toggle = true;
 
   const smallCard = () => {

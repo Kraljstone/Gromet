@@ -14,7 +14,6 @@ export const routesReset = () => {
 
     rows.forEach((row) => {
       const inputs = row.querySelectorAll('input[name], select[name]');
-
       inputs.forEach((input) => {
         input.value = '';
       });
@@ -24,6 +23,10 @@ export const routesReset = () => {
     clearDirections();
     const card = document.querySelectorAll('.card');
     card.forEach((card) => (card.style.display = 'none'));
+    const resetColor = document.querySelectorAll('.pinConnectColor');
+    resetColor.forEach((color) => {
+      color.style.background = 'transparent';
+    });
   });
 
   resetButtonContainer.appendChild(resetButton);
