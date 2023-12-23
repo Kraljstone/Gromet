@@ -22,7 +22,15 @@ export const routesReset = () => {
     localStorage.removeItem('routesData');
     clearDirections();
     const card = document.querySelectorAll('.card');
+    const bigCard = document.querySelectorAll('.bigCard');
+    const availabilityTable = document.querySelector('.availabilityTable');
     card.forEach((card) => (card.style.display = 'none'));
+    bigCard.forEach((bigCard) => (bigCard.style.display = 'none'));
+    availabilityTable.remove();
+    const navBtn = document.querySelector('.nav-btn-container');
+    const nav = document.querySelector('.nav');
+    navBtn.style.height = '60px';
+    nav.style.height = '106px';
     const resetColor = document.querySelectorAll('.pinConnectColor');
     resetColor.forEach((color) => {
       color.style.background = 'transparent';

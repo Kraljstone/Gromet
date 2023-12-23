@@ -350,14 +350,19 @@ input:disabled {
 
 .nav-btn-container {
   display: flex;
+  flex-direction: column-reverse;
+  padding-bottom: 10px;
+  max-width: 700px;
+}
+
+.nav-btn-wrapper {
+  display: flex;
+  justify-content: end;
+  margin-top: 10px;
   align-items: end;
 }
 
 .nav-btn {
-  display: flex;
-  height: 85px;
-  width: 180px;
-  justify-content: space-between;
   flex-direction: column;
   margin: 0 16px;
 }
@@ -378,7 +383,7 @@ input:disabled {
 }
 
 .bigCard {
-  margin: 16px;
+  margin: 8px;
   max-width: 200px;
   height: 100%;
   padding: 16px;
@@ -418,4 +423,16 @@ input:disabled {
 .overweight i {
   margin-left: 140px;
   font-size: 26px;
+}
+
+.availabilityTable {
+  margin-right: 16px;
+  border-collapse: collapse;
+}
+
+.availabilityTable th,
+.availabilityTable td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
 }

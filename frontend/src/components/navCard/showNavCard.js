@@ -1,9 +1,14 @@
 import { navCard } from './navCard';
 import { bigNavCard } from './bigNavCard';
+import { navTable } from './navTable';
 
 export const showNavCard = () => {
   const routesData = JSON.parse(localStorage.getItem('routesData'));
+  const checkboxState = JSON.parse(localStorage.getItem('checkboxState'));
+  const tableContainer = document.querySelector('.nav-btn-container');
+  const bigScreenChecked = document.querySelector('.lock-extended-display');
   let toggle = true;
+  let toggleTable = false;
 
   const smallCard = () => {
     routesData?.forEach((data) => {
@@ -12,10 +17,6 @@ export const showNavCard = () => {
       }
     });
   };
-
-  if (toggle) {
-    smallCard();
-  }
 
   const bigCard = () => {
     const cardBig = document.querySelectorAll('.bigCard');
@@ -28,6 +29,19 @@ export const showNavCard = () => {
       }
     });
   };
+
+  if (checkboxState) {
+    bigCard();
+    navTable();
+    tableContainer.style.height = '250px';
+    bigScreenChecked.checked = checkboxState;
+    toggle = false;
+    toggleTable = true;
+  }
+
+  if (toggle) {
+    smallCard();
+  }
 
   const showAllTabs = document.querySelector('.show-tabs-btn');
 
@@ -52,5 +66,38 @@ export const showNavCard = () => {
     bigCard();
 
     toggle = !toggle;
+  });
+
+  let availableTable;
+
+  const availableTableBtn = document.querySelector('.available-vehicles');
+  availableTableBtn.addEventListener('click', () => {
+    availableTable = document.querySelector('.availabilityTable');
+
+    if (toggleTable) {
+      if (availableTable) {
+        tableContainer.style.height = '50px';
+        availableTable.remove();
+      }
+    } else {
+      if (!availableTable) {
+        navTable();
+        tableContainer.style.height = '250px';
+        availableTable = document.querySelector('.availabilityTable');
+      }
+    }
+
+    toggleTable = !toggleTable;
+  });
+
+  bigScreenChecked.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      return localStorage.setItem(
+        'checkboxState',
+        JSON.stringify(e.target.checked)
+      );
+    }
+
+    localStorage.removeItem('checkboxState');
   });
 };
