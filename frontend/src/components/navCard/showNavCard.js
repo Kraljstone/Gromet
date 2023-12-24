@@ -3,7 +3,8 @@ import { bigNavCard } from './bigNavCard';
 import { navTable } from './navTable';
 
 export const showNavCard = () => {
-  const routesData = JSON.parse(localStorage.getItem('routesData'));
+  const vehiclesData = JSON.parse(localStorage.getItem('vehiclesData')) || [];
+  const routesData = JSON.parse(localStorage.getItem('routesData')) || [];
   const checkboxState = JSON.parse(localStorage.getItem('checkboxState'));
   const tableContainer = document.querySelector('.nav-btn-container');
   const bigScreenChecked = document.querySelector('.lock-extended-display');
@@ -13,11 +14,10 @@ export const showNavCard = () => {
   const smallCard = () => {
     routesData?.forEach((data) => {
       if (data.routeName !== '') {
-        navCard(data);
+        return navCard(data);
       }
     });
   };
-
   const bigCard = () => {
     const cardBig = document.querySelectorAll('.bigCard');
     cardBig.forEach((card) => {
@@ -30,17 +30,17 @@ export const showNavCard = () => {
     });
   };
 
+  if (toggle && !checkboxState) {
+    smallCard();
+  }
+
   if (checkboxState) {
     bigCard();
-    navTable();
+    navTable(routesData, vehiclesData);
     tableContainer.style.height = '250px';
     bigScreenChecked.checked = checkboxState;
     toggle = false;
     toggleTable = true;
-  }
-
-  if (toggle) {
-    smallCard();
   }
 
   const showAllTabs = document.querySelector('.show-tabs-btn');
@@ -81,7 +81,7 @@ export const showNavCard = () => {
       }
     } else {
       if (!availableTable) {
-        navTable();
+        navTable(routesData, vehiclesData);
         tableContainer.style.height = '250px';
         availableTable = document.querySelector('.availabilityTable');
       }

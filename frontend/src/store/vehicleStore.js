@@ -23,7 +23,7 @@ export const loadVehiclesFromStorage = (rowIndex, createInputElement) => {
   const tbl = document.createElement('table');
 
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData')) || [];
-  const reversedVehicles = storedVehicles.slice().reverse();
+  const reversedVehicles = storedVehicles;
 
   reversedVehicles.forEach((vehicleData) => {
     const trBody = document.createElement('tr');

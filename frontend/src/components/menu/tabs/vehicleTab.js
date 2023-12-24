@@ -55,9 +55,11 @@ export const vehicleTab = () => {
 
     const vehicleBody = document.createElement('td');
     vehicleBody.setAttribute('id', 'vehicleBody');
-
     const deleteBtn = document.createElement('div');
     const i = document.createElement('i');
+    i.addEventListener('click', (event) => {
+      event.target.parentElement.parentElement.remove();
+    });
     i.setAttribute('class', 'gg-trash');
     deleteBtn.appendChild(i);
 

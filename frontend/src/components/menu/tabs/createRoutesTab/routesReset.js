@@ -26,11 +26,11 @@ export const routesReset = () => {
     const availabilityTable = document.querySelector('.availabilityTable');
     card.forEach((card) => (card.style.display = 'none'));
     bigCard.forEach((bigCard) => (bigCard.style.display = 'none'));
-    availabilityTable.remove();
+    availabilityTable?.remove();
     const navBtn = document.querySelector('.nav-btn-container');
     const nav = document.querySelector('.nav');
-    navBtn.style.height = '60px';
-    nav.style.height = '106px';
+    navBtn.style.height = 'auto';
+    nav.style.height = 'auto';
     const resetColor = document.querySelectorAll('.pinConnectColor');
     resetColor.forEach((color) => {
       color.style.background = 'transparent';

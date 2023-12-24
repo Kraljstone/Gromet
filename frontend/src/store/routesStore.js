@@ -6,8 +6,11 @@ storedData?.forEach((savedDistance) => {
   if (savedDistance.distance) {
     distanceArr.push(savedDistance.distance);
   }
-});
 
+  if (savedDistance.randomColor) {
+    colorArr.push(savedDistance.randomColor);
+  }
+});
 export const saveRoutesToStorage = (selector, storageKey, distance, color) => {
   distanceArr.push(distance);
   colorArr.push(color);
@@ -36,7 +39,7 @@ export const saveRoutesToStorage = (selector, storageKey, distance, color) => {
       data['randomColor'] = color;
     }
     data.distance = distanceArr[index];
-    data.color = colorArr[index];
+    data.randomColor = colorArr[index];
 
     routes.push(data);
   });

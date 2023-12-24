@@ -1,28 +1,17 @@
 import { createElement } from '../../utils/createElement';
 import { createTable } from '../../utils/createTable';
+import { calculateTotal } from '../../utils/calculateTotal';
+import {
+  createLoadWeightElement,
+  createGaugeElement,
+} from '../../utils/weightAndGauge';
 import data from '../../../../mapLocations.json';
 const nav = document.querySelector('.nav-bar');
-
-const createIcon = (iconClassList) => {
-  const icon = createElement('i');
-  icon.classList.add(...iconClassList);
-  return icon;
-};
 
 const createCard = (backgroundColor) => {
   const card = createElement('div', 'card');
   card.style.background = backgroundColor;
   return card;
-};
-
-const createLoadWeightElement = (weight, limit, iconClassList) => {
-  const loadWeight = createElement('p');
-  loadWeight.innerHTML = `${weight} kg`;
-  const overLoad = createIcon(iconClassList);
-  if (weight > limit) {
-    loadWeight.appendChild(overLoad);
-  }
-  return loadWeight;
 };
 
 export const navCard = ({
@@ -52,7 +41,7 @@ export const navCard = ({
   );
 
   const vehicleCost = +routeVehicle?.cost;
-  const routeCost = vehicleCost + +routeVehicle.highwayCost;
+  const routeCost = vehicleCost + +routeVehicle?.highwayCost;
   const routeInvoiceSum = invoiceValueSum();
   const profitabilityPercentage = Math.round(
     (routeInvoiceSum / (routeCost / 0.02)) * 100
@@ -78,19 +67,18 @@ export const navCard = ({
       return { hours, minutes };
     });
 
-  const totalRouteLoad = locationInvoice.reduce((sum, load) => {
-    const weight = +load.Težina_kg;
-    return weight ? sum + weight : sum;
-  }, 0);
+  const totalRouteLoad = calculateTotal(locationInvoice, 'Težina_kg');
+  const totalGauge = calculateTotal(locationInvoice, 'Gabarit_m3');
 
-  const totalGauge = locationInvoice.reduce((sum, gauge) => {
-    const gaugeSize = +gauge.Gabarit_m3;
-    return gaugeSize ? sum + gaugeSize : sum;
-  }, 0);
+  const loadWeightElement = createLoadWeightElement(
+    totalRouteLoad,
+    routeVehicle.kg
+  );
+  const gaugeElement = createGaugeElement(totalGauge, routeVehicle.m3);
 
   const cardBackgroundColor =
-    totalRouteLoad <= +routeVehicle.kg &&
-    totalGauge <= +routeVehicle.m3 &&
+    totalRouteLoad <= +routeVehicle?.kg &&
+    totalGauge <= +routeVehicle?.m3 &&
     profitabilityRatio <= 2
       ? '#19CB00'
       : '#FF3636';
@@ -110,28 +98,16 @@ export const navCard = ({
   );
   leftColumn.appendChild(createElement('p', null, `${valueToProfitability}`));
 
-  leftColumn.appendChild(
-    createLoadWeightElement(routeVehicle.kg, +routeVehicle.kg, [
-      'fas',
-      'fa-solid',
-      'fa-weight-hanging',
-    ])
-  );
+  leftColumn.appendChild(loadWeightElement);
 
-  const gauge = createElement('p', null, `${routeVehicle.m3} m3 `);
-  const gaugeIcon = createIcon(['fas', 'fa-times-circle', 'gaugeIcon']);
-  if (totalGauge > +routeVehicle.m3) {
-    gauge.appendChild(gaugeIcon);
-  }
-
-  leftColumn.appendChild(gauge);
+  leftColumn.appendChild(gaugeElement);
   leftColumn.appendChild(createElement('p', null, `${profitabilityRatio}`));
 
   rightColum.appendChild(
     createElement(
       'p',
       null,
-      `${routeDuration[0].hours}h ${routeDuration[0].minutes}min`
+      `${routeDuration[0]?.hours}h ${routeDuration[0]?.minutes}min`
     )
   );
   rightColum.appendChild(

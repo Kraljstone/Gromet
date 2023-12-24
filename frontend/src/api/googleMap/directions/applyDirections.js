@@ -8,6 +8,7 @@ import { generateRandomColor } from '../../../utils/generateRandomColor';
 
 export const applyDirections = async (map, markerPositions) => {
   const storedData = JSON.parse(localStorage.getItem('routesData'));
+  const checkBox = JSON.parse(localStorage.getItem('checkboxState'));
   const routesTabBody = document.querySelector('.menu-tab-body');
 
   storedData?.forEach((data) => {
@@ -31,6 +32,18 @@ export const applyDirections = async (map, markerPositions) => {
       cards.forEach((card) => {
         card.remove();
       });
+      const bigCards = document.querySelectorAll('.bigCard');
+      bigCards.forEach((card) => {
+        card.remove();
+      });
+
+      if (checkBox) {
+        const navTable = document.querySelector('.availabilityTable');
+        navTable?.remove();
+      }
+
+      const nav = document.querySelector('.nav-btn-container');
+      nav.style.height = 'auto';
 
       const routeColor =
         event.target.parentElement.parentElement.firstChild.lastChild;

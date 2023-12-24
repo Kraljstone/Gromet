@@ -1,37 +1,12 @@
 import { createElement } from '../../utils/createElement';
 import { createTable } from '../../utils/createTable';
+import {
+  createLoadWeightElement,
+  createGaugeElement,
+} from '../../utils/weightAndGauge';
+import { calculateTotal } from '../../utils/calculateTotal';
 import data from '../../../../mapLocations.json';
 const nav = document.querySelector('.nav-bar');
-
-const calculateTotal = (items, property) => {
-  return items.reduce((sum, item) => sum + +item[property], 0);
-};
-
-const createIconElement = (iconClass) => {
-  const icon = createElement('i');
-  icon.classList.add('fas', `fa-solid`, iconClass);
-  return icon;
-};
-
-const createLoadWeightElement = (totalLoad, vehicleLimit) => {
-  const element = createElement('p');
-  element.innerHTML = `${totalLoad} kg`;
-  if (totalLoad > +vehicleLimit) {
-    const overLoadIcon = createIconElement('fa-weight-hanging');
-    element.appendChild(overLoadIcon);
-  }
-  return element;
-};
-
-const createGaugeElement = (totalGauge, vehicleLimit) => {
-  const element = createElement('p');
-  element.innerHTML = `${totalGauge} m3`;
-  if (totalGauge > +vehicleLimit) {
-    const gaugeIcon = createIconElement('fa-times-circle gaugeIcon');
-    element.appendChild(gaugeIcon);
-  }
-  return element;
-};
 
 export const bigNavCard = ({
   routeName,
@@ -84,7 +59,7 @@ export const bigNavCard = ({
     totalRouteLoad,
     routeVehicle.kg
   );
-  createGaugeElement(totalGauge, routeVehicle.m3);
+  const gaugeElement = createGaugeElement(totalGauge, routeVehicle.m3);
 
   if (
     totalRouteLoad <= +routeVehicle.kg &&
@@ -100,19 +75,15 @@ export const bigNavCard = ({
     createElement('p', 'cardHeadings', 'kriterijumi'),
     createElement('p', 'cardHeadings', 'info')
   );
-
+  leftColumn.appendChild(
+    createElement('p', null, `${profitabilityPercentage}%`)
+  );
   leftColumn.appendChild(createElement('p', null, `${valueToProfitability}`));
   leftColumn.appendChild(loadWeightElement);
-  leftColumn.appendChild(createGaugeElement('p', null, `${profitabilityRatio}`));
+  leftColumn.appendChild(gaugeElement);
 
   rightColumn.appendChild(
-    createTable(
-      createElement('p', null, `${profitabilityPercentage}%`),
-      createElement('p', null, `${Math.round(distance)} km`)
-    ).reduce((table, element) => {
-      table.appendChild(element);
-      return table;
-    }, createElement('div'))
+    createElement('p', null, `${Math.round(distance)} km`)
   );
 
   rightColumn.appendChild(createElement('p', null, `Pr:${routePriorities}`));
