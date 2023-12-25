@@ -4,8 +4,8 @@ import { menu } from '../components/menu/menu';
 import { showNavCard } from '../components/navCard/showNavCard';
 
 export const handleLogin = () => {
-  const hardcodedUsername = 'user';
-  const hardcodedPassword = 'password';
+  const hardcodedUsername = 'grometAdmin';
+  const hardcodedPassword = 'adminadmin2024';
 
   const enteredUsername = document.getElementById('username').value;
   const enteredPassword = document.getElementById('password').value;
