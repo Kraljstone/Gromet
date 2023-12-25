@@ -38,7 +38,7 @@ export const vehicleTab = () => {
     const input = document.createElement('input');
     input.setAttribute('type', type);
     input.setAttribute('name', name);
-    input.addEventListener('blur', function () {
+    input.addEventListener('blur',  () => {
       input.setAttribute('disabled', 'disabled');
       // Save input values to local storage on blur
       saveVehiclesToStorage('.vehicleRow', 'vehiclesData');

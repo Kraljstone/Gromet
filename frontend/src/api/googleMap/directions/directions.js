@@ -2,7 +2,7 @@ import { computeTotalDistance } from './computeTotalDistance';
 const directionsRenderers = [];
 const infoWindows = [];
 
-export function directions(map, markerPositions, pinNumbersToConnect, color) {
+export const directions = (map, markerPositions, pinNumbersToConnect, color) => {
   if (!Array.isArray(markerPositions) || markerPositions.length === 0) {
     console.error('markerPositions should be a non-empty array.');
     return;
@@ -77,7 +77,7 @@ const showInfoWindow = (map, response, distance) => {
   infoWindows.push(infoWindow);
 };
 
-export function clearDirections() {
+export const clearDirections = () => {
   directionsRenderers.forEach((renderer) => {
     renderer.setMap(null);
   });

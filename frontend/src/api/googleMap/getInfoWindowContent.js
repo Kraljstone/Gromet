@@ -1,4 +1,4 @@
-export function getInfoWindowContent(mapLocationData, pinAddress) {
+export const getInfoWindowContent = (mapLocationData, pinAddress) => {
   // Filter data based on matching address
   const matchingData = mapLocationData.filter((data) => {
     const dataAddress = `${data.Adresa},${data.Mesto}`;

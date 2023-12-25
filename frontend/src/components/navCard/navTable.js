@@ -1,4 +1,4 @@
-export function navTable(storedRoutes, storedVehicles) {
+export const navTable = (storedRoutes, storedVehicles) => {
   const nav = document.querySelector('.nav-btn-container');
   const table = document.createElement('table');
   table.classList.add('availabilityTable');
