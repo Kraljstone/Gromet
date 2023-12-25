@@ -10,13 +10,13 @@ export const routesValidation = (tr) => {
 
   // Basic validation for routeName
   if (!routeName) {
-    alert('Molimo vas da odaberete naziv rute');
+    alert('Molimo vas da unesete naziv rute');
     return;
   }
 
   // Basic validation for locationMapping
   if (!locationMapping) {
-    alert('Molimo vas da odaberete zeljenu rutu');
+    alert('Molimo vas da unesete zeljenu rutu');
     return;
   }
 
@@ -28,7 +28,7 @@ export const routesValidation = (tr) => {
 
   // Basic validation for highwayCost
   if (!highwayCost || isNaN(parseFloat(highwayCost))) {
-    alert('Molimo vas da odaberete vrednost putarine');
+    alert('Molimo vas da unesete vrednost putarine');
     return;
   }
 };
