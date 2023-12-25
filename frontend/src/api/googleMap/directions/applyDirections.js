@@ -5,6 +5,7 @@ import {
 } from '../../../store/routesStore';
 import { showNavCard } from '../../../components/navCard/showNavCard';
 import { generateRandomColor } from '../../../utils/generateRandomColor';
+import { routesValidation } from '../../../components/menu/tabs/createRoutesTab/routesValidation';
 
 export const applyDirections = async (map, markerPositions) => {
   const storedData = JSON.parse(localStorage.getItem('routesData'));
@@ -26,6 +27,7 @@ export const applyDirections = async (map, markerPositions) => {
 
     if (target.classList.contains('applyBtn')) {
       const tr = target.closest('tr');
+      routesValidation(tr);
       const invoiceNumber = tr.querySelector(
         'input[name="locationMapping"]'
       ).value;
