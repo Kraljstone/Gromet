@@ -1,47 +1,32 @@
 import { initMap } from './api/googleMap/googleMap';
 import { menu } from './components/menu/menu';
 import { showNavCard } from './components/navCard/showNavCard';
-import { apiKey } from '../../config.json';
+import { loadGoogleMapsAPI } from './api/googleMap/loadGoogleMapsAPI';
+import { handleLogin } from './utils/handleLogin';
 
-((g) => {
-  var h,
-    a,
-    k,
-    p = 'The Google Maps JavaScript API',
-    c = 'google',
-    l = 'importLibrary',
-    q = '__ib__',
-    m = document,
-    b = window;
-  b = b[c] || (b[c] = {});
-  var d = b.maps || (b.maps = {}),
-    r = new Set(),
-    e = new URLSearchParams(),
-    u = () =>
-      h ||
-      (h = new Promise(async (f, n) => {
-        await (a = m.createElement('script'));
-        e.set('libraries', [...r] + '');
-        for (k in g)
-          e.set(
-            k.replace(/[A-Z]/g, (t) => '_' + t[0].toLowerCase()),
-            g[k]
-          );
-        e.set('callback', c + '.maps.' + q);
-        a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
-        d[q] = f;
-        a.onerror = () => (h = n(Error(p + ' could not load.')));
-        a.nonce = m.querySelector('script[nonce]')?.nonce || '';
-        m.head.append(a);
-      }));
-  d[l]
-    ? console.warn(p + ' only loads once. Ignoring:', g)
-    : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
-})({ key: apiKey, v: 'weekly' });
+// Get the login status from localStorage
+const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
-initMap();
+if (isLoggedIn) {
+  const layout = document.querySelector('.layout');
+  layout.style.display = 'flex';
+  const loginForm = document.querySelector('.login-form');
+  loginForm.style.display = 'none';
 
-//Side Menu
-menu();
+  // Load Google Maps API and initialize the map
+  loadGoogleMapsAPI();
+  initMap();
+  menu();
+  showNavCard();
+} else {
+  const loginBtn = document.querySelector('.login-btn');
+  const passwordInput = document.getElementById('password');
 
-showNavCard();
+  loginBtn.addEventListener('click', handleLogin);
+
+  passwordInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      handleLogin();
+    }
+  });
+}

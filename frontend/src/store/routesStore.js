@@ -14,10 +14,10 @@ storedData?.forEach((savedDistance) => {
 export const saveRoutesToStorage = (selector, storageKey, distance, color) => {
   distanceArr.push(distance);
   colorArr.push(color);
+
   const routes = [];
   const rows = document.querySelectorAll(selector);
 
-  // Query all rows based on the provided CSS selector.
   rows.forEach((row, index) => {
     const inputs = row.querySelectorAll('input[name], select[name]');
     const data = {};
@@ -47,8 +47,8 @@ export const saveRoutesToStorage = (selector, storageKey, distance, color) => {
   localStorage.setItem(storageKey, JSON.stringify(routes));
 };
 
-export const loadRoutesFromStorage = (selector, data) => {
-  const storedData = localStorage.getItem(data);
+export const loadRoutesFromStorage = (selector, storageKey) => {
+  const storedData = localStorage.getItem(storageKey);
 
   if (storedData) {
     const routes = JSON.parse(storedData);

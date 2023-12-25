@@ -8,13 +8,14 @@ export const showNavCard = () => {
   const checkboxState = JSON.parse(localStorage.getItem('checkboxState'));
   const tableContainer = document.querySelector('.nav-btn-container');
   const bigScreenChecked = document.querySelector('.lock-extended-display');
+  
   let toggle = true;
   let toggleTable = false;
 
   const smallCard = () => {
-    routesData?.forEach((data) => {
-      if (data.routeName !== '') {
-        return navCard(data);
+    routesData?.forEach((routeInfo) => {
+      if (routeInfo.routeName !== '') {
+        return navCard(routeInfo);
       }
     });
   };
@@ -23,9 +24,9 @@ export const showNavCard = () => {
     cardBig.forEach((card) => {
       card.remove();
     });
-    routesData?.forEach((data) => {
-      if (data.routeName !== '') {
-        bigNavCard(data);
+    routesData?.forEach((routeInfo) => {
+      if (routeInfo.routeName !== '') {
+        bigNavCard(routeInfo);
       }
     });
   };

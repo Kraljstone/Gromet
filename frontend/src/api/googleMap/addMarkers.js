@@ -1,4 +1,4 @@
-import { getCoordinates } from './googleMap.js';
+import { getCoordinates } from './getCoordinates.js';
 import { applyDirections } from './directions/applyDirections.js';
 import { getInfoWindowContent } from './getInfoWindowContent.js';
 

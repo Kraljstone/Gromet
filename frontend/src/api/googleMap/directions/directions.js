@@ -32,6 +32,7 @@ export function directions(map, markerPositions, pinNumbersToConnect, color) {
       stopover: true,
     };
   });
+  
   return new Promise((resolve, reject) => {
     directionsService.route(
       {

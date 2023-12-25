@@ -1,16 +1,7 @@
 import { addMarkers } from './addMarkers';
 import data from '../../../../mapLocations.json';
-import googleKey from '../../../../config.json';
+import { getCoordinates } from './getCoordinates';
 
-// Get the coordinates of the address
-export const getCoordinates = async (address) => {
-  const geolocationAddress = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${googleKey.apiKey}`
-  );
-  const geolocation = await geolocationAddress.json();
-  const { lat, lng } = geolocation.results[0].geometry.location;
-  return { lat, lng };
-};
 
 export const initMap = async () => {
   const mapLocationData = data;
@@ -22,7 +13,6 @@ export const initMap = async () => {
 
     const initMapLoad = async (addressCoordinates) => {
       const { Map } = await google.maps.importLibrary('maps');
-
       let map = new Map(document.getElementById('map'), {
         zoom: 10,
         center: addressCoordinates,

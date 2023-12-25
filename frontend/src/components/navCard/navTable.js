@@ -16,11 +16,11 @@ export function navTable(storedRoutes, storedVehicles) {
 
     weekDates.forEach((date, colIndex) => {
       const transformedLocalDate = date.slice(-10);
-      const route = storedRoutes.find((r) => {
-        const storedDate = r.datePicker.split('-').reverse().join('-');
+      const route = storedRoutes.find((storedRoute) => {
+        const storedDate = storedRoute.datePicker.split('-').reverse().join('-');
         return (
           storedDate === transformedLocalDate &&
-          r.selectedField === vehicle.vehicle
+          storedRoute.selectedField === vehicle.vehicle
         );
       });
 
@@ -39,7 +39,6 @@ const getCurrentWeekDates = () => {
     today.getDate() - currentDay + (currentDay === 1 ? 0 : -6)
   );
 
-  // Ensure that the starting day is within the desired range (18th to 24th)
   startOfWeek.setDate(startOfWeek.getDate() < 18 ? 18 : startOfWeek.getDate());
 
   const daysInSerbian = [

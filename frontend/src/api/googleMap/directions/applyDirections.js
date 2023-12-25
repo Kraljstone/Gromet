@@ -23,25 +23,27 @@ export const applyDirections = async (map, markerPositions) => {
 
   routesTabBody.addEventListener('click', (event) => {
     const target = event.target;
+
     if (target.classList.contains('applyBtn')) {
       const tr = target.closest('tr');
       const invoiceNumber = tr.querySelector(
         'input[name="locationMapping"]'
       ).value;
+
       const cards = document.querySelectorAll('.card');
       cards.forEach((card) => {
         card.remove();
       });
+
       const bigCards = document.querySelectorAll('.bigCard');
       bigCards.forEach((card) => {
         card.remove();
       });
 
-      if (checkBox) {
+      if (!checkBox) {
         const navTable = document.querySelector('.availabilityTable');
         navTable?.remove();
       }
-
       const nav = document.querySelector('.nav-btn-container');
       nav.style.height = 'auto';
 

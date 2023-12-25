@@ -12,7 +12,7 @@
       src="https://kit.fontawesome.com/93387713f1.js"
       crossorigin="anonymous"
     ></script>
-    <script type="module" async defer src="src/app.js"></script>
+    <script async defer type="module" async defer src="src/app.js"></script>
     <title>Gromet</title>
   </head>
   <body>
@@ -46,5 +46,20 @@
         <div id="map"></div>
       </div>
     </div>
+    <form class="login-form" id="loginForm">
+      <label class="form-label" for="username">Username:</label>
+      <input
+        class="login-input"
+        type="text"
+        id="username"
+        name="username"
+        required
+      />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required />
+
+      <button class="login-btn" type="button">Login</button>
+    </form>
   </body>
 </html>
