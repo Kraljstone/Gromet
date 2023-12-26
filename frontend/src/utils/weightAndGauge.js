@@ -1,8 +1,13 @@
 import { createElement } from './createElement';
 
+const sanitizeClassName = (className) => {
+  return className.replace(/\s+/g, '_');
+};
+
 const createIconElement = (iconClass) => {
   const icon = createElement('i');
-  icon.classList.add('fas', `fa-solid`, iconClass);
+  const sanitizedClass = sanitizeClassName(iconClass);
+  icon.classList.add('fas', 'fa-solid', sanitizedClass);
   return icon;
 };
 

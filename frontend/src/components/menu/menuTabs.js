@@ -2,7 +2,7 @@ import { readDocsTab } from './tabs/readDocsTab';
 import { vehicleTab } from './tabs/vehicleTab';
 import { createRoutesTab } from './tabs/createRoutesTab/createRoutesTab';
 
-const allTabs = document.querySelectorAll('.tab');
+const allTabs = document.querySelectorAll('.tabs');
 
 export const menuTabs = () => {
   //Active Tab functionality
