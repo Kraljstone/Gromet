@@ -17,15 +17,15 @@ export const menuTabs = () => {
 
       singleTab.classList.add('menu-active-tab');
 
-      if (singleTab.classList[0] === 'read-doc-tab') {
+      if (singleTab.classList.contains('read-doc-tab')) {
         readDocsTab();
       }
-
-      if (singleTab.classList[0] === 'vehicle-tab') {
+      
+      if (singleTab.classList.contains('vehicle-tab')) {
         vehicleTab();
       }
-
-      if (singleTab.classList[0] === 'routes-tab') {
+      
+      if (singleTab.classList.contains('routes-tab')) {
         createRoutesTab();
       }
     });
