@@ -38,11 +38,10 @@ export const vehicleTab = () => {
     const input = document.createElement('input');
     input.setAttribute('type', type);
     input.setAttribute('name', name);
-    input.addEventListener('blur',  () => {
-      input.setAttribute('disabled', 'disabled');
-      // Save input values to local storage on blur
-      saveVehiclesToStorage('.vehicleRow', 'vehiclesData');
-    });
+    // input.addEventListener('blur', () => {
+    //   input.setAttribute('disabled', 'disabled');
+    //   // Save input values to local storage on blur
+    // });
     return input;
   };
 
@@ -83,7 +82,9 @@ export const vehicleTab = () => {
 
     const table = tbl.appendChild(trBody);
     table.setAttribute('id', 'vehicleTable');
+
     menuTabBody.insertBefore(table, addVehicleBtn);
+    menuTabBody.insertBefore(table, saveVehicleBtn);
 
     rowIndex++;
   };
@@ -93,5 +94,13 @@ export const vehicleTab = () => {
   addVehicleBtn.innerHTML = 'Dodaj vozilo +';
   addVehicleBtn.setAttribute('class', 'addVehicleBtn');
   addVehicleBtn.addEventListener('click', addVehicleFn);
+  const saveVehicleBtn = document.createElement('div');
+  saveVehicleBtn.innerHTML = 'Sacuvaj vozilo';
+  saveVehicleBtn.setAttribute('class', 'addVehicleBtn');
+  saveVehicleBtn.addEventListener('click', () => {
+    saveVehiclesToStorage('.vehicleRow', 'vehiclesData');
+  });
+
+  menuTabBody.appendChild(saveVehicleBtn);
   menuTabBody.appendChild(addVehicleBtn);
 };

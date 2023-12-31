@@ -2,7 +2,12 @@ import { computeTotalDistance } from './computeTotalDistance';
 const directionsRenderers = [];
 const infoWindows = [];
 
-export const directions = (map, markerPositions, pinNumbersToConnect, color) => {
+export const directions = (
+  map,
+  markerPositions,
+  pinNumbersToConnect,
+  color
+) => {
   if (!Array.isArray(markerPositions) || markerPositions.length === 0) {
     console.error('markerPositions should be a non-empty array.');
     return;
@@ -32,7 +37,7 @@ export const directions = (map, markerPositions, pinNumbersToConnect, color) => 
       stopover: true,
     };
   });
-  
+
   return new Promise((resolve, reject) => {
     directionsService.route(
       {
@@ -51,7 +56,6 @@ export const directions = (map, markerPositions, pinNumbersToConnect, color) => 
           };
 
           renderDirections(directionsRenderer, response);
-
           showInfoWindow(map, response, distance);
           resolve(distance);
         } else {
@@ -61,30 +65,35 @@ export const directions = (map, markerPositions, pinNumbersToConnect, color) => 
       }
     );
   });
-}
+};
 
 const showInfoWindow = (map, response, distance) => {
-  const infoWindow = new google.maps.InfoWindow();
-  const midpointIndex = Math.floor(response.routes[0].legs[0].steps.length / 2);
-  const midpointLocation =
-    response.routes[0].legs[0].steps[midpointIndex].end_location;
-  const content = `Total Distance: ${distance.toFixed(2)} km`;
+  if (!infoWindows.some((info) => info.distance === distance)) {
+    const infoWindow = new google.maps.InfoWindow();
+    const midpointIndex = Math.floor(
+      response.routes[0].legs[0].steps.length / 2
+    );
+    const midpointLocation =
+      response.routes[0].legs[0].steps[midpointIndex].end_location;
+    const content = `Total Distance: ${distance.toFixed(2)} km`;
 
-  infoWindow.setContent(content);
-  infoWindow.setPosition(midpointLocation);
-  infoWindow.open(map);
+    infoWindow.setContent(content);
+    infoWindow.setPosition(midpointLocation);
+    infoWindow.open(map);
 
-  infoWindows.push(infoWindow);
+    infoWindows.push({ distance, infoWindow });
+  }
 };
 
 export const clearDirections = () => {
   directionsRenderers.forEach((renderer) => {
     renderer.setMap(null);
   });
+
   directionsRenderers.length = 0;
 
-  infoWindows.forEach((infoWindow) => {
-    infoWindow.close();
+  infoWindows.forEach((info) => {
+    info.infoWindow.close();
   });
   infoWindows.length = 0;
-}
+};

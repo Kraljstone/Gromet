@@ -8,27 +8,20 @@ export const routesValidation = (tr) => {
     .querySelector('input[name="highwayCost"]')
     .value.trim();
 
-  // Basic validation for routeName
   if (!routeName) {
     alert('Molimo vas da unesete naziv rute');
-    return;
+    return false;
   }
 
-  // Basic validation for locationMapping
   if (!locationMapping) {
     alert('Molimo vas da unesete zeljenu rutu');
-    return;
+    return false;
   }
 
-  // Basic validation for selectedField (vehicle selection)
   if (selectedField === 'Odaberi Vozilo') {
     alert('Molimo vas da odaberete vozilo');
-    return;
+    return false;
   }
 
-  // Basic validation for highwayCost
-  if (!highwayCost || isNaN(parseFloat(highwayCost))) {
-    alert('Molimo vas da unesete vrednost putarine');
-    return;
-  }
+  return true;
 };

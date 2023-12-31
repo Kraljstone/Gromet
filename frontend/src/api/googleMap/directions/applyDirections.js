@@ -27,7 +27,9 @@ export const applyDirections = async (map, markerPositions) => {
 
     if (target.classList.contains('applyBtn')) {
       const tr = target.closest('tr');
-      routesValidation(tr);
+      if (!routesValidation(tr)) {
+        return;
+      }
       const invoiceNumber = tr.querySelector(
         'input[name="locationMapping"]'
       ).value;

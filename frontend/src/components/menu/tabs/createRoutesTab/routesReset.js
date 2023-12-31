@@ -15,10 +15,11 @@ export const routesReset = () => {
     rows.forEach((row) => {
       const inputs = row.querySelectorAll('input[name], select[name]');
       inputs.forEach((input) => {
-        input.value = '';
+        if (row.lastChild.lastChild.classList.contains('fa-lock-open')) {
+          input.value = '';
+        }
       });
     });
-
     localStorage.removeItem('routesData');
     clearDirections();
     const card = document.querySelectorAll('.card');

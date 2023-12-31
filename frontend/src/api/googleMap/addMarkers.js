@@ -12,8 +12,9 @@ export const addMarkers = async (mapLocationData, map) => {
     const position = await getCoordinates(address);
 
     // Create an array of alphabetical characters used to label the markers.
-    const labels = i.toString();
-    const label = labels[i % labels.length];
+    const labels = 1+ i;
+
+    const label = labels.toString();
     const pinGlyph = new google.maps.marker.PinElement({
       glyph: label,
       glyphColor: 'white',
@@ -31,6 +32,7 @@ export const addMarkers = async (mapLocationData, map) => {
     });
     // Add event listeners for mouseover and mouseout to show/hide the InfoWindow
 
+    infoWindow.open(map, marker);
     marker.addListener('click', () => {
       infoWindow.open(map, marker);
     });

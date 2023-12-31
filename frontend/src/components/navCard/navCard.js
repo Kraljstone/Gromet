@@ -22,7 +22,7 @@ export const navCard = ({
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
   const mapLocationData = data;
-  const startingPin = locationMapping.split(',');
+  const startingPin = locationMapping.slice(0, -1).split(',');
   const locationInvoice = mapLocationData.filter((data) => {
     const pinValues = startingPin.map((pinValue) => +pinValue + 1);
     return pinValues.includes(+data['RB naloga']);
@@ -37,11 +37,11 @@ export const navCard = ({
   };
 
   const routeVehicle = storedVehicles.find((storedVehicle) =>
-    storedVehicle.vehicle.includes(selectedField)
+    storedVehicle?.vehicle?.includes(selectedField)
   );
 
   const vehicleCost = +routeVehicle?.cost;
-  const routeCost = vehicleCost + +routeVehicle?.highwayCost;
+  const routeCost = vehicleCost + distance * +routeVehicle?.highwayCost;
   const routeInvoiceSum = invoiceValueSum();
   const profitabilityPercentage = Math.round(
     (routeInvoiceSum / (routeCost / 0.02)) * 100
@@ -57,7 +57,7 @@ export const navCard = ({
   ).length;
 
   const routeDuration = storedVehicles
-    .filter((storedVehicle) => storedVehicle.vehicle.includes(selectedField))
+    .filter((storedVehicle) => storedVehicle?.vehicle?.includes(selectedField))
     .map((storedVehicle) => {
       const vehicleSpeed = storedVehicle.averageSpeed;
       const routeTimeDuration = distance / vehicleSpeed;
@@ -72,9 +72,9 @@ export const navCard = ({
 
   const loadWeightElement = createLoadWeightElement(
     totalRouteLoad,
-    routeVehicle.kg
+    routeVehicle?.kg
   );
-  const gaugeElement = createGaugeElement(totalGauge, routeVehicle.m3);
+  const gaugeElement = createGaugeElement(totalGauge, routeVehicle?.m3);
 
   const cardBackgroundColor =
     totalRouteLoad <= +routeVehicle?.kg &&
