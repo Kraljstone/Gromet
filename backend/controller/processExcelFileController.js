@@ -1,46 +1,38 @@
-const XLSX = require('xlsx');
-const fs = require('fs');
 
-const processExcelFileController = (req, res) => {
+const fs = require('fs');
+const deleteFile  = require('../util/deleteFile');
+
+const readFile  = require('../util/readFile');
+
+const readProperties  = require('../util/readProperties');
+
+const readMapLocations = require('../util/readMapLocations');
+
+const processExcelFileController = async (req, res) => {
+  console.log("request arrived");
+
   const uploadedFile = req.file;
+  
+  if(!uploadedFile)
+    return res.json({ success: false });
+
   const filePath = uploadedFile.path;
 
-  const workbook = XLSX.readFile(filePath);
-  const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-  const data = XLSX.utils.sheet_to_json(worksheet, { header: 1, raw: false });
+  const fileData = readFile(filePath);
 
-  const location_properties = [];
-  data.forEach((column, index) => {
-    const prop = column[0];
-    if (prop) {
-      console.log('provera prop', prop);
-      location_properties.push(prop);
-      column.shift();
-    }
-  });
-  // Create an array to hold the product objects
-  const mapLocations = [];
+  const location_properties = readProperties(fileData);
 
-  const NUM_OF_PRODUCTS = data[0].length;
-  console.log(
-    'props:',
-    location_properties,
-    '\nNUM_OF_PRODUCTS:',
-    NUM_OF_PRODUCTS
-  );
-
-  for (let i = 0; i < NUM_OF_PRODUCTS; i++) {
-    const product = {};
-    data.forEach((column, colIndex) => {
-      if (location_properties[colIndex]) {
-        product[location_properties[colIndex]] = column[i] ? column[i] : '/';
-      }
-    });
-    mapLocations.push(product);
-  }
+  const NUM_OF_PRODUCTS = fileData[0].length;
+  console.log('props:', location_properties);
+  console.log('NUM_OF_PRODUCTS:', NUM_OF_PRODUCTS);
+    
+  const mapLocations = readMapLocations(fileData, location_properties, NUM_OF_PRODUCTS);
 
   console.log('mapLocations:', mapLocations.length);
+
   fs.writeFileSync('mapLocations.json', JSON.stringify(mapLocations));
+
+  await deleteFile(filePath);
 
   res.json({ success: true });
 };
