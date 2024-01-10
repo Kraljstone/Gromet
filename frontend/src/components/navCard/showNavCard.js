@@ -38,7 +38,6 @@ export const showNavCard = () => {
   if (checkboxState) {
     bigCard();
     navTable(routesData, vehiclesData);
-    tableContainer.style.height = '250px';
     bigScreenChecked.checked = checkboxState;
     toggle = false;
     toggleTable = true;
@@ -83,7 +82,7 @@ export const showNavCard = () => {
     } else {
       if (!availableTable) {
         navTable(routesData, vehiclesData);
-        tableContainer.style.height = '250px';
+        tableContainer.style.height = '200px';
         availableTable = document.querySelector('.availabilityTable');
       }
     }

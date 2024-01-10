@@ -9,6 +9,7 @@ import { routesValidation } from '../../../components/menu/tabs/createRoutesTab/
 
 export const applyDirections = async (map, markerPositions) => {
   const storedData = JSON.parse(localStorage.getItem('routesData'));
+  const vehiclesData = JSON.parse(localStorage.getItem('vehiclesData')) || [];
   const checkBox = JSON.parse(localStorage.getItem('checkboxState'));
   const routesTabBody = document.querySelector('.menu-tab-body');
 
@@ -44,10 +45,9 @@ export const applyDirections = async (map, markerPositions) => {
         card.remove();
       });
 
-      if (!checkBox) {
-        const navTable = document.querySelector('.availabilityTable');
-        navTable?.remove();
-      }
+      const navTable = document.querySelector('.availabilityTable');
+      navTable?.remove();
+
       const nav = document.querySelector('.nav-btn-container');
       nav.style.height = 'auto';
 

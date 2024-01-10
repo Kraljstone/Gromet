@@ -12,11 +12,10 @@ export const addMarkers = async (mapLocationData, map) => {
     const position = await getCoordinates(address);
 
     // Create an array of alphabetical characters used to label the markers.
-    const labels = 1+ i;
+    const labels = i.toString();
 
-    const label = labels.toString();
     const pinGlyph = new google.maps.marker.PinElement({
-      glyph: label,
+      glyph: labels,
       glyphColor: 'white',
     });
 

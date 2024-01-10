@@ -4,12 +4,10 @@ export const navTable = (storedRoutes, storedVehicles) => {
   table.classList.add('availabilityTable');
   const headerRow = table.insertRow(0);
   headerRow.insertCell(0).innerHTML = 'Raspoloživost vozila';
-
   const weekDates = getCurrentWeekDates();
   weekDates.forEach((date, i) => {
     headerRow.insertCell(i + 1).innerHTML = date;
   });
-
   storedVehicles.forEach((vehicle, rowIndex) => {
     const dataRow = table.insertRow(rowIndex + 1);
     dataRow.insertCell(0).innerHTML = vehicle.vehicle || '';
@@ -17,7 +15,11 @@ export const navTable = (storedRoutes, storedVehicles) => {
     weekDates.forEach((date, colIndex) => {
       const transformedLocalDate = date.slice(-10);
       const route = storedRoutes.find((storedRoute) => {
-        const storedDate = storedRoute.datePicker.split('-').reverse().join('-');
+        const storedDate = storedRoute.datePicker
+          .split('-')
+          .reverse()
+          .join('-');
+
         return (
           storedDate === transformedLocalDate &&
           storedRoute.selectedField === vehicle.vehicle
@@ -30,16 +32,25 @@ export const navTable = (storedRoutes, storedVehicles) => {
   });
 
   nav.appendChild(table);
-}
+};
+
+const padZero = (num) => (num < 10 ? `0${num}` : num);
+
 const getCurrentWeekDates = () => {
   const today = new Date();
   const currentDay = today.getDay();
+  const currentHour = today.getHours();
   const startOfWeek = new Date(today);
-  startOfWeek.setDate(
-    today.getDate() - currentDay + (currentDay === 1 ? 0 : -6)
-  );
 
-  startOfWeek.setDate(startOfWeek.getDate() < 18 ? 18 : startOfWeek.getDate());
+  if (currentDay === 0 && currentHour >= 0) {
+    startOfWeek.setDate(startOfWeek.getDate() + 7);
+  }
+
+  startOfWeek.setDate(
+    today.getDate() -
+      currentDay +
+      (currentDay === 1 ? 0 : currentDay === 0 ? -6 : 1)
+  );
 
   const daysInSerbian = [
     'Nedelja',
@@ -55,9 +66,11 @@ const getCurrentWeekDates = () => {
     const currentDate = new Date(startOfWeek);
     currentDate.setDate(startOfWeek.getDate() + i);
     const dayIndex = currentDate.getDay();
-    return `${daysInSerbian[dayIndex]}<br>${currentDate.getDate()}-${
-      currentDate.getMonth() + 1
-    }-${currentDate.getFullYear()}`;
+    const day = padZero(currentDate.getDate());
+    const month = padZero(currentDate.getMonth() + 1);
+    return `${
+      daysInSerbian[dayIndex]
+    }<br>${day}-${month}-${currentDate.getFullYear()}`;
   });
 
   return weekDates;
