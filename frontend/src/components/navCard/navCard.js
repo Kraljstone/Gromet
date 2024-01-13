@@ -22,7 +22,7 @@ export const navCard = ({
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
   const mapLocationData = data;
-  const startingPin = locationMapping.slice(0, -1).split(',');
+  const startingPin = locationMapping.split(',').slice(0, -1).map(Number);
   const locationInvoice = mapLocationData.filter((data) => {
     const pinValues = startingPin.map((pinValue) => +pinValue + 1);
     return pinValues.includes(+data['RB naloga']);
@@ -35,7 +35,6 @@ export const navCard = ({
     });
     return totalValue;
   };
-
   const routeVehicle = storedVehicles.find((storedVehicle) =>
     storedVehicle?.vehicle?.includes(selectedField)
   );
@@ -46,11 +45,10 @@ export const navCard = ({
   const profitabilityPercentage = Math.round(
     (routeInvoiceSum / (routeCost / 0.02)) * 100
   );
-
   const valueToProfitability = Math.round(
     routeInvoiceSum - routeCost / 0.02
   ).toLocaleString('en-GB');
-  const profitabilityRatio = Math.round((routeCost / routeInvoiceSum) * 100);
+  const profitabilityRatio = (routeCost / routeInvoiceSum) * 100;
 
   const routePriorities = locationInvoice.filter(
     (priority) => priority.Prioritet !== '/'
@@ -101,7 +99,9 @@ export const navCard = ({
   leftColumn.appendChild(loadWeightElement);
 
   leftColumn.appendChild(gaugeElement);
-  leftColumn.appendChild(createElement('p', null, `${profitabilityRatio}`));
+  leftColumn.appendChild(
+    createElement('p', null, `${profitabilityRatio.toFixed(2)}`)
+  );
 
   rightColum.appendChild(
     createElement(

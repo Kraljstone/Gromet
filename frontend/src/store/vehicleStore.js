@@ -56,7 +56,6 @@ export const loadVehiclesFromStorage = (rowIndex, createInputElement) => {
         key
       );
       input.value = inputValue || '';
-      input.setAttribute('disabled', 'disabled');
 
       vehicleBody.appendChild(input);
     });

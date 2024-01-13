@@ -14,7 +14,6 @@ storedData?.forEach((savedDistance) => {
 export const saveRoutesToStorage = (selector, storageKey, distance, color) => {
   distanceArr.push(distance);
   colorArr.push(color);
-
   const routes = [];
   const rows = document.querySelectorAll(selector);
 

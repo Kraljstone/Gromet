@@ -6,11 +6,8 @@ import {
 import { showNavCard } from '../../../components/navCard/showNavCard';
 import { generateRandomColor } from '../../../utils/generateRandomColor';
 import { routesValidation } from '../../../components/menu/tabs/createRoutesTab/routesValidation';
-
 export const applyDirections = async (map, markerPositions) => {
   const storedData = JSON.parse(localStorage.getItem('routesData'));
-  const vehiclesData = JSON.parse(localStorage.getItem('vehiclesData')) || [];
-  const checkBox = JSON.parse(localStorage.getItem('checkboxState'));
   const routesTabBody = document.querySelector('.menu-tab-body');
 
   storedData?.forEach((data) => {
@@ -28,9 +25,11 @@ export const applyDirections = async (map, markerPositions) => {
 
     if (target.classList.contains('applyBtn')) {
       const tr = target.closest('tr');
+
       if (!routesValidation(tr)) {
         return;
       }
+
       const invoiceNumber = tr.querySelector(
         'input[name="locationMapping"]'
       ).value;
@@ -50,7 +49,6 @@ export const applyDirections = async (map, markerPositions) => {
 
       const nav = document.querySelector('.nav-btn-container');
       nav.style.height = 'auto';
-
       const routeColor =
         event.target.parentElement.parentElement.firstChild.lastChild;
       const color = generateRandomColor();

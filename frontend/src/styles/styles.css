@@ -386,7 +386,7 @@ input:disabled {
 }
 
 .bigCard {
-  margin: 8px;
+  margin-top: 8px;
   max-width: 200px;
   min-width: 150px;
   height: 100%;

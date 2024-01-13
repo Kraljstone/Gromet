@@ -17,7 +17,7 @@ export const bigNavCard = ({
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
   const mapLocationData = data;
-  const startingPin = locationMapping.split(',');
+  const startingPin = locationMapping.split(',').slice(0, -1).map(Number);
   const card = createElement('div', 'bigCard');
   const heading = createElement(
     'h2',
@@ -30,15 +30,16 @@ export const bigNavCard = ({
     ? `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`
     : 'Nema Datuma';
 
-  const routeVehicle = storedVehicles.find((vehicle) =>
-    vehicle.vehicle.includes(selectedField)
-  );
+  const routeVehicle = storedVehicles.find((vehicle) => {
+    return vehicle.vehicle.includes(selectedField);
+  });
 
   const vehicleCost = +routeVehicle.cost;
-  const routeCost = vehicleCost + +routeVehicle.highwayCost;
-  const locationInvoice = mapLocationData.filter((data) =>
-    startingPin.map((pinValue) => +pinValue + 1).includes(+data['RB naloga'])
-  );
+  const routeCost = vehicleCost + distance * +routeVehicle?.highwayCost;
+  const locationInvoice = mapLocationData.filter((data) => {
+    const pinValues = startingPin.map((pinValue) => +pinValue + 1);
+    return pinValues.includes(+data['RB naloga']);
+  });
 
   const routeInvoiceSum = calculateTotal(locationInvoice, 'Vrednost naloga');
   const valueToProfitability = Math.round(
@@ -47,6 +48,7 @@ export const bigNavCard = ({
   const profitabilityPercentage = Math.round(
     (routeInvoiceSum / (routeCost / 0.02)) * 100
   );
+
   const profitabilityRatio = Math.round((routeCost / routeInvoiceSum) * 100);
   const routePriorities = locationInvoice.filter(
     (priority) => priority.Prioritet !== '/'

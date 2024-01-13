@@ -17,14 +17,15 @@ export const directions = (
     console.error('pinNumbersToConnect should be a non-empty array.');
     return;
   }
-
   const directionsService = new google.maps.DirectionsService();
+
   const createDirectionsRenderer = (map, color) =>
     new google.maps.DirectionsRenderer({
       map,
       polylineOptions: { strokeColor: color, strokeWeight: 5 },
       suppressMarkers: true,
     });
+
   const directionsRenderer = createDirectionsRenderer(map, color);
 
   directionsRenderers.push(directionsRenderer);
@@ -50,11 +51,9 @@ export const directions = (
       (response, status) => {
         if (status === 'OK') {
           const distance = computeTotalDistance(response);
-
           const renderDirections = (directionsRenderer, response) => {
             directionsRenderer.setDirections(response);
           };
-
           renderDirections(directionsRenderer, response);
           showInfoWindow(map, response, distance);
           resolve(distance);

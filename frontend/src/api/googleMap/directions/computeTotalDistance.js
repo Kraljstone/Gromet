@@ -5,6 +5,5 @@ export const computeTotalDistance = (directionsResult) => {
   for (let i = 0; i < legs.length; i++) {
     totalDistance += legs[i].distance.value;
   }
-
-  return totalDistance / 1000 + totalDistance / 2000;
+  return totalDistance / 1000;
 };
