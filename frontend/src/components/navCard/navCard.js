@@ -8,9 +8,8 @@ import {
 import data from '../../../../mapLocations.json';
 const nav = document.querySelector('.nav-bar');
 
-const createCard = (backgroundColor) => {
+const createCard = () => {
   const card = createElement('div', 'card');
-  card.style.background = backgroundColor;
   return card;
 };
 
@@ -19,6 +18,7 @@ export const navCard = ({
   selectedField,
   distance,
   locationMapping,
+  randomColor,
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
   const mapLocationData = data;
@@ -84,7 +84,9 @@ export const navCard = ({
   const card = createCard(cardBackgroundColor);
 
   const heading = createElement('h2', null, routeName);
+  heading.style.background = randomColor;
   const vehicleText = createElement('p', null, selectedField);
+  vehicleText.style.background = cardBackgroundColor;
 
   const [leftColumn, rightColum] = createTable(
     createElement('p', 'cardHeadings', 'Kriterijumi'),

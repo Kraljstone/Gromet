@@ -259,12 +259,16 @@ input:disabled {
 }
 
 .card h2 {
+  border-radius: 10px 10px 0 0;
   margin-bottom: 0;
   margin-top: 10px;
+  padding: 10px 0;
 }
 
 .card p {
-  margin-top: 10px;
+  border-radius: 0 0 10px 10px;
+  margin-top: 0;
+  padding: 10px 0;
   margin-bottom: 10px;
 }
 
