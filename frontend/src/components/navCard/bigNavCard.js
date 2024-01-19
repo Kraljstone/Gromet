@@ -104,5 +104,8 @@ export const bigNavCard = ({
   card.appendChild(heading);
   card.appendChild(day);
   card.appendChild(cardContent);
-  nav.appendChild(card);
+
+  const cardContainer = document.querySelector('.cardContainer')
+  cardContainer.appendChild(card)
+  nav.appendChild(cardContainer);
 };

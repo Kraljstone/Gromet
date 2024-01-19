@@ -1,6 +1,7 @@
 import { loadRoutesFromStorage } from '../../../../store/routesStore';
 import { routesReset } from './routesReset';
 import { routesHead } from './routesHead';
+import { directionsRenderers } from '../../../../api/googleMap/directions/directions';
 
 export const createRoutesTab = () => {
   const menuTabBody = document.querySelector('.menu-tab-body');
@@ -16,7 +17,7 @@ export const createRoutesTab = () => {
   };
   // Generate table content for each row
 
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 20; i++) {
     // Create a table row
     const trBody = document.createElement('tr');
 
@@ -55,6 +56,44 @@ export const createRoutesTab = () => {
     applyBtn.innerHTML = 'Primeni';
     applyBtn.setAttribute('class', 'applyBtn');
     applyBtn.setAttribute('disabled', 'disabled');
+
+    const deleteContainer = document.createElement('div');
+    deleteContainer.classList.add('deleteRouteBtn');
+    const deleteBtn = document.createElement('i');
+    deleteContainer.appendChild(deleteBtn);
+    deleteBtn.classList.add('gg-trash');
+
+    deleteBtn.addEventListener('click', (e) => {
+      const targetValue =
+        e.target.parentElement.parentElement.firstChild.firstChild.value;
+      let routesData = JSON.parse(localStorage.getItem('routesData'));
+
+      if (routesData && Array.isArray(routesData)) {
+        const index = routesData.findIndex(
+          (routeInfo) => routeInfo.routeName === targetValue
+        );
+
+        if (index !== -1) {
+          if (directionsRenderers[index]) {
+            directionsRenderers[index].setDirections({ routes: [] });
+          }
+
+          routesData[index] = Object.fromEntries(
+            Object.keys(routesData[index]).map((key) => [key, ''])
+          );
+          localStorage.setItem('routesData', JSON.stringify(routesData));
+        }
+      }
+
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card) => {
+        if (card.firstChild.innerHTML === targetValue) {
+          card.parentNode.removeChild(card);
+        }
+      });
+
+      loadRoutesFromStorage('.routesTableBody', 'routesData');
+    });
 
     const datePickContainer = document.createElement('div');
     datePickContainer.classList = 'datePickerContainer';
@@ -110,6 +149,7 @@ export const createRoutesTab = () => {
     inputsBody.appendChild(applyBtn);
     inputsBody.appendChild(datePickContainer);
     inputsBody.appendChild(lockBtn);
+    inputsBody.appendChild(deleteBtn);
     trBody.appendChild(inputsBody);
 
     // Add the table row to the table

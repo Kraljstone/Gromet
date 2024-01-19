@@ -1,25 +1,32 @@
-// Add randomColor to each row
-export const generateRandomColor = (usedColors = []) => {
-  const baseHue = Math.floor(Math.random() * 360); // Random hue value
+export const generateRandomColor = (() => {
+  const intuitiveColors = [
+    '#1f77b4',
+    '#ff7f0e',
+    '#2ca02c',
+    '#d62728',
+    '#9467bd',
+    '#8c564b',
+    '#e377c2',
+    '#7f7f7f',
+    '#bcbd22',
+    '#17becf',
+    '#FF5733',
+    '#33FF57',
+    '#5733FF',
+    '#FF33A8',
+    '#FF8C33',
+    '#33A8FF',
+    '#8C33FF',
+    '#33FF8C',
+    '#A833FF',
+    '#FFA833',
+  ];
 
-  // Function to check the difference between two hues
-  const hueDifference = (hue1, hue2) => {
-    const diff = Math.abs(hue1 - hue2);
-    return Math.min(diff, 360 - diff);
+  let currentIndex = 0;
+
+  return () => {
+    const color = intuitiveColors[currentIndex];
+    currentIndex = (currentIndex + 1) % intuitiveColors.length;
+    return color;
   };
-
-  // Check if the generated color is too close to any used color
-  const isColorTooClose = (color) => {
-    return usedColors.some((usedColor) => hueDifference(usedColor, color) < 30);
-  };
-
-  // Generate a color and ensure it's distinct from used colors
-  let randomColor;
-  do {
-    randomColor = `hsl(${baseHue + Math.random() * 60},${
-      30 + Math.random() * 40
-    }%,${50 + Math.random() * 10}%)`;
-  } while (isColorTooClose(randomColor));
-
-  return randomColor;
-};
+})();

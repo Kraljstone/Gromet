@@ -57,7 +57,6 @@ export const loadRoutesFromStorage = (selector, storageKey) => {
     rows.forEach((row, rowIndex) => {
       const inputs = row.querySelectorAll('input[name], select[name]');
       const colorElement = row.querySelector('.pinConnectColor');
-
       inputs.forEach((input) => {
         const inputName = input.name;
         const inputData = routes?.[rowIndex]?.[inputName];

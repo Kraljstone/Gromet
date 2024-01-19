@@ -52,7 +52,6 @@ export const applyDirections = async (map, markerPositions) => {
       const routeColor =
         event.target.parentElement.parentElement.firstChild.lastChild;
       const color = generateRandomColor();
-      routeColor.style.background = color;
 
       const distancePromises = new Promise(async (resolve, reject) => {
         try {

@@ -12,6 +12,8 @@ const createCard = () => {
   const card = createElement('div', 'card');
   return card;
 };
+const cardContainer = document.createElement('div');
+cardContainer.classList.add('cardContainer');
 
 export const navCard = ({
   routeName,
@@ -139,5 +141,6 @@ export const navCard = ({
   card.appendChild(vehicleText);
   card.appendChild(cardContent);
 
-  nav.appendChild(card);
+  cardContainer.appendChild(card);
+  nav.appendChild(cardContainer);
 };

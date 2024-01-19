@@ -1,8 +1,7 @@
 import { computeTotalDistance } from './computeTotalDistance';
 import data from '../../../../../mapLocations.json';
-const directionsRenderers = [];
+export const directionsRenderers = [];
 const infoWindows = [];
-
 export const directions = (
   map,
   markerPositions,
@@ -83,22 +82,22 @@ const showInfoWindow = (map, response, distances) => {
     } = distanceObj;
 
     combinedContent += `
-      Pins: ${pins}<br>
-      Value to Profitability: ${valueToProfitability}<br>
-      Profitability Percentage: ${profitabilityPercentage}%<br>
-      Duration: ${duration}<br>
-      Total Distance: ${distance}<br><br>
+      Pinovi: ${pins}<br>
+      Vrednost do isplativosti: ${valueToProfitability}<br>
+      Procenat isplativosti: ${profitabilityPercentage}%<br>
+      Procenjeno vreme: ${duration}<br>
+      Udaljenost: ${distance}<br><br>
     `;
   }
 
-  const midpointIndex = Math.floor(
-    response.routes[0].legs[0].steps.length / 2
-  );
+  const midpointIndex = Math.floor(response.routes[0].legs[0].steps.length / 2);
   const midpointLocation =
     response.routes[0].legs[0].steps[midpointIndex].end_location;
 
   const infoWindow = new google.maps.InfoWindow();
-  infoWindow.setContent(`<div style="max-height: 90px; overflow-y: auto;">${combinedContent}</div>`);
+  infoWindow.setContent(
+    `<div style="max-height: 90px; overflow-y: auto;">${combinedContent}</div>`
+  );
   infoWindow.setPosition(midpointLocation);
   infoWindow.open(map);
 
@@ -107,8 +106,6 @@ const showInfoWindow = (map, response, distances) => {
   infoWindows.length = 0;
   infoWindows.push({ distance: 'combined', infoWindow });
 };
-
-
 
 const calculateDistance = (directionsResult, pinNumbersToConnect) => {
   const legs = directionsResult.routes[0].legs;
@@ -120,13 +117,13 @@ const calculateDistance = (directionsResult, pinNumbersToConnect) => {
     const leg = legs[i];
 
     const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
-    const routesData = JSON.parse(localStorage.getItem('routesData')) || [];
+    const routesData = JSON.parse(localStorage.getItem('routesData'));
 
     const routeVehicle = storedVehicles.find((storedVehicle) => {
       return routesData?.some((routeInfo) => {
         return (
-          routeInfo.routeName !== '' &&
-          storedVehicle?.vehicle?.includes(routeInfo.selectedField)
+          routeInfo?.routeName !== '' &&
+          storedVehicle?.vehicle?.includes(routeInfo?.selectedField)
         );
       });
     });
@@ -167,7 +164,6 @@ const calculateDistance = (directionsResult, pinNumbersToConnect) => {
       duration: leg.duration.text,
       distance: leg.distance.text,
     };
-
     durationsAndDistances.push(legData);
   }
 
