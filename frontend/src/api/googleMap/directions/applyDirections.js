@@ -1,5 +1,8 @@
 import { directions } from './directions';
-import { saveRoutesToStorage } from '../../../store/routesStore';
+import {
+  loadRoutesFromStorage,
+  saveRoutesToStorage,
+} from '../../../store/routesStore';
 import { showNavCard } from '../../../components/navCard/showNavCard';
 import { routesValidation } from '../../../components/menu/tabs/createRoutesTab/routesValidation';
 import { handleInfoButtonClick } from '../../../utils/handleInfoButtonClick';
@@ -10,7 +13,7 @@ const removeElements = (selector) => {
   elements.forEach((element) => element.remove());
 };
 
-const applyDirections = async (map, markerPositions) => {
+export const applyDirections = async (map, markerPositions) => {
   const storedData = JSON.parse(localStorage.getItem('routesData'));
   const routesTabBody = document.querySelector('.menu-tab-body');
 
@@ -30,6 +33,7 @@ const applyDirections = async (map, markerPositions) => {
     if (target.classList.contains('applyBtn')) {
       const tr = target.closest('tr');
       await handleApplyButtonClick(map, markerPositions, storedData, tr);
+      location.reload();
     }
 
     if (target.classList.contains('info')) {
@@ -43,20 +47,24 @@ const handleApplyButtonClick = async (map, markerPositions, storedData, tr) => {
   if (!routesValidation(tr)) {
     return;
   }
+
   const invoiceNumber = tr.querySelector('input[name="locationMapping"]').value;
   const routeName = tr.firstChild.firstChild.value;
+
   const existingRouteIndex = storedData?.findIndex(
     (routeInfo) => routeInfo.routeName === routeName
   );
   if (existingRouteIndex !== -1 && directionsRenderers[existingRouteIndex]) {
-    directionsRenderers[existingRouteIndex].setDirections({ routes: [] });
+    directionsRenderers[existingRouteIndex].setDirections({
+      routes: [],
+    });
   }
-
   removeElements('.card');
   removeElements('.bigCard');
   removeElements('.availabilityTable');
 
   const color = tr.firstChild.lastChild.style.backgroundColor;
+
   try {
     const { distance } = await directions(
       map,
@@ -64,11 +72,11 @@ const handleApplyButtonClick = async (map, markerPositions, storedData, tr) => {
       invoiceNumber.split(',').map(Number),
       color
     );
+
+    // Wait for directions to complete before proceeding
     saveRoutesToStorage('.routesTableBody', 'routesData', distance, color);
     showNavCard();
   } catch (error) {
     console.error('Error calculating distances:', error);
   }
 };
-
-export { applyDirections };

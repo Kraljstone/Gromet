@@ -2,6 +2,7 @@ import { loadRoutesFromStorage } from '../../../../store/routesStore';
 import { routesReset } from './routesReset';
 import { routesHead } from './routesHead';
 import { directionsRenderers } from '../../../../api/googleMap/directions/directions';
+import { fetchDataAndDownloadExcel } from '../../../../utils/fetchDataAndDownloadExcel';
 
 export const createRoutesTab = () => {
   const menuTabBody = document.querySelector('.menu-tab-body');
@@ -124,6 +125,11 @@ export const createRoutesTab = () => {
     info.classList.add('fas', 'fa-info');
     info.classList.add('info');
 
+    const print = document.createElement('i');
+    print.classList.add('fas', 'fa-print');
+    print.classList.add('print');
+    print.addEventListener('click', fetchDataAndDownloadExcel);
+
     const datePickContainer = document.createElement('div');
     datePickContainer.classList = 'datePickerContainer';
     const datePickerIcon = document.createElement('i');
@@ -180,6 +186,7 @@ export const createRoutesTab = () => {
     inputsBody.appendChild(lockBtn);
     inputsBody.appendChild(deleteBtn);
     inputsBody.appendChild(info);
+    inputsBody.appendChild(print);
     trBody.appendChild(inputsBody);
 
     // Add the table row to the table

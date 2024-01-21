@@ -499,3 +499,13 @@ input:disabled {
   cursor: pointer;
   color: rgb(37, 37, 255);
 }
+
+.print {
+  font-size: 32px;
+  margin-left: 8px;
+}
+
+.print:hover {
+  cursor: pointer;
+  color: rgb(37, 37, 255);
+}
