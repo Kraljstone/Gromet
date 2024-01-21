@@ -1,5 +1,6 @@
 const distanceArr = [];
 const colorArr = [];
+let lastColor;
 
 const storedData = JSON.parse(localStorage.getItem('routesData'));
 storedData?.forEach((savedDistance) => {
@@ -8,12 +9,19 @@ storedData?.forEach((savedDistance) => {
   }
 
   if (savedDistance.randomColor) {
-    colorArr.push(savedDistance.randomColor);
+    if (savedDistance.randomColor !== lastColor) {
+      colorArr.push(savedDistance.randomColor);
+      lastColor = savedDistance.randomColor;
+    }
   }
 });
+
 export const saveRoutesToStorage = (selector, storageKey, distance, color) => {
-  distanceArr.push(distance);
-  colorArr.push(color);
+  if (color !== lastColor) {
+    colorArr.push(color);
+    lastColor = color;
+  }
+
   const routes = [];
   const rows = document.querySelectorAll(selector);
 
@@ -34,11 +42,10 @@ export const saveRoutesToStorage = (selector, storageKey, distance, color) => {
     }
 
     if (data['routeName'] !== '') {
-      data['distance'] = distance;
-      data['randomColor'] = color;
+      // Correct the assignment of distance and color
+      data['distance'] = distanceArr[index] || distance;
+      data['randomColor'] = colorArr[index] || color;
     }
-    data.distance = distanceArr[index];
-    data.randomColor = colorArr[index];
 
     routes.push(data);
   });

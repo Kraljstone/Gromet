@@ -15,7 +15,11 @@ export const routesReset = () => {
     rows.forEach((row) => {
       const inputs = row.querySelectorAll('input[name], select[name]');
       inputs.forEach((input) => {
-        input.value = '';
+        if (input.nodeName.toLowerCase() === 'select') {
+          input.selectedIndex = 0;
+        } else {
+          input.value = '';
+        }
       });
     });
 

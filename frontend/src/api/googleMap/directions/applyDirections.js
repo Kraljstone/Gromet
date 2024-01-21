@@ -57,7 +57,6 @@ const handleApplyButtonClick = async (map, markerPositions, storedData, tr) => {
   removeElements('.availabilityTable');
 
   const color = tr.firstChild.lastChild.style.backgroundColor;
-
   try {
     const { distance } = await directions(
       map,
@@ -65,14 +64,11 @@ const handleApplyButtonClick = async (map, markerPositions, storedData, tr) => {
       invoiceNumber.split(',').map(Number),
       color
     );
-
     saveRoutesToStorage('.routesTableBody', 'routesData', distance, color);
     showNavCard();
   } catch (error) {
     console.error('Error calculating distances:', error);
   }
 };
-
-
 
 export { applyDirections };

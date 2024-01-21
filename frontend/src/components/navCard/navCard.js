@@ -30,7 +30,6 @@ export const navCard = ({
     const pinValues = startingPin.map((pinValue) => +pinValue + 1);
     return pinValues.includes(+data['RB naloga']);
   });
-
   const invoiceValueSum = () => {
     let totalValue = 0;
     locationInvoice.forEach((invoiceValue) => {
@@ -48,7 +47,7 @@ export const navCard = ({
     (routeInvoiceSum / (routeCost / 0.02)) * 100
   );
   const valueToProfitability = Math.trunc(
-    routeInvoiceSum - (routeCost / 0.02)
+    routeInvoiceSum - routeCost / 0.02
   ).toLocaleString('en-GB');
   const profitabilityRatio = (routeCost / routeInvoiceSum) * 100;
 
