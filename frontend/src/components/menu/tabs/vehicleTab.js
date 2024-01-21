@@ -11,10 +11,9 @@ export const vehicleTab = () => {
   const headings = [
     '',
     'Vozilo',
-    'Kg',
-    'm³',
+    'Nosivost (Kg)',
+    'Gabarit (m³)',
     'Trošak',
-    'Putarina',
     'Pročna brzina (km/h)',
     'Vreme istovara',
   ];
@@ -62,7 +61,6 @@ export const vehicleTab = () => {
     const kg = createInputElement('number', 'kg');
     const m3 = createInputElement('number', 'm3');
     const cost = createInputElement('number', 'cost');
-    const highwayCost = createInputElement('number', 'highwayCost');
     const averageSpeed = createInputElement('text', 'averageSpeed');
     const deliveryTime = createInputElement('text', 'deliveryTime');
 
@@ -71,7 +69,6 @@ export const vehicleTab = () => {
     vehicleBody.appendChild(kg);
     vehicleBody.appendChild(m3);
     vehicleBody.appendChild(cost);
-    vehicleBody.appendChild(highwayCost);
     vehicleBody.appendChild(averageSpeed);
     vehicleBody.appendChild(deliveryTime);
     trBody.appendChild(vehicleBody);

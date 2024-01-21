@@ -16,6 +16,28 @@ export const createRoutesTab = () => {
     return input;
   };
   // Generate table content for each row
+  const colorPallet = [
+    '#1f77b4',
+    '#ff7f0e',
+    '#2ca02c',
+    '#d62728',
+    '#9467bd',
+    '#8c564b',
+    '#e377c2',
+    '#7f7f7f',
+    '#bcbd22',
+    '#17becf',
+    '#FF5733',
+    '#33FF57',
+    '#5733FF',
+    '#FF33A8',
+    '#FF8C33',
+    '#33A8FF',
+    '#8C33FF',
+    '#33FF8C',
+    '#A833FF',
+    '#FFA833',
+  ];
 
   for (let i = 0; i < 20; i++) {
     // Create a table row
@@ -28,6 +50,7 @@ export const createRoutesTab = () => {
     const color = document.createElement('p');
     color.innerHTML = 'a';
     color.setAttribute('class', 'pinConnectColor');
+    color.style.backgroundColor = colorPallet[i % colorPallet.length];
 
     routeAndColor.appendChild(routeName);
     routeAndColor.appendChild(color);
@@ -57,43 +80,49 @@ export const createRoutesTab = () => {
     applyBtn.setAttribute('class', 'applyBtn');
     applyBtn.setAttribute('disabled', 'disabled');
 
-    const deleteContainer = document.createElement('div');
-    deleteContainer.classList.add('deleteRouteBtn');
     const deleteBtn = document.createElement('i');
-    deleteContainer.appendChild(deleteBtn);
     deleteBtn.classList.add('gg-trash');
+    deleteBtn.style.color = 'gray';
 
     deleteBtn.addEventListener('click', (e) => {
-      const targetValue =
-        e.target.parentElement.parentElement.firstChild.firstChild.value;
-      let routesData = JSON.parse(localStorage.getItem('routesData'));
+      if (
+        e.target.parentElement.children[2].classList.contains('fa-lock-open')
+      ) {
+        const targetValue =
+          e.target.parentElement.parentElement.firstChild.firstChild.value;
+        let routesData = JSON.parse(localStorage.getItem('routesData'));
 
-      if (routesData && Array.isArray(routesData)) {
-        const index = routesData.findIndex(
-          (routeInfo) => routeInfo.routeName === targetValue
-        );
-
-        if (index !== -1) {
-          if (directionsRenderers[index]) {
-            directionsRenderers[index].setDirections({ routes: [] });
-          }
-
-          routesData[index] = Object.fromEntries(
-            Object.keys(routesData[index]).map((key) => [key, ''])
+        if (routesData && Array.isArray(routesData)) {
+          const index = routesData.findIndex(
+            (routeInfo) => routeInfo.routeName === targetValue
           );
-          localStorage.setItem('routesData', JSON.stringify(routesData));
+
+          if (index !== -1) {
+            if (directionsRenderers[index]) {
+              directionsRenderers[index].setDirections({ routes: [] });
+            }
+
+            routesData[index] = Object.fromEntries(
+              Object.keys(routesData[index]).map((key) => [key, ''])
+            );
+            localStorage.setItem('routesData', JSON.stringify(routesData));
+          }
         }
+
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((card) => {
+          if (card.firstChild.innerHTML === targetValue) {
+            card.parentNode.removeChild(card);
+          }
+        });
+
+        loadRoutesFromStorage('.routesTableBody', 'routesData');
       }
-
-      const cards = document.querySelectorAll('.card');
-      cards.forEach((card) => {
-        if (card.firstChild.innerHTML === targetValue) {
-          card.parentNode.removeChild(card);
-        }
-      });
-
-      loadRoutesFromStorage('.routesTableBody', 'routesData');
     });
+
+    const info = document.createElement('i');
+    info.classList.add('fas', 'fa-info');
+    info.classList.add('info');
 
     const datePickContainer = document.createElement('div');
     datePickContainer.classList = 'datePickerContainer';
@@ -130,15 +159,15 @@ export const createRoutesTab = () => {
         input.disabled = !input.disabled;
       });
 
-      const locks = document.querySelectorAll('.fa-lock-open');
-
       if (e.target.classList.contains('fa-lock-open')) {
         resetRoutesBtn.removeAttribute('disabled', 'disabled');
+        deleteBtn.style.color = '#00005e';
         return (datePickerIcon.style.color = '#00005e');
       }
 
       resetRoutesBtn.setAttribute('disabled', 'disabled');
       datePickerIcon.style.color = 'gray';
+      deleteBtn.style.color = 'gray';
     });
 
     // Append elements to the table row
@@ -150,6 +179,7 @@ export const createRoutesTab = () => {
     inputsBody.appendChild(datePickContainer);
     inputsBody.appendChild(lockBtn);
     inputsBody.appendChild(deleteBtn);
+    inputsBody.appendChild(info);
     trBody.appendChild(inputsBody);
 
     // Add the table row to the table

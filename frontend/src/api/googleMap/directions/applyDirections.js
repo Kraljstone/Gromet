@@ -1,87 +1,137 @@
 import { directions } from './directions';
-import {
-  saveRoutesToStorage,
-  loadRoutesFromStorage,
-} from '../../../store/routesStore';
+import { saveRoutesToStorage } from '../../../store/routesStore';
 import { showNavCard } from '../../../components/navCard/showNavCard';
-import { generateRandomColor } from '../../../utils/generateRandomColor';
 import { routesValidation } from '../../../components/menu/tabs/createRoutesTab/routesValidation';
-export const applyDirections = async (map, markerPositions) => {
+import data from '../../../../../mapLocations.json';
+import { calculateDistance } from '../../../utils/calculateDistance';
+import { directionsRenderers } from './directions';
+import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
+
+const generateTooltipContent = (distances) => {
+  let combinedContent = '';
+
+  for (const distanceObj of distances) {
+    const {
+      pins,
+      valueToProfitability,
+      profitabilityPercentage,
+      duration,
+      distance,
+    } = distanceObj;
+    combinedContent += `
+      Pinovi: ${pins}<br>
+      Vrednost do isplativosti: ${valueToProfitability}<br>
+      Procenat isplativosti: ${profitabilityPercentage}%<br>
+      Procenjeno vreme: ${duration}<br>
+      Udaljenost: ${distance}<br><br>
+    `;
+  }
+
+  return combinedContent;
+};
+
+const removeElements = (selector) => {
+  const elements = document.querySelectorAll(selector);
+  elements.forEach((element) => element.remove());
+};
+
+const applyDirections = async (map, markerPositions) => {
   const storedData = JSON.parse(localStorage.getItem('routesData'));
   const routesTabBody = document.querySelector('.menu-tab-body');
 
   storedData?.forEach((data) => {
-    let pinNumbersToConnect = [];
-    if (data.locationMapping) {
-      pinNumbersToConnect = data.locationMapping.split(',').map(Number);
-    }
+    const pinNumbersToConnect = data.locationMapping
+      ? data.locationMapping.split(',').map(Number)
+      : [];
+
     if (pinNumbersToConnect.length > 0) {
       directions(map, markerPositions, pinNumbersToConnect, data.randomColor);
     }
   });
 
-  routesTabBody.addEventListener('click', (event) => {
+  routesTabBody.addEventListener('click', async (event) => {
     const target = event.target;
 
     if (target.classList.contains('applyBtn')) {
       const tr = target.closest('tr');
+      await handleApplyButtonClick(map, markerPositions, storedData, tr);
+    }
 
-      if (!routesValidation(tr)) {
-        return;
-      }
-
-      const invoiceNumber = tr.querySelector(
-        'input[name="locationMapping"]'
-      ).value;
-
-      const cards = document.querySelectorAll('.card');
-      cards.forEach((card) => {
-        card.remove();
-      });
-
-      const bigCards = document.querySelectorAll('.bigCard');
-      bigCards.forEach((card) => {
-        card.remove();
-      });
-
-      const navTable = document.querySelector('.availabilityTable');
-      navTable?.remove();
-
-      const nav = document.querySelector('.nav-btn-container');
-      nav.style.height = 'auto';
-      const routeColor =
-        event.target.parentElement.parentElement.firstChild.lastChild;
-      const color = generateRandomColor();
-
-      const distancePromises = new Promise(async (resolve, reject) => {
-        try {
-          const distance = await directions(
-            map,
-            markerPositions,
-            invoiceNumber.split(',').map(Number),
-            color
-          );
-          resolve(distance);
-        } catch (error) {
-          console.error(error);
-          reject(error);
-        }
-      });
-
-      distancePromises
-        .then((distances) => {
-          saveRoutesToStorage(
-            '.routesTableBody',
-            'routesData',
-            distances,
-            color
-          );
-          loadRoutesFromStorage('routesData');
-          showNavCard();
-        })
-        .catch((error) => {
-          console.error('Error calculating distances:', error);
-        });
+    if (target.classList.contains('info')) {
+      const tr = target.closest('tr');
+      await handleInfoButtonClick(map, markerPositions, tr);
     }
   });
 };
+
+const handleApplyButtonClick = async (map, markerPositions, storedData, tr) => {
+  if (!routesValidation(tr)) {
+    return;
+  }
+  const invoiceNumber = tr.querySelector('input[name="locationMapping"]').value;
+  const routeName = tr.firstChild.firstChild.value;
+  const existingRouteIndex = storedData?.findIndex(
+    (routeInfo) => routeInfo.routeName === routeName
+  );
+  if (existingRouteIndex !== -1 && directionsRenderers[existingRouteIndex]) {
+    directionsRenderers[existingRouteIndex].setDirections({ routes: [] });
+  }
+
+  removeElements('.card');
+  removeElements('.bigCard');
+  removeElements('.availabilityTable');
+
+  const color = tr.firstChild.lastChild.style.backgroundColor;
+
+  try {
+    const { distance } = await directions(
+      map,
+      markerPositions,
+      invoiceNumber.split(',').map(Number),
+      color
+    );
+
+    saveRoutesToStorage('.routesTableBody', 'routesData', distance, color);
+    showNavCard();
+  } catch (error) {
+    console.error('Error calculating distances:', error);
+  }
+};
+
+const handleInfoButtonClick = async (map, markerPositions, tr) => {
+  if (!routesValidation(tr)) {
+    return;
+  }
+
+  const invoiceNumber = tr.querySelector('input[name="locationMapping"]').value;
+  const highwayCost = tr.querySelector('input[name="highwayCost"]').value;
+  const color = tr.parentElement.firstChild.lastChild.style.backgroundColor;
+
+  try {
+    const { response } = await directions(
+      map,
+      markerPositions,
+      invoiceNumber.split(',').map(Number),
+      color
+    );
+
+    const distanceBetweenPins = calculateDistance(
+      response,
+      invoiceNumber.split(',').map(Number),
+      highwayCost,
+      data
+    );
+
+    const tooltipContent = generateTooltipContent(distanceBetweenPins);
+    tippy(tr.querySelector('.info'), {
+      content: tooltipContent,
+      placement: 'top',
+      allowHTML: true,
+    });
+  } catch (error) {
+    console.error('Error calculating distances:', error);
+  }
+};
+
+export { applyDirections };

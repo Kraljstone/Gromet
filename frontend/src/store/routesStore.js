@@ -56,7 +56,6 @@ export const loadRoutesFromStorage = (selector, storageKey) => {
 
     rows.forEach((row, rowIndex) => {
       const inputs = row.querySelectorAll('input[name], select[name]');
-      const colorElement = row.querySelector('.pinConnectColor');
       inputs.forEach((input) => {
         const inputName = input.name;
         const inputData = routes?.[rowIndex]?.[inputName];
@@ -75,13 +74,14 @@ export const loadRoutesFromStorage = (selector, storageKey) => {
             input.value = inputData;
           }
         }
+        if (
+          inputName === 'selectedField' &&
+          inputData === '' &&
+          input.nodeName.toLowerCase() === 'select'
+        ) {
+          input.value = input.options[0].value;
+        }
       });
-
-      // Check if color data exists and set the color element content
-      const colorData = routes?.[rowIndex]?.randomColor;
-      if (colorData !== undefined) {
-        colorElement.style.backgroundColor = colorData;
-      }
     });
   }
 };

@@ -138,7 +138,7 @@ body {
 .routesTable div:last-child,
 .routesTableBody th:last-child,
 .routesTableBody div:last-child {
-  width: 200%;
+  width: 300%;
   display: flex;
   align-items: center;
 }
@@ -196,15 +196,16 @@ body {
 
 #vehicleBody {
   display: flex;
+  width: 100%;
 }
 
 .gg-trash {
   scale: 1.8;
+  margin-left: 5px;
 }
 
 .gg-trash:hover {
   cursor: pointer;
-  color: red !important;
 }
 
 .dropdown-input {
@@ -487,4 +488,14 @@ input:disabled {
 
 .infoWindow {
   width: 180px;
+}
+
+.info {
+  padding-left: 20px;
+  font-size: 32px;
+}
+
+.info:hover {
+  cursor: pointer;
+  color: rgb(37, 37, 255);
 }

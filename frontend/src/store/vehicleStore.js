@@ -44,7 +44,6 @@ export const loadVehiclesFromStorage = (rowIndex, createInputElement) => {
       'kg',
       'm3',
       'cost',
-      'highwayCost',
       'averageSpeed',
       'deliveryTime',
     ];

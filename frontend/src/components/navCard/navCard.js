@@ -21,6 +21,7 @@ export const navCard = ({
   distance,
   locationMapping,
   randomColor,
+  highwayCost,
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
   const mapLocationData = data;
@@ -40,15 +41,14 @@ export const navCard = ({
   const routeVehicle = storedVehicles.find((storedVehicle) =>
     storedVehicle?.vehicle?.includes(selectedField)
   );
-
   const vehicleCost = +routeVehicle?.cost;
-  const routeCost = vehicleCost + distance * +routeVehicle?.highwayCost;
+  const routeCost = distance * vehicleCost + +highwayCost;
   const routeInvoiceSum = invoiceValueSum();
-  const profitabilityPercentage = Math.round(
+  const profitabilityPercentage = Math.trunc(
     (routeInvoiceSum / (routeCost / 0.02)) * 100
   );
-  const valueToProfitability = Math.round(
-    routeInvoiceSum - routeCost / 0.02
+  const valueToProfitability = Math.trunc(
+    routeInvoiceSum - (routeCost / 0.02)
   ).toLocaleString('en-GB');
   const profitabilityRatio = (routeCost / routeInvoiceSum) * 100;
 

@@ -31,10 +31,6 @@ export const routesReset = () => {
     const nav = document.querySelector('.nav');
     navBtn.style.height = 'auto';
     nav.style.height = 'auto';
-    const resetColor = document.querySelectorAll('.pinConnectColor');
-    resetColor.forEach((color) => {
-      color.style.background = 'transparent';
-    });
   });
 
   resetButtonContainer.appendChild(resetButton);

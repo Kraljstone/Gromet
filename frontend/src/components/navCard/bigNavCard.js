@@ -14,6 +14,7 @@ export const bigNavCard = ({
   distance,
   locationMapping,
   datePicker,
+  highwayCost,
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
   const mapLocationData = data;
@@ -34,22 +35,22 @@ export const bigNavCard = ({
     return vehicle.vehicle.includes(selectedField);
   });
 
-  const vehicleCost = +routeVehicle.cost;
-  const routeCost = vehicleCost + distance * +routeVehicle?.highwayCost;
+  const vehicleCost = +routeVehicle?.cost;
+  const routeCost = distance * vehicleCost + +highwayCost;
   const locationInvoice = mapLocationData.filter((data) => {
     const pinValues = startingPin.map((pinValue) => +pinValue + 1);
     return pinValues.includes(+data['RB naloga']);
   });
 
   const routeInvoiceSum = calculateTotal(locationInvoice, 'Vrednost naloga');
-  const valueToProfitability = Math.round(
+  const valueToProfitability = Math.trunc(
     routeInvoiceSum - routeCost / 0.02
   ).toLocaleString('en-GB');
-  const profitabilityPercentage = Math.round(
+  const profitabilityPercentage = Math.trunc(
     (routeInvoiceSum / (routeCost / 0.02)) * 100
   );
 
-  const profitabilityRatio = Math.round((routeCost / routeInvoiceSum) * 100);
+  const profitabilityRatio = (routeCost / routeInvoiceSum) * 100;
   const routePriorities = locationInvoice.filter(
     (priority) => priority.Prioritet !== '/'
   ).length;
@@ -105,7 +106,7 @@ export const bigNavCard = ({
   card.appendChild(day);
   card.appendChild(cardContent);
 
-  const cardContainer = document.querySelector('.cardContainer')
-  cardContainer.appendChild(card)
+  const cardContainer = document.querySelector('.cardContainer');
+  cardContainer.appendChild(card);
   nav.appendChild(cardContainer);
 };
