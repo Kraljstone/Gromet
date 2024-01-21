@@ -42,8 +42,10 @@ export const calculateDistance = (
       (routeInvoiceSum / (routeCost / 0.02)) * 100
     );
 
-    const valueToProfitability =
-      routeInvoiceSum - (routeCost / 0.02).toLocaleString('en-GB');
+    const valueToProfitability = Math.trunc(
+      routeInvoiceSum - (routeCost / 0.02)
+    ).toLocaleString('en-GB');
+
 
 
     const legData = {

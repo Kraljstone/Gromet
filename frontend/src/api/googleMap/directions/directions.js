@@ -27,7 +27,6 @@ export const directions = (
   const directionsRenderer = createDirectionsRenderer(map, color);
 
   directionsRenderers.push(directionsRenderer);
-
   const waypoints = pinNumbersToConnect.slice(1, -1).map((pinNumber) => {
     const position = markerPositions[pinNumber];
 
