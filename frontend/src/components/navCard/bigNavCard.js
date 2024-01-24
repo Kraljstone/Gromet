@@ -8,6 +8,9 @@ import { calculateTotal } from '../../utils/calculateTotal';
 import data from '../../../../mapLocations.json';
 const nav = document.querySelector('.nav-bar');
 
+const cardContainer = document.createElement('div');
+cardContainer.classList.add('cardContainer');
+
 export const bigNavCard = ({
   routeName,
   selectedField,
@@ -106,7 +109,6 @@ export const bigNavCard = ({
   card.appendChild(day);
   card.appendChild(cardContent);
 
-  const cardContainer = document.querySelector('.cardContainer');
   cardContainer.appendChild(card);
   nav.appendChild(cardContainer);
 };
