@@ -1,4 +1,3 @@
-import data from '../../../mapLocations.json';
 import { calculateDistance } from './calculateDistance';
 import { routesValidation } from '../components/menu/tabs/createRoutesTab/routesValidation';
 import { directions } from '../api/googleMap/directions/directions';
@@ -9,7 +8,7 @@ export const handleInfoButtonClick = async (map, markerPositions, tr) => {
   if (!routesValidation(tr)) {
     return;
   }
-
+  const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
   const invoiceNumber = tr.querySelector('input[name="locationMapping"]').value;
   const highwayCost = tr.querySelector('input[name="highwayCost"]').value;
   const color = tr.parentElement.firstChild.lastChild.style.backgroundColor;
@@ -26,7 +25,7 @@ export const handleInfoButtonClick = async (map, markerPositions, tr) => {
       response,
       invoiceNumber.split(',').map(Number),
       highwayCost,
-      data
+      mapLocationData
     );
 
     const tooltipContent = generateTooltipContent(distanceBetweenPins);

@@ -1,14 +1,12 @@
 import { addMarkers } from './addMarkers';
-import data from '../../../../mapLocations.json';
 import { getCoordinates } from './getCoordinates';
 
-
 export const initMap = async () => {
-  const mapLocationData = data;
-  const defaultLocation = mapLocationData[0];
+  const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
+  const defaultLocation = mapLocationData?.[0];
   if (mapLocationData.length > 0) {
     const defaultAddress = await getCoordinates(
-      `${defaultLocation.Adresa},${defaultLocation.Mesto}`
+      `${defaultLocation?.Adresa},${defaultLocation?.Mesto}`
     );
 
     const initMapLoad = async (addressCoordinates) => {

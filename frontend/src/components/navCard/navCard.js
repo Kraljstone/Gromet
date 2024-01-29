@@ -5,7 +5,6 @@ import {
   createLoadWeightElement,
   createGaugeElement,
 } from '../../utils/weightAndGauge';
-import data from '../../../../mapLocations.json';
 const nav = document.querySelector('.nav-bar');
 
 const createCard = () => {
@@ -24,7 +23,7 @@ export const navCard = ({
   highwayCost,
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
-  const mapLocationData = data;
+  const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
   const startingPin = locationMapping.split(',').slice(0, -1).map(Number);
   const locationInvoice = mapLocationData.filter((data) => {
     const pinValues = startingPin.map((pinValue) => +pinValue + 1);

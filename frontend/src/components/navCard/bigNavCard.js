@@ -5,7 +5,6 @@ import {
   createGaugeElement,
 } from '../../utils/weightAndGauge';
 import { calculateTotal } from '../../utils/calculateTotal';
-import data from '../../../../mapLocations.json';
 const nav = document.querySelector('.nav-bar');
 
 const cardContainer = document.createElement('div');
@@ -20,7 +19,7 @@ export const bigNavCard = ({
   highwayCost,
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
-  const mapLocationData = data;
+  const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
   const startingPin = locationMapping.split(',').slice(0, -1).map(Number);
   const card = createElement('div', 'bigCard');
   const heading = createElement(

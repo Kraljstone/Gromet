@@ -6,6 +6,7 @@ import { fetchDataAndDownloadExcel } from '../../../../utils/fetchDataAndDownloa
 
 export const createRoutesTab = () => {
   const menuTabBody = document.querySelector('.menu-tab-body');
+  const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
   const tbl = document.createElement('table');
   routesHead();
 
@@ -128,7 +129,15 @@ export const createRoutesTab = () => {
     const print = document.createElement('i');
     print.classList.add('fas', 'fa-print');
     print.classList.add('print');
-    print.addEventListener('click', fetchDataAndDownloadExcel);
+    print.addEventListener('click', (e) => {
+      const target = e.target.parentElement.parentElement.children[1].value;
+      const pins = target.split(',').map((part) => parseInt(part) + 1);
+      const newMapLocationData = mapLocationData.filter((data) => {
+        const rbNalogValue = +data['RB naloga'];
+        return pins.includes(rbNalogValue);
+      });
+      fetchDataAndDownloadExcel(newMapLocationData);
+    });
 
     const datePickContainer = document.createElement('div');
     datePickContainer.classList = 'datePickerContainer';

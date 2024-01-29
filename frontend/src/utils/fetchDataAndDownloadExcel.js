@@ -1,9 +1,9 @@
+import config from '../../config';
 export async function fetchDataAndDownloadExcel(routesData) {
-  const endpoint = 'https://your-api-endpoint.com/'; // Replace with your actual API endpoint
+  const endpoint = config.API_BASE_URL + '/api/download';
 
   try {
-
-    const jsonData =  routesData
+    const jsonData = routesData;
 
     const response = await fetch(endpoint, {
       method: 'POST',
@@ -37,7 +37,11 @@ export async function fetchDataAndDownloadExcel(routesData) {
       // Remove the link from the document
       document.body.removeChild(link);
     } else {
-      console.error('Server returned an error:', response.status, response.statusText);
+      console.error(
+        'Server returned an error:',
+        response.status,
+        response.statusText
+      );
     }
   } catch (error) {
     // Handle any other errors that may occur during the fetch process
