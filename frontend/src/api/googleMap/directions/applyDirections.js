@@ -33,7 +33,6 @@ export const applyDirections = async (map, markerPositions) => {
     if (target.classList.contains('applyBtn')) {
       const tr = target.closest('tr');
       await handleApplyButtonClick(map, markerPositions, storedData, tr);
-      location.reload();
     }
 
     if (target.classList.contains('info')) {
@@ -76,6 +75,7 @@ const handleApplyButtonClick = async (map, markerPositions, storedData, tr) => {
     // Wait for directions to complete before proceeding
     saveRoutesToStorage('.routesTableBody', 'routesData', distance, color);
     showNavCard();
+    location.reload();
   } catch (error) {
     console.error('Error calculating distances:', error);
   }

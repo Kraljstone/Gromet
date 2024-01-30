@@ -20,11 +20,13 @@ export const navCard = ({
   distance,
   locationMapping,
   randomColor,
+  datePicker,
   highwayCost,
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
   const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
   const startingPin = locationMapping.split(',').slice(0, -1).map(Number);
+  const dateParts = datePicker ? datePicker.split('-') : [];
   const locationInvoice = mapLocationData.filter((data) => {
     const pinValues = startingPin.map((pinValue) => +pinValue + 1);
     return pinValues.includes(+data['RB naloga']);
@@ -75,17 +77,27 @@ export const navCard = ({
   const gaugeElement = createGaugeElement(totalGauge, routeVehicle?.m3);
 
   const cardBackgroundColor =
-    totalRouteLoad <= +routeVehicle?.kg &&
-    totalGauge <= +routeVehicle?.m3 &&
-    profitabilityRatio <= 2
+    (totalRouteLoad <= +routeVehicle?.kg && totalGauge <= +routeVehicle?.m3) ||
+    (totalRouteLoad <= +routeVehicle?.kg && profitabilityRatio <= 2) ||
+    (totalGauge <= +routeVehicle?.m3 && profitabilityRatio <= 2)
+      ? '#FFA500'
+      : totalRouteLoad <= +routeVehicle?.kg &&
+        totalGauge <= +routeVehicle?.m3 &&
+        profitabilityRatio <= 2
       ? '#19CB00'
       : '#FF3636';
 
   const card = createCard(cardBackgroundColor);
 
-  const heading = createElement('h2', null, routeName);
+  const heading = createElement('h2', null, `${routeName}`);
   heading.style.background = randomColor;
-  const vehicleText = createElement('p', null, selectedField);
+  const vehicleText = createElement('p', null, '');
+
+  vehicleText.innerHTML = `${
+    datePicker
+      ? `Datum: ${dateParts[2]}.${dateParts[1]}.${dateParts[0]}<br>`
+      : 'Nema Datuma<br>'
+  }Vozilo: ${selectedField}`;
   vehicleText.style.background = cardBackgroundColor;
 
   const [leftColumn, rightColum] = createTable(

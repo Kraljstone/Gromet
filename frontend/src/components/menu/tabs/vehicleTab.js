@@ -13,9 +13,9 @@ export const vehicleTab = () => {
     'Vozilo',
     'Nosivost (Kg)',
     'Gabarit (m³)',
-    'Trošak',
+    'Trošak (RSD)',
     'Pročna brzina (km/h)',
-    'Vreme istovara',
+    'Vreme istovara (min)',
   ];
 
   const trHeading = document.createElement('tr');
