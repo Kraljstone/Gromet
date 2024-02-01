@@ -87,38 +87,44 @@ export const createRoutesTab = () => {
     deleteBtn.style.color = 'gray';
 
     deleteBtn.addEventListener('click', (e) => {
-      if (
-        e.target.parentElement.children[2].classList.contains('fa-lock-open')
-      ) {
-        const targetValue =
-          e.target.parentElement.parentElement.firstChild.firstChild.value;
-        let routesData = JSON.parse(localStorage.getItem('routesData'));
+      const isConfirmed = window.confirm(
+        'Da li ste sigurni da zelite da obrisete rutu?'
+      );
 
-        if (routesData && Array.isArray(routesData)) {
-          const index = routesData.findIndex(
-            (routeInfo) => routeInfo.routeName === targetValue
-          );
+      if (isConfirmed) {
+        if (
+          e.target.parentElement.children[2].classList.contains('fa-lock-open')
+        ) {
+          const targetValue =
+            e.target.parentElement.parentElement.firstChild.firstChild.value;
+          let routesData = JSON.parse(localStorage.getItem('routesData'));
 
-          if (index !== -1) {
-            if (directionsRenderers[index]) {
-              directionsRenderers[index].setDirections({ routes: [] });
-            }
-
-            routesData[index] = Object.fromEntries(
-              Object.keys(routesData[index]).map((key) => [key, ''])
+          if (routesData && Array.isArray(routesData)) {
+            const index = routesData.findIndex(
+              (routeInfo) => routeInfo.routeName === targetValue
             );
-            localStorage.setItem('routesData', JSON.stringify(routesData));
+
+            if (index !== -1) {
+              if (directionsRenderers[index]) {
+                directionsRenderers[index].setDirections({ routes: [] });
+              }
+
+              routesData[index] = Object.fromEntries(
+                Object.keys(routesData[index]).map((key) => [key, ''])
+              );
+              localStorage.setItem('routesData', JSON.stringify(routesData));
+            }
           }
+
+          const cards = document.querySelectorAll('.card');
+          cards.forEach((card) => {
+            if (card.firstChild.innerHTML === targetValue) {
+              card.parentNode.removeChild(card);
+            }
+          });
+
+          loadRoutesFromStorage('.routesTableBody', 'routesData');
         }
-
-        const cards = document.querySelectorAll('.card');
-        cards.forEach((card) => {
-          if (card.firstChild.innerHTML === targetValue) {
-            card.parentNode.removeChild(card);
-          }
-        });
-
-        loadRoutesFromStorage('.routesTableBody', 'routesData');
       }
     });
 

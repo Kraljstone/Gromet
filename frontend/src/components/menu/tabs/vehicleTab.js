@@ -92,7 +92,7 @@ export const vehicleTab = () => {
   saveVehicleBtn.setAttribute('class', 'addVehicleBtn');
   saveVehicleBtn.addEventListener('click', () => {
     saveVehiclesToStorage('.vehicleRow', 'vehiclesData');
-    alert('vozilo je sacuvano')
+    alert('vozilo je sacuvano');
   });
 
   menuTabBody.appendChild(saveVehicleBtn);

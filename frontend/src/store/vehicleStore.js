@@ -68,11 +68,17 @@ export const loadVehiclesFromStorage = (rowIndex, createInputElement) => {
     rowIndex++;
 
     deleteBtn.addEventListener('click', (e) => {
-      const rowIndex =
-        e.target.parentElement.parentElement.parentElement.getAttribute(
-          'data-row-index'
-        );
-      deleteRow(rowIndex);
+      const isConfirmed = window.confirm(
+        'Da li ste sigurni da zelite da obrisete vozilo?'
+      );
+
+      if (isConfirmed) {
+        const rowIndex =
+          e.target.parentElement.parentElement.parentElement.getAttribute(
+            'data-row-index'
+          );
+        deleteRow(rowIndex);
+      }
     });
   });
 };
