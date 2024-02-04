@@ -42,15 +42,12 @@ const getCurrentWeekDates = () => {
   const currentHour = today.getHours();
   const startOfWeek = new Date(today);
 
-  if (currentDay === 0 && currentHour >= 0) {
-    startOfWeek.setDate(startOfWeek.getDate() + 7);
-  }
+  // if (currentDay === 0 && currentHour >= 0) {
+  //   startOfWeek.setDate(startOfWeek.getDate() + 7);
+  // }
 
   startOfWeek.setDate(
-    today.getDate() -
-      currentDay +
-      (currentDay === 1 ? 0 : currentDay === 0 ? -6 : 1)
-  );
+    today.getDate() - currentDay);
 
   const daysInSerbian = [
     'Nedelja',
@@ -62,7 +59,7 @@ const getCurrentWeekDates = () => {
     'Subota',
   ];
 
-  const weekDates = Array.from({ length: 7 }, (_, i) => {
+  const weekDates = Array.from({ length: 14 }, (_, i) => {
     const currentDate = new Date(startOfWeek);
     currentDate.setDate(startOfWeek.getDate() + i);
     const dayIndex = currentDate.getDay();

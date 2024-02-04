@@ -369,7 +369,8 @@ input:disabled {
   display: flex;
   flex-direction: column-reverse;
   padding-bottom: 10px;
-  max-width: 700px;
+  width: 700px;
+  height: 220px;
 }
 
 .nav-btn-wrapper {
@@ -445,6 +446,11 @@ input:disabled {
 .availabilityTable {
   margin-right: 16px;
   border-collapse: collapse;
+
+  width: 700px;
+  overflow: scroll;
+  display: block;
+  height: 300px;
 }
 
 .availabilityTable th,

@@ -1,5 +1,6 @@
 import { menuTabs } from './menuTabs';
 import { readDocsTab } from './tabs/readDocsTab';
+import {createRoutesTab} from './tabs/createRoutesTab/createRoutesTab';
 
 const navBarSelector = document.querySelector('.nav-bar-btn');
 const menuSelector = document.querySelector('.menu');
@@ -10,9 +11,9 @@ const menuBody = document.querySelector('.menu-tab-body');
 export const menu = () => {
   if (menuSelector.style.display === 'none' || !menuSelector.style.display) {
     menuSelector.style.display = 'block';
-    const readDocs = document.querySelector('.read-doc-tab');
-    readDocs.classList.add('menu-active-tab');
-    return readDocsTab();
+    const routesTab = document.querySelector('.routes-tab');
+    routesTab.classList.add('menu-active-tab');
+    return createRoutesTab();
   }
 
   menuBody.innerHTML = '';
