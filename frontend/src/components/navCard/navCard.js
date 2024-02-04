@@ -42,7 +42,7 @@ export const navCard = ({
     storedVehicle?.vehicle?.includes(selectedField)
   );
   const vehicleCost = +routeVehicle?.cost;
-  const routeCost = distance * vehicleCost + +highwayCost;
+  const routeCost = (distance * vehicleCost) + +highwayCost;
   const routeInvoiceSum = invoiceValueSum();
   const profitabilityPercentage = Math.trunc(
     (routeInvoiceSum / (routeCost / 0.02)) * 100

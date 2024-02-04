@@ -38,21 +38,29 @@ export const bigNavCard = ({
   });
 
   const vehicleCost = +routeVehicle?.cost;
-  const routeCost = distance * vehicleCost + +highwayCost;
+  const routeCost = (distance * vehicleCost )+ +highwayCost;
   const locationInvoice = mapLocationData.filter((data) => {
     const pinValues = startingPin.map((pinValue) => +pinValue + 1);
     return pinValues.includes(+data['RB naloga']);
   });
 
+  console.log("highwayCost", highwayCost)
+  console.log("vehicleCost", vehicleCost)
+  console.log("(distance * vehicleCost )", (distance * vehicleCost ),distance, vehicleCost);
+  console.log("routeCost", routeCost)
+
   const routeInvoiceSum = calculateTotal(locationInvoice, 'Vrednost naloga');
-  const valueToProfitability = Math.trunc(
-    routeInvoiceSum - routeCost / 0.02
-  ).toLocaleString('en-GB');
-  const profitabilityPercentage = Math.trunc(
-    (routeInvoiceSum / (routeCost / 0.02)) * 100
-  );
+  console.log("routeInvoiceSum", routeInvoiceSum);
+
+  const valueToProfitability = Math.trunc(routeInvoiceSum - routeCost / 0.02).toLocaleString('en-GB');
+  console.log("valueToProfitability", valueToProfitability)
+
+  const profitabilityPercentage = Math.trunc((routeInvoiceSum / (routeCost / 0.02)) * 100);
+  console.log("procenat isplativosti - profitabilityPercentage", profitabilityPercentage);
 
   const profitabilityRatio = (routeCost / routeInvoiceSum) * 100;
+  console.log("koef isplativosti - profitabilityRatio", profitabilityRatio);
+
   const routePriorities = locationInvoice.filter(
     (priority) => priority.Prioritet !== '/'
   ).length;
@@ -71,9 +79,12 @@ export const bigNavCard = ({
     totalGauge <= +routeVehicle.m3 &&
     profitabilityRatio <= 2
   ) {
-    card.style.background = '#19CB00';
+    //green
+    const PASSED_3_CRITERIA_GREEN = '#64e100' 
+    card.style.background = PASSED_3_CRITERIA_GREEN; 
   } else {
-    card.style.background = '#FF3636';
+    const FAILED_ONE_CRITERIA_RED = '#ff1400';
+    card.style.background = FAILED_ONE_CRITERIA_RED;
   }
 
   const [leftColumn, rightColumn] = createTable(

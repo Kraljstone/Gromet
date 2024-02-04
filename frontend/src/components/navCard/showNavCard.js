@@ -26,6 +26,7 @@ export const showNavCard = () => {
     });
     routesData?.forEach((routeInfo) => {
       if (routeInfo.routeName !== '') {
+        console.log("routeInfo", routeInfo);
         bigNavCard(routeInfo);
       }
     });
