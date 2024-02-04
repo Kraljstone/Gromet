@@ -29,7 +29,6 @@ export const applyDirections = async (map, markerPositions) => {
 
   routesTabBody.addEventListener('click', async (event) => {
     const target = event.target;
-
     if (target.classList.contains('applyBtn')) {
       const tr = target.closest('tr');
       await handleApplyButtonClick(map, markerPositions, storedData, tr);
@@ -73,7 +72,13 @@ const handleApplyButtonClick = async (map, markerPositions, storedData, tr) => {
     );
 
     // Wait for directions to complete before proceeding
-    saveRoutesToStorage('.routesTableBody', 'routesData', distance, color);
+    saveRoutesToStorage(
+      '.routesTableBody',
+      'routesData',
+      distance,
+      color,
+      tr.getAttribute('data-row-index')
+    );
     showNavCard();
     location.reload();
   } catch (error) {

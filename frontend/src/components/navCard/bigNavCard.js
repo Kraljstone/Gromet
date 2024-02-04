@@ -20,7 +20,7 @@ export const bigNavCard = ({
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
   const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
-  const startingPin = locationMapping.split(',').slice(0, -1).map(Number);
+  const startingPin = locationMapping.split(',');
   const card = createElement('div', 'bigCard');
   const heading = createElement(
     'h2',
@@ -38,28 +38,39 @@ export const bigNavCard = ({
   });
 
   const vehicleCost = +routeVehicle?.cost;
-  const routeCost = (distance * vehicleCost )+ +highwayCost;
+  const routeCost = Math.round(distance) * vehicleCost + +highwayCost;
   const locationInvoice = mapLocationData.filter((data) => {
     const pinValues = startingPin.map((pinValue) => +pinValue + 1);
     return pinValues.includes(+data['RB naloga']);
   });
 
-  console.log("highwayCost", highwayCost)
-  console.log("vehicleCost", vehicleCost)
-  console.log("(distance * vehicleCost )", (distance * vehicleCost ),distance, vehicleCost);
-  console.log("routeCost", routeCost)
+  console.log('highwayCost', highwayCost);
+  console.log('vehicleCost', vehicleCost);
+  console.log(
+    '(distance * vehicleCost )',
+    Math.round(distance) * vehicleCost,
+    Math.round(distance)
+  );
+  console.log('routeCost', routeCost);
 
   const routeInvoiceSum = calculateTotal(locationInvoice, 'Vrednost naloga');
-  console.log("routeInvoiceSum", routeInvoiceSum);
+  console.log('routeInvoiceSum', routeInvoiceSum);
 
-  const valueToProfitability = Math.trunc(routeInvoiceSum - routeCost / 0.02).toLocaleString('en-GB');
-  console.log("valueToProfitability", valueToProfitability)
+  const valueToProfitability = Math.trunc(
+    routeInvoiceSum - routeCost / 0.02
+  ).toLocaleString('en-GB');
+  console.log('valueToProfitability', valueToProfitability);
 
-  const profitabilityPercentage = Math.trunc((routeInvoiceSum / (routeCost / 0.02)) * 100);
-  console.log("procenat isplativosti - profitabilityPercentage", profitabilityPercentage);
+  const profitabilityPercentage = Math.trunc(
+    (routeInvoiceSum / (routeCost / 0.02)) * 100
+  );
+  console.log(
+    'procenat isplativosti - profitabilityPercentage',
+    profitabilityPercentage
+  );
 
   const profitabilityRatio = (routeCost / routeInvoiceSum) * 100;
-  console.log("koef isplativosti - profitabilityRatio", profitabilityRatio);
+  console.log('koef isplativosti - profitabilityRatio', profitabilityRatio);
 
   const routePriorities = locationInvoice.filter(
     (priority) => priority.Prioritet !== '/'
@@ -80,8 +91,8 @@ export const bigNavCard = ({
     profitabilityRatio <= 2
   ) {
     //green
-    const PASSED_3_CRITERIA_GREEN = '#64e100' 
-    card.style.background = PASSED_3_CRITERIA_GREEN; 
+    const PASSED_3_CRITERIA_GREEN = '#64e100';
+    card.style.background = PASSED_3_CRITERIA_GREEN;
   } else {
     const FAILED_ONE_CRITERIA_RED = '#ff1400';
     card.style.background = FAILED_ONE_CRITERIA_RED;

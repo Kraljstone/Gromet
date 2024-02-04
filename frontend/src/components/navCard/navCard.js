@@ -25,12 +25,13 @@ export const navCard = ({
 }) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
   const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
-  const startingPin = locationMapping.split(',').slice(0, -1).map(Number);
+  const startingPin = locationMapping.split(',');
   const dateParts = datePicker ? datePicker.split('-') : [];
   const locationInvoice = mapLocationData.filter((data) => {
     const pinValues = startingPin.map((pinValue) => +pinValue + 1);
     return pinValues.includes(+data['RB naloga']);
   });
+
   const invoiceValueSum = () => {
     let totalValue = 0;
     locationInvoice.forEach((invoiceValue) => {
@@ -42,7 +43,7 @@ export const navCard = ({
     storedVehicle?.vehicle?.includes(selectedField)
   );
   const vehicleCost = +routeVehicle?.cost;
-  const routeCost = (distance * vehicleCost) + +highwayCost;
+  const routeCost = distance * vehicleCost + +highwayCost;
   const routeInvoiceSum = invoiceValueSum();
   const profitabilityPercentage = Math.trunc(
     (routeInvoiceSum / (routeCost / 0.02)) * 100

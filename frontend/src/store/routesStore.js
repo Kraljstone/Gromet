@@ -16,12 +16,19 @@ storedData?.forEach((savedDistance) => {
   }
 });
 
-export const saveRoutesToStorage = (selector, storageKey, distance, color) => {
+export const saveRoutesToStorage = (
+  selector,
+  storageKey,
+  distance,
+  color,
+  indexRow
+) => {
   if (color !== lastColor) {
     colorArr.push(color);
     lastColor = color;
   }
-
+  distanceArr[indexRow] = distance;
+  
   const routes = [];
   const rows = document.querySelectorAll(selector);
 
