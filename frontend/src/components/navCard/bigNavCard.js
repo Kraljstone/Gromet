@@ -17,16 +17,25 @@ export const bigNavCard = ({
   locationMapping,
   datePicker,
   highwayCost,
-}) => {
+}, routeIndex) => {
   const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
   const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
   const startingPin = locationMapping.split(',');
   const card = createElement('div', 'bigCard');
   const heading = createElement(
     'h2',
-    null,
+    'h2BigCardRouteName',
     `Ruta ${routeName} (${selectedField})`
   );
+
+
+  const routesData = JSON.parse(localStorage.getItem('routesData')) || [];
+
+  if(routesData.length > 0){
+    console.log("heading", heading, routeIndex, routesData[routeIndex].randomColor);
+    heading.style.backgroundColor = routesData[routeIndex].randomColor;
+  }
+
   const day = createElement('p');
   const dateParts = datePicker ? datePicker.split('-') : [];
   day.innerHTML = datePicker
@@ -85,16 +94,25 @@ export const bigNavCard = ({
   );
   const gaugeElement = createGaugeElement(totalGauge, routeVehicle.m3);
 
-  if (
-    totalRouteLoad <= +routeVehicle.kg &&
-    totalGauge <= +routeVehicle.m3 &&
-    profitabilityRatio <= 2
-  ) {
-    //green
-    const PASSED_3_CRITERIA_GREEN = '#64e100';
+
+
+  const cardShouldBeGreen = totalRouteLoad <= +routeVehicle?.kg &&
+  totalGauge <= +routeVehicle?.m3 &&
+  profitabilityRatio <= 2;
+
+  const cardShouldBeOrange = (totalRouteLoad <= +routeVehicle?.kg && totalGauge <= +routeVehicle?.m3) ||
+  (totalRouteLoad <= +routeVehicle?.kg && profitabilityRatio <= 2) ||
+  (totalGauge <= +routeVehicle?.m3 && profitabilityRatio <= 2);
+    
+  const PASSED_3_CRITERIA_GREEN = '#64e100';
+  const PASSED_2_CRITERIA_ORANGE = '#FFA500';
+  const FAILED_ONE_CRITERIA_RED = '#ff1400';
+  if (cardShouldBeGreen) {
     card.style.background = PASSED_3_CRITERIA_GREEN;
-  } else {
-    const FAILED_ONE_CRITERIA_RED = '#ff1400';
+  } else if(cardShouldBeOrange){
+    card.style.background = PASSED_2_CRITERIA_ORANGE;
+  }
+  else{
     card.style.background = FAILED_ONE_CRITERIA_RED;
   }
 
@@ -115,6 +133,9 @@ export const bigNavCard = ({
 
   rightColumn.appendChild(createElement('p', null, `Pr:${routePriorities}`));
 
+
+  rightColumn.appendChild(createElement('p', null, `Koef:${(profitabilityRatio).toFixed(2)}` ));
+
   const cardInner = createTable(leftColumn, rightColumn).reduce(
     (table, element) => {
       table.appendChild(element);
@@ -131,5 +152,9 @@ export const bigNavCard = ({
   card.appendChild(cardContent);
 
   cardContainer.appendChild(card);
+  // const prevCardContainers = nav.querySelectorAll('.cardContainer');
+  // if(prevCardContainers.length > 1){
+  //   nav.removeChild(prevCardContainer[0]);
+  // }
   nav.appendChild(cardContainer);
 };

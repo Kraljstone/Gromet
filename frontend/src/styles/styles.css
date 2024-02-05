@@ -53,7 +53,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 45%;
+  width: 36%;
   height: 100%;
   padding: 0 16px;
   z-index: 10;
@@ -252,6 +252,7 @@ input:disabled {
 .cardContainer {
   overflow-y: scroll;
   height: 280px;
+  /* width: 670px; */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
@@ -259,7 +260,7 @@ input:disabled {
 .card {
   width: 210px;
   text-align: center;
-  margin: 10px 15px;
+  margin: 9px 5px 0px 0px;
   border-radius: 10px;
   position: relative;
 }
@@ -271,8 +272,8 @@ input:disabled {
 .card h2 {
   border-radius: 10px 10px 0 0;
   margin-bottom: 0;
-  margin-top: 10px;
-  padding: 10px 0;
+  margin-top: 0px;
+  /* padding: 10px 0; */
 }
 
 .card p {
@@ -369,7 +370,7 @@ input:disabled {
   display: flex;
   flex-direction: column-reverse;
   padding-bottom: 10px;
-  width: 700px;
+  width: 730px;
   height: 220px;
 }
 
@@ -401,24 +402,28 @@ input:disabled {
 }
 
 .bigCard {
-  margin: 8px;
+  margin: 5px;
   max-width: 200px;
   min-width: 150px;
-  padding: 16px;
+  /* padding: 16px; */
+  width: 202px;
 }
 
-.bigCard h2 {
+.h2BigCardRouteName{
   margin: 0;
   font-size: 16px;
+  padding: 8px;
+  text-align: center;
 }
 
 .bigCard p {
   margin: 6px 0;
+  text-align: center;
 }
 
 .bigInfoCard {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .cardHeadings {
@@ -444,10 +449,9 @@ input:disabled {
 }
 
 .availabilityTable {
-  margin-right: 16px;
+  padding-right: 4px;
   border-collapse: collapse;
-
-  width: 700px;
+  max-width: 740px;
   overflow: scroll;
   display: block;
   height: 300px;
@@ -456,8 +460,14 @@ input:disabled {
 .availabilityTable th,
 .availabilityTable td {
   border: 1px solid black;
-  padding: 8px;
+  padding: 2px;
   text-align: center;
+  max-width: 43.5px;
+  overflow: hidden;
+}
+
+tr td:first-child{
+  font-size: 13px;
 }
 
 .login-form {

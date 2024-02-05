@@ -24,10 +24,10 @@ export const showNavCard = () => {
     cardBig.forEach((card) => {
       card.remove();
     });
-    routesData?.forEach((routeInfo) => {
+    routesData?.forEach((routeInfo, index) => {
       if (routeInfo.routeName !== '') {
         console.log("routeInfo", routeInfo);
-        bigNavCard(routeInfo);
+        bigNavCard(routeInfo, index);
       }
     });
   };

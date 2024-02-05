@@ -62,7 +62,7 @@ const handleApplyButtonClick = async (map, markerPositions, storedData, tr) => {
   removeElements('.availabilityTable');
 
   const color = tr.firstChild.lastChild.style.backgroundColor;
-
+  console.log("color", color, tr.firstChild.firstChild )
   try {
     const { distance } = await directions(
       map,

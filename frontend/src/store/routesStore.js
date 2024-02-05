@@ -28,6 +28,7 @@ export const saveRoutesToStorage = (
     lastColor = color;
   }
   distanceArr[indexRow] = distance;
+  colorArr[indexRow] = color;
   
   const routes = [];
   const rows = document.querySelectorAll(selector);
@@ -51,7 +52,8 @@ export const saveRoutesToStorage = (
     if (data['routeName'] !== '') {
       // Correct the assignment of distance and color
       data['distance'] = distanceArr[index] || distance;
-      data['randomColor'] = colorArr[index] || color;
+      console.log("color data['randomColor']", colorArr,index,colorArr[index], color );
+      data['randomColor'] = colorArr[index];
     }
 
     routes.push(data);

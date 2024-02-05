@@ -77,16 +77,24 @@ export const navCard = ({
   );
   const gaugeElement = createGaugeElement(totalGauge, routeVehicle?.m3);
 
-  const cardBackgroundColor =
-    (totalRouteLoad <= +routeVehicle?.kg && totalGauge <= +routeVehicle?.m3) ||
-    (totalRouteLoad <= +routeVehicle?.kg && profitabilityRatio <= 2) ||
-    (totalGauge <= +routeVehicle?.m3 && profitabilityRatio <= 2)
-      ? '#FFA500'
-      : totalRouteLoad <= +routeVehicle?.kg &&
-        totalGauge <= +routeVehicle?.m3 &&
-        profitabilityRatio <= 2
-      ? '#19CB00'
-      : '#FF3636';
+  const PASSED_3_CRITERIA_GREEN = '#64e100';
+  const PASSED_2_CRITERIA_ORANGE = '#FFA500';
+  const FAILED_ONE_CRITERIA_RED = '#ff1400';
+
+  const cardShouldBeGreen = totalRouteLoad <= +routeVehicle?.kg &&
+  totalGauge <= +routeVehicle?.m3 &&
+  profitabilityRatio <= 2;
+
+  const cardShouldBeOrange = (totalRouteLoad <= +routeVehicle?.kg && totalGauge <= +routeVehicle?.m3) ||
+  (totalRouteLoad <= +routeVehicle?.kg && profitabilityRatio <= 2) ||
+  (totalGauge <= +routeVehicle?.m3 && profitabilityRatio <= 2);
+
+  const cardBackgroundColor = cardShouldBeGreen 
+    ? 
+    PASSED_3_CRITERIA_GREEN 
+    : cardShouldBeOrange
+      ? PASSED_2_CRITERIA_ORANGE
+      : FAILED_ONE_CRITERIA_RED;
 
   const card = createCard(cardBackgroundColor);
 
@@ -153,5 +161,9 @@ export const navCard = ({
   card.appendChild(cardContent);
 
   cardContainer.appendChild(card);
+  // const prevCardContainers = nav.querySelectorAll('.cardContainer');
+  // if(prevCardContainers.length > 1){
+  //   nav.removeChild(prevCardContainer[0]);
+  // }
   nav.appendChild(cardContainer);
 };

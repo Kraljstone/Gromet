@@ -3,7 +3,7 @@ export const navTable = (storedRoutes, storedVehicles) => {
   const table = document.createElement('table');
   table.classList.add('availabilityTable');
   const headerRow = table.insertRow(0);
-  headerRow.insertCell(0).innerHTML = 'Raspoloživost vozila';
+  headerRow.insertCell(0).innerHTML = 'Rasp.<br/>vozila';
   const weekDates = getCurrentWeekDates();
   weekDates.forEach((date, i) => {
     headerRow.insertCell(i + 1).innerHTML = date;
@@ -50,13 +50,13 @@ const getCurrentWeekDates = () => {
     today.getDate() - currentDay);
 
   const daysInSerbian = [
-    'Nedelja',
-    'Ponedeljak',
-    'Utorak',
-    'Sreda',
-    'Četvrtak',
-    'Petak',
-    'Subota',
+    'Ned',
+    'Pon',
+    'Uto',
+    'Sre',
+    'Čet',
+    'Pet',
+    'Sub',
   ];
 
   const weekDates = Array.from({ length: 14 }, (_, i) => {
