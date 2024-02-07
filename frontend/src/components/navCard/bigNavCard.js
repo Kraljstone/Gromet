@@ -53,6 +53,14 @@ export const bigNavCard = ({
     return pinValues.includes(+data['RB naloga']);
   });
 
+
+  const uniqueAddresses = [
+    ...new Set(locationInvoice.map((data) => data.Adresa)),
+  ];
+  const filteredAddresses = mapLocationData.filter((data) =>
+    uniqueAddresses.includes(data.Adresa)
+  );
+
   console.log('highwayCost', highwayCost);
   console.log('vehicleCost', vehicleCost);
   console.log(
@@ -62,7 +70,7 @@ export const bigNavCard = ({
   );
   console.log('routeCost', routeCost);
 
-  const routeInvoiceSum = calculateTotal(locationInvoice, 'Vrednost naloga');
+  const routeInvoiceSum = calculateTotal(filteredAddresses, 'Vrednost naloga');
   console.log('routeInvoiceSum', routeInvoiceSum);
 
   const valueToProfitability = Math.trunc(
@@ -81,12 +89,12 @@ export const bigNavCard = ({
   const profitabilityRatio = (routeCost / routeInvoiceSum) * 100;
   console.log('koef isplativosti - profitabilityRatio', profitabilityRatio);
 
-  const routePriorities = locationInvoice.filter(
+  const routePriorities = filteredAddresses.filter(
     (priority) => priority.Prioritet !== '/'
   ).length;
 
-  const totalRouteLoad = calculateTotal(locationInvoice, 'Težina_kg');
-  const totalGauge = calculateTotal(locationInvoice, 'Gabarit_m3');
+  const totalRouteLoad = calculateTotal(filteredAddresses, 'Težina_kg');
+  const totalGauge = calculateTotal(filteredAddresses, 'Gabarit_m3');
 
   const loadWeightElement = createLoadWeightElement(
     totalRouteLoad,

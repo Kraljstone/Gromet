@@ -32,19 +32,27 @@ export const navCard = ({
     return pinValues.includes(+data['RB naloga']);
   });
 
+  const uniqueAddresses = [
+    ...new Set(locationInvoice.map((data) => data.Adresa)),
+  ];
+  const filteredAddresses = mapLocationData.filter((data) =>
+    uniqueAddresses.includes(data.Adresa)
+  );
   const invoiceValueSum = () => {
     let totalValue = 0;
-    locationInvoice.forEach((invoiceValue) => {
+    filteredAddresses.forEach((invoiceValue) => {
       totalValue += +invoiceValue['Vrednost naloga'];
     });
     return totalValue;
   };
+
   const routeVehicle = storedVehicles.find((storedVehicle) =>
     storedVehicle?.vehicle?.includes(selectedField)
   );
   const vehicleCost = +routeVehicle?.cost;
   const routeCost = distance * vehicleCost + +highwayCost;
   const routeInvoiceSum = invoiceValueSum();
+  console.log(routeInvoiceSum);
   const profitabilityPercentage = Math.trunc(
     (routeInvoiceSum / (routeCost / 0.02)) * 100
   );
@@ -53,7 +61,7 @@ export const navCard = ({
   ).toLocaleString('en-GB');
   const profitabilityRatio = (routeCost / routeInvoiceSum) * 100;
 
-  const routePriorities = locationInvoice.filter(
+  const routePriorities = filteredAddresses.filter(
     (priority) => priority.Prioritet !== '/'
   ).length;
 
@@ -68,8 +76,8 @@ export const navCard = ({
       return { hours, minutes };
     });
 
-  const totalRouteLoad = calculateTotal(locationInvoice, 'Težina_kg');
-  const totalGauge = calculateTotal(locationInvoice, 'Gabarit_m3');
+  const totalRouteLoad = calculateTotal(filteredAddresses, 'Težina_kg');
+  const totalGauge = calculateTotal(filteredAddresses, 'Gabarit_m3');
 
   const loadWeightElement = createLoadWeightElement(
     totalRouteLoad,
@@ -81,20 +89,21 @@ export const navCard = ({
   const PASSED_2_CRITERIA_ORANGE = '#FFA500';
   const FAILED_ONE_CRITERIA_RED = '#ff1400';
 
-  const cardShouldBeGreen = totalRouteLoad <= +routeVehicle?.kg &&
-  totalGauge <= +routeVehicle?.m3 &&
-  profitabilityRatio <= 2;
+  const cardShouldBeGreen =
+    totalRouteLoad <= +routeVehicle?.kg &&
+    totalGauge <= +routeVehicle?.m3 &&
+    profitabilityRatio <= 2;
 
-  const cardShouldBeOrange = (totalRouteLoad <= +routeVehicle?.kg && totalGauge <= +routeVehicle?.m3) ||
-  (totalRouteLoad <= +routeVehicle?.kg && profitabilityRatio <= 2) ||
-  (totalGauge <= +routeVehicle?.m3 && profitabilityRatio <= 2);
+  const cardShouldBeOrange =
+    (totalRouteLoad <= +routeVehicle?.kg && totalGauge <= +routeVehicle?.m3) ||
+    (totalRouteLoad <= +routeVehicle?.kg && profitabilityRatio <= 2) ||
+    (totalGauge <= +routeVehicle?.m3 && profitabilityRatio <= 2);
 
-  const cardBackgroundColor = cardShouldBeGreen 
-    ? 
-    PASSED_3_CRITERIA_GREEN 
+  const cardBackgroundColor = cardShouldBeGreen
+    ? PASSED_3_CRITERIA_GREEN
     : cardShouldBeOrange
-      ? PASSED_2_CRITERIA_ORANGE
-      : FAILED_ONE_CRITERIA_RED;
+    ? PASSED_2_CRITERIA_ORANGE
+    : FAILED_ONE_CRITERIA_RED;
 
   const card = createCard(cardBackgroundColor);
 
