@@ -27,8 +27,25 @@ export const directions = (
   const directionsRenderer = createDirectionsRenderer(map, color);
 
   directionsRenderers.push(directionsRenderer);
-  const waypoints = pinNumbersToConnect.slice(1, -1).map((pinNumber) => {
-    const position = markerPositions[pinNumber];
+
+  let origin;
+  let destination;
+  console.log("pinNumbersToConnect", pinNumbersToConnect)
+  const waypoints = pinNumbersToConnect.map((pinNumber, index) => {
+    // console.log("markerPositions", markerPositions);
+    // const position = markerPositions[pinNumber];
+    const storedData = JSON.parse(localStorage.getItem('mapLocations'));
+    const dtoIndex = storedData.findIndex(dto => dto["RB naloga"] === String(pinNumber))
+    // console.log("index and storedData", dtoIndex, storedData, markerPositions);
+    const position = markerPositions[dtoIndex];
+    
+    if(index === 0){
+      origin = markerPositions[dtoIndex];
+    }
+    if(index === pinNumbersToConnect.length - 1){
+      destination = markerPositions[dtoIndex];
+    }
+
 
     return {
       location: new google.maps.LatLng(position.lat, position.lng),
@@ -39,9 +56,8 @@ export const directions = (
   return new Promise((resolve, reject) => {
     directionsService.route(
       {
-        origin: markerPositions[pinNumbersToConnect[0]],
-        destination:
-          markerPositions[pinNumbersToConnect[pinNumbersToConnect.length - 1]],
+        origin: origin,
+        destination: destination,
         waypoints,
         travelMode: 'DRIVING',
       },

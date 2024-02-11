@@ -6,16 +6,14 @@ export const addMarkers = async (mapLocationData, map) => {
   const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
 
   const markerPositions = [];
-
   for (let i = 0; i < mapLocationData.length; i++) {
     const address = `${mapLocationData[i].Adresa},${mapLocationData[i].Mesto}`;
     const position = await getCoordinates(address);
 
-    // Create an array of alphabetical characters used to label the markers.
-    const labels = i.toString();
+      const redniBroj = mapLocationData[i]["RB naloga"];
 
     const pinGlyph = new google.maps.marker.PinElement({
-      glyph: labels,
+      glyph: redniBroj,
       glyphColor: 'white',
     });
 

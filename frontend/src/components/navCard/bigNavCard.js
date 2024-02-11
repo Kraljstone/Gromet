@@ -49,8 +49,7 @@ export const bigNavCard = ({
   const vehicleCost = +routeVehicle?.cost;
   const routeCost = Math.round(distance) * vehicleCost + +highwayCost;
   const locationInvoice = mapLocationData.filter((data) => {
-    const pinValues = startingPin.map((pinValue) => +pinValue + 1);
-    return pinValues.includes(+data['RB naloga']);
+    return startingPin.includes(data['RB naloga']);
   });
 
 

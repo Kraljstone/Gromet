@@ -28,8 +28,7 @@ export const navCard = ({
   const startingPin = locationMapping.split(',');
   const dateParts = datePicker ? datePicker.split('-') : [];
   const locationInvoice = mapLocationData.filter((data) => {
-    const pinValues = startingPin.map((pinValue) => +pinValue + 1);
-    return pinValues.includes(+data['RB naloga']);
+    return startingPin.includes(data['RB naloga']);
   });
 
   const uniqueAddresses = [
@@ -50,7 +49,7 @@ export const navCard = ({
     storedVehicle?.vehicle?.includes(selectedField)
   );
   const vehicleCost = +routeVehicle?.cost;
-  const routeCost = distance * vehicleCost + +highwayCost;
+  const routeCost = Math.round(distance) * vehicleCost + +highwayCost;
   const routeInvoiceSum = invoiceValueSum();
   console.log(routeInvoiceSum);
   const profitabilityPercentage = Math.trunc(
@@ -58,7 +57,7 @@ export const navCard = ({
   );
   const valueToProfitability = Math.trunc(
     routeInvoiceSum - routeCost / 0.02
-  ).toLocaleString('en-GB');
+  ).toLocaleString('en-GB');  
   const profitabilityRatio = (routeCost / routeInvoiceSum) * 100;
 
   const routePriorities = filteredAddresses.filter(
