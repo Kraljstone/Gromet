@@ -2,7 +2,7 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  height: 100vh;
+  height: 2000px;
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
   align-items: center;
@@ -80,7 +80,6 @@ body {
   padding-top: 16px;
   max-width: 1100px;
   height: 440px !important;
-  overflow-y: scroll;
 }
 
 .droppable-area {
@@ -251,14 +250,21 @@ input:disabled {
 
 .cardContainer {
   overflow-y: scroll;
-  height: 280px;
+
+  height: 225px;
   /* width: 670px; */
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(11, 1fr);
+}
+
+@media (max-width: 1440px) {
+  .cardContainer {
+    grid-template-columns: repeat(7, 1fr);
+  }
 }
 
 .card {
-  width: 210px;
+  width: 170px;
   text-align: center;
   margin: 9px 5px 0px 0px;
   border-radius: 10px;
@@ -285,7 +291,7 @@ input:disabled {
 
 .cardContent {
   display: none;
-  width: 220px;
+  width: 170px;
   background-color: white;
   position: absolute;
   top: 0;
@@ -311,7 +317,7 @@ input:disabled {
 .infoCard div p {
   border-bottom: 1px solid rgb(217, 217, 217);
   width: 100%;
-  font-size: 20px;
+  font-size: 12px;
   margin-bottom: 0;
   margin-top: 0;
   padding: 10px 0;
@@ -370,15 +376,11 @@ input:disabled {
   display: flex;
   flex-direction: column-reverse;
   padding-bottom: 10px;
-  width: 730px;
   height: 220px;
 }
 
 .nav-btn-wrapper {
-  display: flex;
-  justify-content: end;
   margin-top: 10px;
-  align-items: end;
 }
 
 .nav-btn {
@@ -403,13 +405,12 @@ input:disabled {
 
 .bigCard {
   margin: 5px;
-  max-width: 200px;
-  min-width: 150px;
   /* padding: 16px; */
-  width: 202px;
+  height: 200px;
+  width: 170px;
 }
 
-.h2BigCardRouteName{
+.h2BigCardRouteName {
   margin: 0;
   font-size: 16px;
   padding: 8px;
@@ -449,12 +450,12 @@ input:disabled {
 }
 
 .availabilityTable {
+  margin-top: 36px;
   padding-right: 4px;
   border-collapse: collapse;
   max-width: 740px;
   overflow: scroll;
   display: block;
-  height: 300px;
 }
 
 .availabilityTable th,
@@ -466,7 +467,7 @@ input:disabled {
   overflow: hidden;
 }
 
-tr td:first-child{
+tr td:first-child {
   font-size: 13px;
 }
 
@@ -524,4 +525,10 @@ tr td:first-child{
 .print:hover {
   cursor: pointer;
   color: rgb(37, 37, 255);
+}
+
+.checkbox-container {
+  width: 180px;
+  text-align: center;
+  padding-bottom: 12px;
 }

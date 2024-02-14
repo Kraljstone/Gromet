@@ -6,7 +6,6 @@ export const showNavCard = () => {
   const vehiclesData = JSON.parse(localStorage.getItem('vehiclesData')) || [];
   const routesData = JSON.parse(localStorage.getItem('routesData')) || [];
   const checkboxState = JSON.parse(localStorage.getItem('checkboxState'));
-  const tableContainer = document.querySelector('.nav-btn-container');
   const bigScreenChecked = document.querySelector('.lock-extended-display');
   
   let toggle = true;
@@ -69,27 +68,7 @@ export const showNavCard = () => {
     toggle = !toggle;
   });
 
-  let availableTable;
 
-  const availableTableBtn = document.querySelector('.available-vehicles');
-  availableTableBtn.addEventListener('click', () => {
-    availableTable = document.querySelector('.availabilityTable');
-
-    if (toggleTable) {
-      if (availableTable) {
-        tableContainer.style.height = '50px';
-        availableTable.remove();
-      }
-    } else {
-      if (!availableTable) {
-        navTable(routesData, vehiclesData);
-        tableContainer.style.height = '200px';
-        availableTable = document.querySelector('.availabilityTable');
-      }
-    }
-
-    toggleTable = !toggleTable;
-  });
 
   bigScreenChecked.addEventListener('change', (e) => {
     if (e.target.checked) {

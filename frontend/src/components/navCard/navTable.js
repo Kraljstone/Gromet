@@ -1,5 +1,7 @@
-export const navTable = (storedRoutes, storedVehicles) => {
-  const nav = document.querySelector('.nav-btn-container');
+export const navTable = () => {
+  const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData')) || [];
+  const storedRoutes = JSON.parse(localStorage.getItem('routesData')) || [];
+  const vehicleTab = document.querySelector('.menu-tab-body');
   const table = document.createElement('table');
   table.classList.add('availabilityTable');
   const headerRow = table.insertRow(0);
@@ -31,33 +33,24 @@ export const navTable = (storedRoutes, storedVehicles) => {
     });
   });
 
-  nav.appendChild(table);
+  vehicleTab.appendChild(table);
 };
 
 const padZero = (num) => (num < 10 ? `0${num}` : num);
 
 const getCurrentWeekDates = () => {
   const today = new Date();
-  const currentDay = today.getDay();
   const currentHour = today.getHours();
   const startOfWeek = new Date(today);
 
-  // if (currentDay === 0 && currentHour >= 0) {
-  //   startOfWeek.setDate(startOfWeek.getDate() + 7);
-  // }
+  startOfWeek.setDate(today.getDate());
 
-  startOfWeek.setDate(
-    today.getDate() - currentDay);
+  if (currentHour === 0) {
+    startOfWeek.setDate(startOfWeek.getDate() + 1);
+  }
+  console.log(startOfWeek)
 
-  const daysInSerbian = [
-    'Ned',
-    'Pon',
-    'Uto',
-    'Sre',
-    'Čet',
-    'Pet',
-    'Sub',
-  ];
+  const daysInSerbian = ['Ned', 'Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub'];
 
   const weekDates = Array.from({ length: 14 }, (_, i) => {
     const currentDate = new Date(startOfWeek);

@@ -1,8 +1,5 @@
 import { directions } from './directions';
-import {
-  loadRoutesFromStorage,
-  saveRoutesToStorage,
-} from '../../../store/routesStore';
+import { saveRoutesToStorage } from '../../../store/routesStore';
 import { showNavCard } from '../../../components/navCard/showNavCard';
 import { routesValidation } from '../../../components/menu/tabs/createRoutesTab/routesValidation';
 import { handleInfoButtonClick } from '../../../utils/handleInfoButtonClick';
@@ -26,7 +23,6 @@ export const applyDirections = async (map, markerPositions) => {
       directions(map, markerPositions, pinNumbersToConnect, data.randomColor);
     }
   });
-
   routesTabBody.addEventListener('click', async (event) => {
     const target = event.target;
     if (target.classList.contains('applyBtn')) {
@@ -62,7 +58,7 @@ const handleApplyButtonClick = async (map, markerPositions, storedData, tr) => {
   removeElements('.availabilityTable');
 
   const color = tr.firstChild.lastChild.style.backgroundColor;
-  console.log("color", color, tr.firstChild.firstChild )
+  console.log('color', color, tr.firstChild.firstChild);
   try {
     const { distance } = await directions(
       map,

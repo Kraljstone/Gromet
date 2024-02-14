@@ -2,6 +2,7 @@ import {
   loadVehiclesFromStorage,
   saveVehiclesToStorage,
 } from '../../../store/vehicleStore';
+import { navTable } from '../../navCard/navTable';
 
 export const vehicleTab = () => {
   const menuTabBody = document.querySelector('.menu-tab-body');
@@ -29,7 +30,6 @@ export const vehicleTab = () => {
   });
 
   menuTabBody.appendChild(table);
-
   // TABLE CONTENT
   let rowIndex = 0;
 
@@ -97,4 +97,6 @@ export const vehicleTab = () => {
 
   menuTabBody.appendChild(saveVehicleBtn);
   menuTabBody.appendChild(addVehicleBtn);
+
+  navTable();
 };
