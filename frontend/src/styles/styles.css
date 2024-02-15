@@ -316,7 +316,7 @@ input:disabled {
   width: 170px;
   background-color: white;
   position: absolute;
-  top: 0;
+  top: 81px;
   z-index: 100;
   border: 1px solid rgb(184, 184, 184);
 }
@@ -553,4 +553,11 @@ tr td:first-child {
   width: 180px;
   text-align: center;
   padding-bottom: 12px;
+}
+
+
+.labelForFileInput{
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
 }

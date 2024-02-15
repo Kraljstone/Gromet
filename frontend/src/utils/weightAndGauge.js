@@ -13,7 +13,7 @@ const createIconElement = (iconClass) => {
 
 export const createLoadWeightElement = (totalLoad, vehicleLimit) => {
   const element = createElement('p');
-  element.innerHTML = `${totalLoad} kg`;
+  element.innerHTML = `${totalLoad - vehicleLimit} kg`;
   if (totalLoad > +vehicleLimit) {
     const overLoadIcon = createIconElement('fa-weight-hanging');
     element.appendChild(overLoadIcon);
@@ -23,7 +23,7 @@ export const createLoadWeightElement = (totalLoad, vehicleLimit) => {
 
 export const createGaugeElement = (totalGauge, vehicleLimit) => {
   const element = createElement('p');
-  element.innerHTML = `${totalGauge} m3`;
+  element.innerHTML = `${totalGauge - vehicleLimit } m3`;
   if (totalGauge > +vehicleLimit) {
     const gaugeIcon = createIconElement('fa-times-circle gaugeIcon');
     element.appendChild(gaugeIcon);
