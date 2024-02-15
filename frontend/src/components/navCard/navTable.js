@@ -48,7 +48,6 @@ const getCurrentWeekDates = () => {
   if (currentHour === 0) {
     startOfWeek.setDate(startOfWeek.getDate() + 1);
   }
-  console.log(startOfWeek)
 
   const daysInSerbian = ['Ned', 'Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub'];
 

@@ -157,7 +157,7 @@ body {
   text-align: center;
   border: 1px solid gainsboro;
   color: rgb(143, 143, 143);
-  margin-top: 24px;
+  margin: 16px 16px;
   padding: 8px 16px;
   border-radius: 6px;
 }
@@ -475,9 +475,9 @@ input:disabled {
   margin-top: 36px;
   padding-right: 4px;
   border-collapse: collapse;
-  max-width: 740px;
-  overflow: scroll;
+  overflow-y: auto;
   display: block;
+  height: 400px;
 }
 
 .availabilityTable th,
@@ -555,9 +555,12 @@ tr td:first-child {
   padding-bottom: 12px;
 }
 
-
-.labelForFileInput{
+.labelForFileInput {
   text-decoration: underline;
   color: blue;
   cursor: pointer;
+}
+
+.vehicleBtnContainer {
+  display: flex;
 }

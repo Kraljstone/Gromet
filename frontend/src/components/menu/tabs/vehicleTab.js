@@ -5,6 +5,7 @@ import {
 import { navTable } from '../../navCard/navTable';
 
 export const vehicleTab = () => {
+  navTable();
   const menuTabBody = document.querySelector('.menu-tab-body');
   const tbl = document.createElement('table');
 
@@ -76,13 +77,15 @@ export const vehicleTab = () => {
     const table = tbl.appendChild(trBody);
     table.setAttribute('id', 'vehicleTable');
 
-    menuTabBody.insertBefore(table, addVehicleBtn);
-    menuTabBody.insertBefore(table, saveVehicleBtn);
+    menuTabBody.insertBefore(table, btnContainer);
+    menuTabBody.insertBefore(table, btnContainer);
 
     rowIndex++;
   };
 
   // ADD VEHICLES BTN
+  const btnContainer = document.createElement('div');
+  btnContainer.setAttribute('class', 'vehicleBtnContainer');
   const addVehicleBtn = document.createElement('div');
   addVehicleBtn.innerHTML = 'Dodaj vozilo +';
   addVehicleBtn.setAttribute('class', 'addVehicleBtn');
@@ -95,8 +98,7 @@ export const vehicleTab = () => {
     alert('vozilo je sacuvano');
   });
 
-  menuTabBody.appendChild(saveVehicleBtn);
-  menuTabBody.appendChild(addVehicleBtn);
-
-  navTable();
+  btnContainer.appendChild(addVehicleBtn);
+  btnContainer.appendChild(saveVehicleBtn);
+  menuTabBody.appendChild(btnContainer);
 };
