@@ -51,7 +51,7 @@ const getCurrentWeekDates = () => {
 
   const daysInSerbian = ['Ned', 'Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub'];
 
-  const weekDates = Array.from({ length: 14 }, (_, i) => {
+  const weekDates = Array.from({ length: 18 }, (_, i) => {
     const currentDate = new Date(startOfWeek);
     currentDate.setDate(startOfWeek.getDate() + i);
     const dayIndex = currentDate.getDay();

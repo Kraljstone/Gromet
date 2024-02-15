@@ -477,7 +477,7 @@ input:disabled {
   border-collapse: collapse;
   overflow-y: auto;
   display: block;
-  height: 400px;
+  height: 370px;
 }
 
 .availabilityTable th,
