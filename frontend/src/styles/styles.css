@@ -250,16 +250,38 @@ input:disabled {
 
 .cardContainer {
   overflow-y: scroll;
-
   height: 225px;
-  /* width: 670px; */
   display: grid;
-  grid-template-columns: repeat(11, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 
-@media (max-width: 1440px) {
+@media (min-width: 1400px) {
+  .cardContainer {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (min-width: 1600px) {
   .cardContainer {
     grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+@media (min-width: 1700px) {
+  .cardContainer {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+@media (min-width: 2000px) {
+  .cardContainer {
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+
+@media (min-width: 2400px) {
+  .cardContainer {
+    grid-template-columns: repeat(12, 1fr);
   }
 }
 
