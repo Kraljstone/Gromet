@@ -29,7 +29,7 @@ export const addMarkers = async (mapLocationData, map) => {
     });
     // Add event listeners for mouseover and mouseout to show/hide the InfoWindow
 
-    infoWindow.open(map, marker);
+    // infoWindow.open(map, marker);
     marker.addListener('click', () => {
       infoWindow.open(map, marker);
     });

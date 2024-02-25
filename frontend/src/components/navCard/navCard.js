@@ -130,21 +130,25 @@ export const navCard = ({
   leftColumn.appendChild(loadWeightElement);
 
   leftColumn.appendChild(gaugeElement);
-  leftColumn.appendChild(
-    createElement('p', null, `${profitabilityRatio.toFixed(2)}`)
-  );
 
+
+  const unloadVehicleTotal = routeVehicle.deliveryTime * locationInvoice.length;
+  console.log("filteredAdr", locationInvoice, locationInvoice.length, routeVehicle.deliveryTime);
   rightColum.appendChild(
     createElement(
       'p',
       null,
-      `${routeDuration[0]?.hours}h ${routeDuration[0]?.minutes}min`
+      `${routeDuration[0]?.hours}h ${routeDuration[0]?.minutes}min, ${unloadVehicleTotal}min`
     )
   );
   rightColum.appendChild(
     createElement('p', null, `${Math.round(distance)} km`)
   );
   rightColum.appendChild(createElement('p', null, `Pr:${routePriorities}`));
+
+  rightColum.appendChild(
+    createElement('p', null, `${profitabilityRatio.toFixed(2)}`)
+  );
 
   const cardInner = createTable(leftColumn, rightColum).reduce(
     (table, element) => {
