@@ -10,11 +10,27 @@ export const addMarkers = async (mapLocationData, map) => {
     const address = `${mapLocationData[i].Adresa},${mapLocationData[i].Mesto}`;
     const position = await getCoordinates(address);
 
-      const redniBroj = mapLocationData[i]["RB naloga"];
+    
+    // ako ima jos neki s tom adresom onda offsetaj position za neki lat/lang
+    const hasMultipleInvoices = mapLocationData.map(loc => loc.Adresa).filter(adr => String(mapLocationData[i].Adresa).includes(adr)).length > 1;
+    if(hasMultipleInvoices){
+      const firstOccuranceIndex = mapLocationData.findIndex(el => el.Adresa === mapLocationData[i].Adresa);
+      if(firstOccuranceIndex !== i){
+        const randomIndexBasedNegation = i % 2 === 0 
+        const latOffest = 0.00005 + (i/1000000);
+        if(randomIndexBasedNegation){
+          position.lat += randomIndexBasedNegation ? -latOffest : +latOffest;
+        }else{
+          position.lng += randomIndexBasedNegation ? -latOffest : +latOffest;
+        }
+      }
+    }
+    const redniBroj = mapLocationData[i]["RB naloga"];
 
     const pinGlyph = new google.maps.marker.PinElement({
       glyph: redniBroj,
       glyphColor: 'white',
+      background:  hasMultipleInvoices ? 'purple' : 'red'
     });
 
     // The marker, positioned at the warehouse
@@ -25,7 +41,7 @@ export const addMarkers = async (mapLocationData, map) => {
     });
     // Create an InfoWindow for each marker
     const infoWindow = new google.maps.InfoWindow({
-      content: getInfoWindowContent(mapLocationData, address),
+      content: getInfoWindowContent(mapLocationData[i], address),
     });
     // Add event listeners for mouseover and mouseout to show/hide the InfoWindow
 

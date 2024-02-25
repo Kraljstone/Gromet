@@ -1,9 +1,10 @@
-export const getInfoWindowContent = (mapLocationData, pinAddress) => {
+export const getInfoWindowContent = (mapLocationDataItem, pinAddress) => {
   // Filter data based on matching address
-  const matchingData = mapLocationData.filter((data) => {
-    const dataAddress = `${data.Adresa},${data.Mesto}`;
-    return pinAddress === dataAddress;
-  });
+  const matchingData = [mapLocationDataItem]
+  // mapLocationData.filter((data) => {
+  //   const dataAddress = `${data.Adresa},${data.Mesto}`;
+  //   return pinAddress === dataAddress;
+  // });
 
   //Check if Invoice is from 2 weeks ago
   const isMoreThanTwoWeeksAgo = (dateString) => {
@@ -29,6 +30,7 @@ export const getInfoWindowContent = (mapLocationData, pinAddress) => {
     <div class=${
       isMoreThanTwoWeeksAgo(data['Datum_naloga']) && 'dateBackground'
     }><strong>Datum:</strong> ${data['Datum_naloga']}</div>
+    <strong>RB naloga:</strong> ${data['RB naloga']}<br>
       <strong>Naziv kupca:</strong> ${data['Naziv kupca']}<br>
       <strong>Vrednost naloga:</strong> ${data['Vrednost naloga']} rsd <br>
       <strong>Težina:</strong> ${data['Težina_kg']} kg<br>
