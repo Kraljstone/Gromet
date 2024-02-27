@@ -10,29 +10,35 @@ export const readDocsTab = () => {
   fileInput.setAttribute('id', 'btnFileUpload');
   fileInput.style.display = 'none';
 
+  const parseUploadResult = (mapLocations, fileName) => {
+    const label = document.querySelector('.labelForFileInput');
+    if(label){
+      const mapLocationData = mapLocations;
+      label.innerHTML =  `<p class='pCurrentFile'>Trenutno učitan: ${fileName} </p>`;
+      label.innerHTML +=   mapLocationData ? 
+                `<p class='pCurrentFile'>Broj ucitanih naloga: ${mapLocationData?.length} </p>`
+                : `<p class='pCurrentFileFailed'>Nema ucitanih naloga / doslo je do greske prilikom ucitavanja </p>`;
+
+      const multipleInvoices = [] ;
+      const passedIds = [];
+      mapLocationData.forEach((element, index) => {
+        const additionalInvoices = mapLocationData.filter(location =>  location.Adresa === element.Adresa);
+        const alreadyCounted = Array(...passedIds).some(id => additionalInvoices.find(el => el['RB naloga'] === id));
+        passedIds.push(element['RB naloga']);
+
+        if(additionalInvoices.length > 1 && !alreadyCounted){
+          multipleInvoices.push(additionalInvoices);
+        }
+      })
+      label.innerHTML +=  `<p class='pCurrentFile'>Pinovi sa vise naloga: ${multipleInvoices.map(grp => `[${grp.map(el => `${el['RB naloga']}`)}]`).toString()} </p>`;
+    }
+  }
+
   const handleFileUpload = async () => {
     if (fileInput.files[0]) {
-      const label = document.querySelector('.labelForFileInput');
-      if(label){
-        const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
-        label.innerHTML +=  `<p class='pCurrentFile'>Trenutno učitan: ${fileInput.files[0].name} </p>`;
-        label.innerHTML +=  `<p class='pCurrentFile'>Broj ucitanih naloga: ${mapLocationData?.length} </p>`;
-        // label.innerHTML +=  `<p class='pCurrentFile'>Broj ucitanih naloga: ${fileInput.files[0].name} </p>`;
-
-        const multipleInvoices = [] ;
-        const passedIds = [];
-        mapLocationData.forEach((element, index) => {
-          const additionalInvoices = mapLocationData.filter(location =>  location.Adresa === element.Adresa);
-          const alreadyCounted = Array(...passedIds).some(id => additionalInvoices.find(el => el['RB naloga'] === id));
-          passedIds.push(element['RB naloga']);
-
-          if(additionalInvoices.length > 1 && !alreadyCounted){
-            multipleInvoices.push(additionalInvoices);
-          }
-        })
-        label.innerHTML +=  `<p class='pCurrentFile'>Pinovi sa vise naloga: ${multipleInvoices.map(grp => `[${grp.map(el => `${el['RB naloga']}`)}]`).toString()} </p>`;
-      }
-      await uploadFile(fileInput.files[0]);
+      await uploadFile(fileInput.files[0]).then(mapLocations => {
+        parseUploadResult(mapLocations, fileInput.files[0].name);
+      }).catch(err => alert("greska prilikom ucitavanja fajla", err));
       await initMap();
     }
   };
@@ -64,7 +70,9 @@ export const readDocsTab = () => {
     const files = event.dataTransfer.files;
 
     if (files.length > 0) {
-      await uploadFile(files[0]);
+      await uploadFile(files[0]).then(mapLocations => {
+        parseUploadResult(mapLocations, files[0].name);
+      });
       await initMap();
     }
   };

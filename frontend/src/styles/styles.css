@@ -567,3 +567,8 @@ tr td:first-child {
 .vehicleBtnContainer {
   display: flex;
 }
+
+.pCurrentFileFailed{
+  color: red;
+  text-decoration: none !important;
+}
