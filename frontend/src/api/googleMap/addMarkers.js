@@ -10,7 +10,11 @@ export const addMarkers = async (mapLocationData, map) => {
     const address = `${mapLocationData[i].Adresa},${mapLocationData[i].Mesto}`;
     const position = await getCoordinates(address);
 
-    
+
+    // hasNearbyNeighbourClient(position, maplocationData);
+    // { check if x2 - x1 lat and y2 - y1 lang are closer than 2000m then return true and those two should have another colour}
+    // distance between 2 points
+
     // ako ima jos neki s tom adresom onda offsetaj position za neki lat/lang
     const hasMultipleInvoices = mapLocationData.map(loc => loc.Adresa).filter(adr => String(mapLocationData[i].Adresa).includes(adr)).length > 1;
     if(hasMultipleInvoices){

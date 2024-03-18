@@ -48,17 +48,17 @@ export const bigNavCard = ({
 
   const vehicleCost = +routeVehicle?.cost;
   const routeCost = Math.round(distance) * vehicleCost + +highwayCost;
-  const locationInvoice = mapLocationData.filter((data) => {
+  const filteredAddresses = mapLocationData.filter((data) => {
     return startingPin.includes(data['RB naloga']);
   });
 
 
-  const uniqueAddresses = [
-    ...new Set(locationInvoice.map((data) => data.Adresa)),
-  ];
-  const filteredAddresses = mapLocationData.filter((data) =>
-    uniqueAddresses.includes(data.Adresa)
-  );
+  // const uniqueAddresses = [
+  //   ...new Set(locationInvoice.map((data) => data.Adresa)),
+  // ];
+  // const filteredAddresses = mapLocationData.filter((data) =>
+  //   uniqueAddresses.includes(data.Adresa)
+  // );
 
   console.log('highwayCost', highwayCost);
   console.log('vehicleCost', vehicleCost);

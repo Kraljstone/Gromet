@@ -27,16 +27,20 @@ export const navCard = ({
   const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
   const startingPin = locationMapping.split(',');
   const dateParts = datePicker ? datePicker.split('-') : [];
-  const locationInvoice = mapLocationData.filter((data) => {
+  const filteredAddresses = mapLocationData.filter((data) => {
     return startingPin.includes(data['RB naloga']);
   });
 
-  const uniqueAddresses = [
-    ...new Set(locationInvoice.map((data) => data.Adresa)),
-  ];
-  const filteredAddresses = mapLocationData.filter((data) =>
-    uniqueAddresses.includes(data.Adresa)
-  );
+  // console.log("Loc invoice", locationInvoice);
+  // const uniqueAddresses = [
+  //   ...new Set(locationInvoice.map((data) => data.Adresa)),
+  // ];
+
+  // const filteredAddresses = mapLocationData.filter((data) =>
+  //   uniqueAddresses.includes(data.Adresa)
+  // );
+
+  console.log("filterADR", filteredAddresses);
   const invoiceValueSum = () => {
     let totalValue = 0;
     filteredAddresses.forEach((invoiceValue) => {
@@ -51,7 +55,7 @@ export const navCard = ({
   const vehicleCost = +routeVehicle?.cost;
   const routeCost = Math.round(distance) * vehicleCost + +highwayCost;
   const routeInvoiceSum = invoiceValueSum();
-  console.log(routeInvoiceSum);
+  console.log("routeInvoiceSum:", routeInvoiceSum);
   const profitabilityPercentage = Math.trunc(
     (routeInvoiceSum / (routeCost / 0.02)) * 100
   );
@@ -132,8 +136,8 @@ export const navCard = ({
   leftColumn.appendChild(gaugeElement);
 
 
-  const unloadVehicleTotal = routeVehicle.deliveryTime * locationInvoice.length;
-  console.log("filteredAdr", locationInvoice, locationInvoice.length, routeVehicle.deliveryTime);
+  const unloadVehicleTotal = routeVehicle.deliveryTime * filteredAddresses.length;
+  console.log("filteredAdr", filteredAddresses, filteredAddresses.length, routeVehicle.deliveryTime);
   rightColum.appendChild(
     createElement(
       'p',

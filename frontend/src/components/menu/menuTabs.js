@@ -1,5 +1,6 @@
 import { readDocsTab } from './tabs/readDocsTab';
 import { vehicleTab } from './tabs/vehicleTab';
+import { createComboTab } from './tabs/comboTab';
 import { createRoutesTab } from './tabs/createRoutesTab/createRoutesTab';
 
 const allTabs = document.querySelectorAll('.tabs');
@@ -23,6 +24,10 @@ export const menuTabs = () => {
       
       if (singleTab.classList.contains('vehicle-tab')) {
         vehicleTab();
+      }
+
+      if (singleTab.classList.contains('combo-tab')) {
+        createComboTab();
       }
       
       if (singleTab.classList.contains('routes-tab')) {
