@@ -580,7 +580,8 @@ tr td:first-child {
   flex-wrap: wrap;
   column-gap: 2px;
   row-gap: 6px;
-  max-height: 450px;
+  max-height: 400px;
+  padding-right: 12px;
   overflow-y: auto;
 }
 

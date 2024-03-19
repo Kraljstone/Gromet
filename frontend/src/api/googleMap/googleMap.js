@@ -1,6 +1,7 @@
 import { addMarkers } from './addMarkers';
 import { getCoordinates } from './getCoordinates';
 
+export let GLOBAL_MAP;
 export const initMap = async () => {
   const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
   const defaultLocation = mapLocationData?.[0];
@@ -21,6 +22,8 @@ export const initMap = async () => {
     };
 
     const map = await initMapLoad(defaultAddress);
+    GLOBAL_MAP = map;
+    console.log(GLOBAL_MAP, "GLOBAL_MAP")
 
     await addMarkers(mapLocationData, map);
   } else {

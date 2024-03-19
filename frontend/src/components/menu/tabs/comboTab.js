@@ -1,3 +1,29 @@
+import {directions} from '../../../api/googleMap/directions/directions';
+import {GLOBAL_MAP} from '../../../api/googleMap/googleMap';
+import { getCoordinates } from '../../../api/googleMap/getCoordinates';
+const colorPallet = [
+    '#1f77b4',
+    '#ff7f0e',
+    '#2ca02c',
+    '#d62728',
+    '#9467bd',
+    '#8c564b',
+    '#e377c2',
+    '#7f7f7f',
+    '#bcbd22',
+    '#17becf',
+    '#FF5733',
+    '#33FF57',
+    '#5733FF',
+    '#FF33A8',
+    '#FF8C33',
+    '#33A8FF',
+    '#8C33FF',
+    '#33FF8C',
+    '#A833FF',
+    '#FFA833',
+];
+
 export const ATTRIBUTE_FILTERS_STATE = "attributeFiltersState";
 export const checkboxLabels = [
     "Prikaži vrednost, kg i gabarit",
@@ -76,8 +102,33 @@ const createComboPinsContainer = () => {
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
+            checkbox.className = "checkboxSelectMapLocation";
             const invoiceId = locationInfo['RB naloga'];
-            if(typeof routesData === typeof [] && invoiceId !== '0'){
+            checkbox.dataset.id = invoiceId;
+            checkbox.addEventListener('click', (ev) => {
+                const target = ev.target;
+                const id =  target.dataset?.id;
+                // const parent = target.parentNode.parentNode;
+                const checkboxes = document.querySelectorAll(".checkboxSelectMapLocation");
+                if(checkboxes){
+
+                    const selected = Array.from(checkboxes).filter(checkbox => checkbox.checked === true && !checkbox.disabled).map(el => el.dataset.id);
+                    console.log("checkboxSelectMapLocation", checkboxes, selected);
+                    const routeLocationsInput = document.querySelector(".inputOdabraninalozi");
+                    if(routeLocationsInput && id){
+                        const array = routeLocationsInput.value.split(',').filter(el => el.length !== 0);
+                        console.log("array", array, id);
+                        if(target.checked){
+                            array.push(id);
+                            routeLocationsInput.value = array.toString();
+                        }else{
+                            routeLocationsInput.value = array.filter(el => el !== id).toString();
+                        }
+                    }
+                }
+            })
+            // console.log("first", routesData, locationInfo);
+            if(routesData && typeof routesData === typeof [] && invoiceId !== '0'){
                 const isAlreadyInARoute = Array.from(routesData).some(route => route.locationMapping.split(",").includes(invoiceId));
                 if(isAlreadyInARoute){
                     checkbox.checked = isAlreadyInARoute;
@@ -155,7 +206,7 @@ const redrawMenuTabBodyElemets = (menuTabBody) => {
 
 }
 
-createRouteDataTable = () => {
+const createRouteDataTable = () => {
     const divFinalContainer = document.createElement('div');
     divFinalContainer.className = 'divRouteConfirmationContainer';
 
@@ -170,6 +221,7 @@ createRouteDataTable = () => {
     headerTitles.forEach(function (title) {
         const th = document.createElement("th");
         th.textContent = title;
+        th.className = `tableHeader${title.replace(" ", "")}`;
         headerRow.appendChild(th);
     });
 
@@ -177,10 +229,28 @@ createRouteDataTable = () => {
     const inputTypes = ["text", "select", "number", "text"];
     const inputRow = document.createElement("tr");
     tableRouteData.appendChild(inputRow);
-    inputTypes.forEach(function (type) {
+    inputTypes.forEach(function (type, index) {
         const td = document.createElement("td");
-        const input = document.createElement("input");
-        input.type = type;
+        const input = document.createElement( index === 1 ? "select": "input");
+        input.className = `input${headerTitles[index]?.replace(" ", "")}`
+        if(index !== 1){
+            input.type = type;
+        }
+        if(index === 1){
+            const savedVehicles = localStorage.getItem("vehiclesData");
+            if(savedVehicles){
+                const vehiclesData = JSON.parse(savedVehicles);
+                vehiclesData.forEach(vehicle => {
+                    const opt1 = document.createElement("option");
+                    opt1.value = vehicle.vehicle;
+                    opt1.text = vehicle.vehicle;
+                    input.add(opt1);
+                });
+            }
+        }
+        if(index === 3){
+            input.disabled = true;
+        }
         td.appendChild(input);
         inputRow.appendChild(td);
     });
@@ -191,7 +261,7 @@ createRouteDataTable = () => {
     const td = document.createElement("td");
     td.colSpan = 4; // Span the entire row
     td.style.textAlign = "justify"; // Justify the text evenly
-    const labels = ["Kriterijumi", "120%", "240000", "6560kg", "15m3"];
+    const labels = ["Kriterijumi", "test120%", "test240000", "test6560kg", "test15m3"];
     labels.forEach(function (label) {
         const span = document.createElement("span");
         span.textContent = label;
@@ -208,7 +278,7 @@ createRouteDataTable = () => {
     const td2 = document.createElement("td");
     td2.colSpan = 4; // Span the entire row
     td2.style.textAlign = "justify"; // Justify the text evenly
-    const labels2 = ["Info", "132km", "Pr:4", "0.39"];
+    const labels2 = ["Info", "test132km", "testPr:4", "test0.39"];
     labels2.forEach(function (label) {
         const span2 = document.createElement("span");
         span2.textContent = label;
@@ -227,11 +297,101 @@ createRouteDataTable = () => {
     // Create "Kreiraj rutu" button
     const kreirajButton = document.createElement("button");
     kreirajButton.textContent = "Kreiraj rutu";
-    buttonsContainer.appendChild(kreirajButton);
+    // buttonsContainer.appendChild(kreirajButton);
 
     // Create "Primeni" button
     const primeniButton = document.createElement("button");
     primeniButton.textContent = "Primeni";
+    primeniButton.addEventListener('click', async (ev) => {
+
+        const routeName = document.querySelector(".inputNazivrute");
+        const routeVehicle = document.querySelector(".inputVozilo");
+        const routePayTollCost = document.querySelector(".inputUnesiputarinu");
+        const routeSelectedLocations = document.querySelector(".inputOdabraninalozi");
+
+        let message = "Molim vas unesite:\n";
+        let isGood = true;
+        if(!routeName?.value){
+            message+= " ime rute\n";
+            isGood = false;
+        }
+        if(!routeVehicle?.value){
+            message+= " vozilo\n";
+            isGood = false;
+        }
+        if(!routePayTollCost?.value || Number(routePayTollCost?.value) < 0){
+            message+= " validnu putarinu\n";
+            isGood = false;
+        }
+        if(!routeSelectedLocations?.value){
+            message+= " lokacije\n";
+            isGood = false;
+        }
+        if(!isGood){
+            alert(message);
+            return;
+        }
+        const savedRoutes = JSON.parse(localStorage.getItem("routesData"));
+        if(savedRoutes){
+            const index = savedRoutes.findIndex( route => route.routeName === "");
+            if(index === -1) {
+                alert("Popunjeno 20 ruta, morate da obrisete neku");
+                return;
+            }
+
+            const color =  colorPallet[index % colorPallet.length];
+            // const map = JSON.parse(localStorage.getItem('map'));
+
+            // calc geo lat lang
+            const markerPositions = [];
+            const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
+            for (let i = 0; i < mapLocationData.length; i++) {
+              const address = `${mapLocationData[i].Adresa},${mapLocationData[i].Mesto}`;
+              const position = await getCoordinates(address);
+          
+          
+              // hasNearbyNeighbourClient(position, maplocationData);
+              // { check if x2 - x1 lat and y2 - y1 lang are closer than 2000m then return true and those two should have another colour}
+              // distance between 2 points
+          
+              // ako ima jos neki s tom adresom onda offsetaj position za neki lat/lang
+              const hasMultipleInvoices = mapLocationData.map(loc => loc.Adresa).filter(adr => String(mapLocationData[i].Adresa).includes(adr)).length > 1;
+              if(hasMultipleInvoices){
+                const firstOccuranceIndex = mapLocationData.findIndex(el => el.Adresa === mapLocationData[i].Adresa);
+                if(firstOccuranceIndex !== i){
+                  const randomIndexBasedNegation = i % 2 === 0 
+                  const latOffest = 0.00005 + (i/1000000);
+                  if(randomIndexBasedNegation){
+                    position.lat += randomIndexBasedNegation ? -latOffest : +latOffest;
+                  }else{
+                    position.lng += randomIndexBasedNegation ? -latOffest : +latOffest;
+                  }
+                }
+              }
+              markerPositions.push(position); 
+            }
+
+           const {distance} = await directions(
+                GLOBAL_MAP,
+                markerPositions,
+                routeSelectedLocations.value.split(',').map(Number),
+                color
+              );
+            console.log("distacnce", distance);
+            savedRoutes[index] = {
+                datePicker: "",
+                distance: distance,
+                highwayCost: routePayTollCost.value,
+                locationMapping: routeSelectedLocations.value,
+                randomColor: color,
+                routeName: routeName.value,
+                selectedField: routeVehicle.value
+            }
+            console.log(savedRoutes, index, distance);
+            localStorage.setItem("routesData", JSON.stringify(savedRoutes));
+            window.location.reload();
+        }
+    })
     buttonsContainer.appendChild(primeniButton);
 
 
