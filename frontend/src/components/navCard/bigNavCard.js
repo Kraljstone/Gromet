@@ -41,6 +41,9 @@ export const bigNavCard = ({
   day.innerHTML = datePicker
     ? `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`
     : 'Nema Datuma';
+  
+
+  day.className = "pBigCardDate"
 
   const routeVehicle = storedVehicles.find((vehicle) => {
     return vehicle.vehicle.includes(selectedField);
@@ -92,6 +95,17 @@ export const bigNavCard = ({
     (priority) => priority.Prioritet !== '/'
   ).length;
 
+  const routeDuration = storedVehicles
+  .filter((storedVehicle) => storedVehicle?.vehicle?.includes(selectedField))
+  .map((storedVehicle) => {
+    const vehicleSpeed = storedVehicle.averageSpeed;
+    const routeTimeDuration = distance / vehicleSpeed;
+    const hours = Math.floor(routeTimeDuration);
+    const minutes = Math.round((routeTimeDuration - hours) * 60);
+
+    return { hours, minutes };
+  });
+
   const totalRouteLoad = calculateTotal(filteredAddresses, 'Težina_kg');
   const totalGauge = calculateTotal(filteredAddresses, 'Gabarit_m3');
 
@@ -134,6 +148,14 @@ export const bigNavCard = ({
   leftColumn.appendChild(loadWeightElement);
   leftColumn.appendChild(gaugeElement);
 
+  const unloadVehicleTotal = routeVehicle.deliveryTime * filteredAddresses.length;
+  rightColumn.appendChild(
+    createElement(
+      'p',
+      null,
+      `${routeDuration[0]?.hours}h ${routeDuration[0]?.minutes}min, ${unloadVehicleTotal}min`
+    )
+  );
   rightColumn.appendChild(
     createElement('p', null, `${Math.round(distance)} km`)
   );

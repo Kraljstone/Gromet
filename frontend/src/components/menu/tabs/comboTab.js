@@ -1,6 +1,7 @@
 import {directions} from '../../../api/googleMap/directions/directions';
 import {GLOBAL_MAP} from '../../../api/googleMap/googleMap';
 import { getCoordinates } from '../../../api/googleMap/getCoordinates';
+import { calculateTotal } from '../../../utils/calculateTotal';
 const colorPallet = [
     '#1f77b4',
     '#ff7f0e',
@@ -212,6 +213,7 @@ const createRouteDataTable = () => {
 
     // Create table
     const tableRouteData = document.createElement('table');
+    tableRouteData.className = 'tableComboRouteData';
 
 
     // Create table header
@@ -256,38 +258,86 @@ const createRouteDataTable = () => {
     });
 
 
-    // Create additional row with text labels
-    const additionalRow = document.createElement("tr");
-    const td = document.createElement("td");
-    td.colSpan = 4; // Span the entire row
-    td.style.textAlign = "justify"; // Justify the text evenly
-    const labels = ["Kriterijumi", "test120%", "test240000", "test6560kg", "test15m3"];
-    labels.forEach(function (label) {
-        const span = document.createElement("span");
-        span.textContent = label;
-        span.style.display = "inline-block";
-        span.style.width = "20%"; // Even distribution
-        td.appendChild(span);
-    });
-    additionalRow.appendChild(td);
+    const createAditionalRows = (criteria, routeVehicleName) => {
+        const criteriaData = {
+            profitabilityPercentage: criteria.profitabilityPercentage,
+            valueToProfitability: criteria.valueToProfitability,
+            weight: criteria.weight,
+            gauge: criteria.gauge,
+            km: criteria.km,
+            routePriorities: criteria.routePriorities,
+            profitabilityRatio: criteria.profitabilityRatio
+        }
+        // Create additional row with text labels
+        const additionalRow = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 4; // Span the entire row
+        td.style.textAlign = "justify"; // Justify the text evenly
+        const labels = [
+            "Kriterijumi",
+            criteriaData.profitabilityPercentage +"%", 
+            criteriaData.valueToProfitability, 
+            criteriaData.weight +"kg",
+            criteriaData.gauge +"m3" 
+        ];
+        labels.forEach(function (label) {
+            const span = document.createElement("span");
+            span.textContent = label;
+            span.style.display = "inline-block";
+            span.style.width = "20%"; // Even distribution
+            td.appendChild(span);
+        });
+        additionalRow.appendChild(td);
+
+        // Create another additional row with text labels
+        const additionalRow2 = document.createElement("tr");
+
+        const td2 = document.createElement("td");
+        td2.colSpan = 4; // Span the entire row
+        td2.style.textAlign = "justify"; // Justify the text evenly
+        const labels2 = [
+            "Info", 
+            criteriaData.km, 
+            criteriaData.routePriorities, 
+            criteriaData.profitabilityRatio];
+        labels2.forEach(function (label) {
+            const span2 = document.createElement("span");
+            span2.textContent = label;
+            span2.style.display = "inline-block";
+            span2.style.width = "20%"; // Even distribution
+            td2.appendChild(span2);
+        });
+        additionalRow2.appendChild(td2);
 
 
-    // Create another additional row with text labels
-    const additionalRow2 = document.createElement("tr");
+        const PASSED_3_CRITERIA_GREEN = '#64e100';
+        const PASSED_2_CRITERIA_ORANGE = '#FFA500';
+        const FAILED_ONE_CRITERIA_RED = '#ff1400';
+      
+        const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
+        const routeVehicle = storedVehicles.find((storedVehicle) =>
+          storedVehicle?.vehicle?.includes(routeVehicleName)
+        );
+        const cardShouldBeGreen =
+        criteriaData.weight <= +routeVehicle?.kg &&
+        criteriaData.gauge <= +routeVehicle?.m3 &&
+        criteriaData.profitabilityRatio <= 2;
+      
+        const cardShouldBeOrange =
+          (criteriaData.weight <= +routeVehicle?.kg && criteriaData.gauge  <= +routeVehicle?.m3) ||
+          (criteriaData.weight <= +routeVehicle?.kg && criteriaData.profitabilityRatio <= 2) ||
+          (criteriaData.gauge <= +routeVehicle?.m3 && criteriaData.profitabilityRatio <= 2);
+      
+        const cardBackgroundColor = cardShouldBeGreen
+          ? PASSED_3_CRITERIA_GREEN
+          : cardShouldBeOrange
+          ? PASSED_2_CRITERIA_ORANGE
+          : FAILED_ONE_CRITERIA_RED;
 
-    const td2 = document.createElement("td");
-    td2.colSpan = 4; // Span the entire row
-    td2.style.textAlign = "justify"; // Justify the text evenly
-    const labels2 = ["Info", "test132km", "testPr:4", "test0.39"];
-    labels2.forEach(function (label) {
-        const span2 = document.createElement("span");
-        span2.textContent = label;
-        span2.style.display = "inline-block";
-        span2.style.width = "20%"; // Even distribution
-        td2.appendChild(span2);
-    });
-    additionalRow2.appendChild(td2);
-
+          additionalRow.style.backgroundColor = cardBackgroundColor;
+          additionalRow2.style.backgroundColor = cardBackgroundColor;
+        return [additionalRow, additionalRow2];
+    }
 
     // Create buttons container
     const buttonsContainer = document.createElement("div");
@@ -302,6 +352,74 @@ const createRouteDataTable = () => {
     // Create "Primeni" button
     const primeniButton = document.createElement("button");
     primeniButton.textContent = "Primeni";
+
+    // Create "Kreiraj rutu" button
+    const kreirajRutuButton = document.createElement("button");
+    kreirajRutuButton.textContent = "Kreiraj rutu";
+    kreirajButton.className = "buttonComboCreateRoute";
+    kreirajButton.disabled = true;
+
+    
+    const evaluateCriteria = (locationMapping, distance, selectedField, highwayCost) => {
+        const storedVehicles = JSON.parse(localStorage.getItem('vehiclesData'));
+        const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
+        const startingPin = locationMapping.split(',');
+        const filteredAddresses = mapLocationData.filter((data) => {
+          return startingPin.includes(data['RB naloga']);
+        });
+
+        const invoiceValueSum = () => {
+            let totalValue = 0;
+            filteredAddresses.forEach((invoiceValue) => {
+              totalValue += +invoiceValue['Vrednost naloga'];
+            });
+            return totalValue;
+          };
+         
+          const routeVehicle = storedVehicles.find((storedVehicle) =>
+            storedVehicle?.vehicle?.includes(selectedField)
+          );
+          const vehicleCost = +routeVehicle?.cost;
+          const routeCost = Math.round(distance) * vehicleCost + +highwayCost;
+          const routeInvoiceSum = invoiceValueSum();
+          console.log("routeInvoiceSum:", routeInvoiceSum);
+          const profitabilityPercentage = Math.trunc(
+            (routeInvoiceSum / (routeCost / 0.02)) * 100
+          );
+          const valueToProfitability = Math.trunc(
+            routeInvoiceSum - routeCost / 0.02
+          ).toLocaleString('en-GB');  
+          const profitabilityRatio = (routeCost / routeInvoiceSum) * 100;
+        
+          const routePriorities = filteredAddresses.filter(
+            (priority) => priority.Prioritet !== '/'
+          ).length;
+        
+          const routeDuration = storedVehicles
+            .filter((storedVehicle) => storedVehicle?.vehicle?.includes(selectedField))
+            .map((storedVehicle) => {
+              const vehicleSpeed = storedVehicle.averageSpeed;
+              const routeTimeDuration = distance / vehicleSpeed;
+              const hours = Math.floor(routeTimeDuration);
+              const minutes = Math.round((routeTimeDuration - hours) * 60);
+        
+              return { hours, minutes };
+            });
+        
+          const totalRouteLoad = calculateTotal(filteredAddresses, 'Težina_kg');
+          const totalGauge = calculateTotal(filteredAddresses, 'Gabarit_m3');
+
+          const criteria = {
+            profitabilityPercentage: profitabilityPercentage,
+            valueToProfitability: valueToProfitability,
+            weight: totalRouteLoad,
+            gauge: totalGauge,
+            km: `${Math.round(distance)} km`,
+            routePriorities: `PR:${routePriorities}`,
+            profitabilityRatio:  `${profitabilityRatio.toFixed(2)}`
+          }
+        return criteria;
+    }
     primeniButton.addEventListener('click', async (ev) => {
 
         const routeName = document.querySelector(".inputNazivrute");
@@ -309,6 +427,7 @@ const createRouteDataTable = () => {
         const routePayTollCost = document.querySelector(".inputUnesiputarinu");
         const routeSelectedLocations = document.querySelector(".inputOdabraninalozi");
 
+        // evaluateCriteria(routeSelectedLocations, 16);
         let message = "Molim vas unesite:\n";
         let isGood = true;
         if(!routeName?.value){
@@ -388,16 +507,36 @@ const createRouteDataTable = () => {
                 selectedField: routeVehicle.value
             }
             console.log(savedRoutes, index, distance);
-            localStorage.setItem("routesData", JSON.stringify(savedRoutes));
-            window.location.reload();
+            localStorage.setItem("tempRoutesData", JSON.stringify(savedRoutes));
+            const criteria = evaluateCriteria(routeSelectedLocations?.value, distance, routeVehicle.value, Number(routePayTollCost?.value))
+            console.log("Criteria", criteria);
+            const aditionalRows = createAditionalRows(criteria, routeVehicle.value);
+            const table = document.querySelector('.tableComboRouteData');
+            const hasCriteria = table.childNodes.length > 3;
+            if(hasCriteria){
+                table.removeChild(table.childNodes[3]);
+                table.removeChild(table.childNodes[2]);
+            }
+            tableRouteData.appendChild(aditionalRows[0]);
+            tableRouteData.appendChild(aditionalRows[1]);
+            // window.location.reload();
+            const enableButton = document.querySelector('.buttonComboCreateRoute');
+            enableButton.disabled = false;
         }
     })
+
+    kreirajButton.addEventListener('click', () => {
+        const savedRoutes = localStorage.getItem("tempRoutesData");
+        localStorage.setItem("routesData", savedRoutes);
+        window.location.reload();
+    })
     buttonsContainer.appendChild(primeniButton);
+    buttonsContainer.appendChild(kreirajButton);
 
 
-    tableRouteData.appendChild(additionalRow);
-    tableRouteData.appendChild(additionalRow2);
+   
     divFinalContainer.appendChild(tableRouteData);
     divFinalContainer.appendChild(buttonsContainer);
     return divFinalContainer;
 }
+
