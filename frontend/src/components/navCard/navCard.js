@@ -40,7 +40,7 @@ export const navCard = ({
   //   uniqueAddresses.includes(data.Adresa)
   // );
 
-  console.log("filterADR", filteredAddresses);
+  // console.log("filterADR", filteredAddresses);
   const invoiceValueSum = () => {
     let totalValue = 0;
     filteredAddresses.forEach((invoiceValue) => {
@@ -137,7 +137,7 @@ export const navCard = ({
 
 
   const unloadVehicleTotal = routeVehicle.deliveryTime * filteredAddresses.length;
-  console.log("filteredAdr", filteredAddresses, filteredAddresses.length, routeVehicle.deliveryTime);
+  // console.log("filteredAdr", filteredAddresses, filteredAddresses.length, routeVehicle.deliveryTime);
   rightColum.appendChild(
     createElement(
       'p',

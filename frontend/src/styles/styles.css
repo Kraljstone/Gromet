@@ -60,6 +60,8 @@ body {
   padding: 0 16px;
   z-index: 10;
   background-color: rgb(241, 241, 241);
+  overflow: scroll;
+  max-height: 750px;
 }
 
 .menu-tabs {
@@ -376,7 +378,9 @@ input:disabled {
   margin: 0 8px;
   width: 30px !important;
   background: transparent;
-  z-index: 2;
+  /* z-index: 2; */
+  width: 33px !important;
+  font-size: 27px;
 }
 
 .datePicker:hover {
@@ -584,18 +588,18 @@ tr td:first-child {
   flex-wrap: wrap;
   column-gap: 2px;
   row-gap: 6px;
-  max-height: 400px;
+  max-height: 420px;
   padding-right: 12px;
   overflow-y: auto;
 }
 
 .divRowItem {
-  width: 32.8%;
+  width: 32.5%;
   display: flex;
   flex-direction: row;
   /* justify-content: center; */
   align-items: center;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   overflow-y: auto;
   max-height: 530px;
   /* min-height: 60px; */
@@ -609,10 +613,20 @@ tr td:first-child {
   font-size: 14px;
 }
 
-.divInvoiceNum{
+.daysOverdue3{
+  color: blue;
+}
+
+.daysOverdue5{
   color: red;
+}
+
+.divInvoiceNum{
+  color: white;
+  background-color: red;
   border: 1px solid black;
   margin-right: 4px;
+  margin-left: 4px;
   width: 20px;
   height: 15px;
   align-items: center;
@@ -631,5 +645,27 @@ tr td:first-child {
   display: flex;
   justify-content: flex-end;
   column-gap: 10px;
+}
+
+.tableComboRouteData{
+  font-size: 15px;
+}
+.inputNazivrute, .inputUnesiputarinu{
+  max-width: 100px;
+}
+.tdRouteNameRouteColor{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.divComboRouteColor{
+  width: 22px;
+  height: 22px;
+  margin-left: 3px;
+}
+.inputVozilo{
+  min-width: 80px;
 }
 /* END styles for route combos */

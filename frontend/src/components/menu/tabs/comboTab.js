@@ -95,7 +95,7 @@ const createComboPinsContainer = () => {
 
     if(mapLocations && typeof mapLocations === typeof []){
         // wrap into array 
-        const data = Array.from(mapLocations);
+        const data = Array.from(mapLocations).sort( (locA, locB) => Number(locA["RB naloga"]) > Number(locB["RB naloga"]) );
 
         data.forEach((locationInfo) => {
             const rowItem = document.createElement('div');
@@ -129,7 +129,8 @@ const createComboPinsContainer = () => {
                 }
             })
             // console.log("first", routesData, locationInfo);
-            if(routesData && typeof routesData === typeof [] && invoiceId !== '0'){
+            const isPinOfCompanyStorage = invoiceId === '0' || invoiceId === '1';
+            if(routesData && typeof routesData === typeof [] && !isPinOfCompanyStorage){
                 const isAlreadyInARoute = Array.from(routesData).some(route => route.locationMapping.split(",").includes(invoiceId));
                 if(isAlreadyInARoute){
                     checkbox.checked = isAlreadyInARoute;
@@ -164,16 +165,27 @@ const createComboPinsContainer = () => {
                  ${locationInfo['Gabarit_m3']},`
             }
 
-            label.innerHTML += ` ${locationInfo['Adresa']}`;
+            const showNone = !showFirst && !showSecond && !showThird && !showFourth;
+            if(showNone)
+                label.innerHTML += ` ${locationInfo['Adresa']}`;
             if(showSecond){
-                const shortenBuyer = String(locationInfo['Naziv kupca'])?.split(" ")[0];
-                console.log("short buyer", shortenBuyer);
+                const buyerName = String(locationInfo['Naziv kupca']);
+                const isLongerThanLimit = buyerName?.length > 20;
+                const shortenBuyer = isLongerThanLimit ? buyerName.substring(0,19) + '...' : buyerName;
+                // console.log("short buyer", shortenBuyer, shortenBuyer.length);
                 label.innerHTML += ` ${shortenBuyer}`;
             }
 
             if(showThird){
                 const workHours = locationInfo['Radno_vreme'];
                 const date = locationInfo['Datum_naloga'];
+                const daysPassed = daysPassedSinceGivenDate(date);
+                if(daysPassed >= 3 && daysPassed < 5)
+                    label.classList.add("daysOverdue3");
+                if(daysPassed >= 5){
+                    label.classList.add("daysOverdue5");
+                }
+                console.log("dayspassed", daysPassed);
                 label.innerHTML += ` ${workHours}, ${date}`;
             }
 
@@ -254,6 +266,19 @@ const createRouteDataTable = () => {
             input.disabled = true;
         }
         td.appendChild(input);
+        if(index === 0){
+            const divColor = document.createElement('div');
+            const savedRoutes = JSON.parse(localStorage.getItem("routesData"));
+            const indexRoute = savedRoutes.findIndex( route => route.routeName === "");
+            console.log("savedRoutes", indexRoute, savedRoutes, );
+            if(indexRoute !== -1) {     
+                const color =  colorPallet[indexRoute % colorPallet.length];
+                divColor.style.backgroundColor = color;
+                divColor.className = 'divComboRouteColor';
+                td.appendChild(divColor);
+                td.className = 'tdRouteNameRouteColor';
+            }
+        }
         inputRow.appendChild(td);
     });
 
@@ -412,8 +437,8 @@ const createRouteDataTable = () => {
           const criteria = {
             profitabilityPercentage: profitabilityPercentage,
             valueToProfitability: valueToProfitability,
-            weight: totalRouteLoad,
-            gauge: totalGauge,
+            weight: totalRouteLoad - Number(routeVehicle.kg),
+            gauge: totalGauge - Number(routeVehicle.m3),
             km: `${Math.round(distance)} km`,
             routePriorities: `PR:${routePriorities}`,
             profitabilityRatio:  `${profitabilityRatio.toFixed(2)}`
@@ -540,3 +565,29 @@ const createRouteDataTable = () => {
     return divFinalContainer;
 }
 
+
+const daysPassedSinceGivenDate = (givenDateStr) => {
+    // Split the given date string into day, month, and year components
+    if(!givenDateStr ) return 0;
+    const delimiter =  givenDateStr.includes("/") 
+        ? "/" 
+        : givenDateStr.includes(".") 
+            ? "." 
+            : givenDateStr.includes(",") 
+                ? "," 
+                : givenDateStr.includes("-") 
+                    ? "-" 
+                    : " ";
+    const [day, month, year] = givenDateStr.split(delimiter).map(Number);
+    
+     // Note: month - 1 because months are zero-indexed in js
+    const givenDate = new Date(year, month - 1, day);
+    const currentDate = new Date();
+    
+    // Calculate the difference in milliseconds between the current date and the given date
+    const timeDifferenceMs = currentDate - givenDate;
+    
+    // Convert milliseconds to days
+    const daysPassed = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
+    return daysPassed;
+}

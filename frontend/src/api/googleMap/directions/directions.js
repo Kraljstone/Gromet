@@ -30,13 +30,13 @@ export const directions = (
 
   let origin;
   let destination;
-  console.log("pinNumbersToConnect", pinNumbersToConnect)
+  // console.log("pinNumbersToConnect", pinNumbersToConnect)
   const waypoints = pinNumbersToConnect.map((pinNumber, index) => {
-    console.log("markerPositions", markerPositions);
+    // console.log("markerPositions", markerPositions);
     // const position = markerPositions[pinNumber];
     const storedData = JSON.parse(localStorage.getItem('mapLocations'));
     const dtoIndex = storedData.findIndex(dto => dto["RB naloga"] === String(pinNumber))
-    // console.log("index and storedData", dtoIndex, storedData, markerPositions);
+    // console.log("index and storedData", pinNumbersToConnect,dtoIndex, pinNumber, storedData, markerPositions);
     const position = markerPositions[dtoIndex];
     
     if(index === 0){

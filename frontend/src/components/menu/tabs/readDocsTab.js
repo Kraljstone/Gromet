@@ -31,6 +31,7 @@ export const readDocsTab = () => {
         }
       })
       label.innerHTML +=  `<p class='pCurrentFile'>Pinovi sa vise naloga: ${multipleInvoices.map(grp => `[${grp.map(el => `${el['RB naloga']}`)}]`).toString()} </p>`;
+      localStorage.setItem('previouslyLoadedFileData', label.innerHTML.toString());
     }
   }
 
@@ -80,8 +81,17 @@ export const readDocsTab = () => {
   const handleDragOver = (event) => {
     event.preventDefault();
   };
+  
+  const loadPreviousLoadedFileData = () => {
+    const label = document.querySelector('.labelForFileInput');
+    const previouslyLoadedFileData = localStorage.getItem('previouslyLoadedFileData');
+    if (label && previouslyLoadedFileData) {
+      label.innerHTML = previouslyLoadedFileData;
+    }
+  }
 
   menuTabBody.appendChild(createLabelFileInput());
+  loadPreviousLoadedFileData();
   menuTabBody.appendChild(createFileInput());
   menuTabBody.appendChild(createDraggableArea());
 };

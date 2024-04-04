@@ -147,14 +147,49 @@ export const createRoutesTab = () => {
 
     const datePickContainer = document.createElement('div');
     datePickContainer.classList = 'datePickerContainer';
+    const datePicker = createInputElement('date', 'datePicker');
+    datePicker.setAttribute('class', 'datePicker');
     const datePickerIcon = document.createElement('i');
     datePickerIcon.setAttribute('class', 'fas fa-solid fa-calendar');
 
-    const datePicker = createInputElement('date', 'datePicker');
-    datePicker.setAttribute('class', 'datePicker');
+  //   datePickerIcon.addEventListener('click', function(event) {
+  //     // Check if the clicked element is the icon
+  //     if (event.target === datePickerIcon) {
+  //       // If so, trigger a click event on the input element
+  //       datePicker.focus();
+  //       var event = new KeyboardEvent('keydown', {
+  //         target: datePicker,
+  //         key: ' ',
+  //         code: 'Space',
+  //         keyCode: 32,
+  //         which: 32,
+  //         bubbles: true
+  //       });
+  //       console.log("clicked pickerIcon", event.target === datePickerIcon, datePicker, event)
+  //       datePicker.focus();
+  //       document.dispatchEvent(event);
+  //       datePicker.focus();
+  //       datePicker.focus();
+  //       datePicker.focus();
+
+
+  //       datePicker.click();
+  //       datePicker.click();
+
+  //       datePicker.click();
+  //       datePicker.click();
+  //       datePicker.click();
+  //       datePicker.click();
+  //       datePicker.click();
+  //       datePicker.click();
+  //       datePicker.click();
+  //     }
+  // });
+
+    
 
     datePickContainer.appendChild(datePicker);
-    datePickContainer.appendChild(datePickerIcon);
+    // datePickContainer.appendChild(datePickerIcon);
 
     const lockBtn = document.createElement('i');
     let locked = 'true';

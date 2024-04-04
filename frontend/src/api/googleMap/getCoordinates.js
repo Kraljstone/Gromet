@@ -3,7 +3,7 @@ import { apiKey } from '../../../../config.json';
 // Get the coordinates of the address
 
 export const getCoordinates = async (address) => {
-  console.log("Adresa za geolokaciju:", address);
+  // console.log("Adresa za geolokaciju:", address);
   const geolocationAddress = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`
   )

@@ -27,8 +27,8 @@ export const navTable = () => {
           storedRoute.selectedField === vehicle.vehicle
         );
       });
-
       const cell = dataRow.insertCell(colIndex + 1);
+      cell.style.backgroundColor = route && route.randomColor;
       cell.innerHTML = route ? route.routeName : '';
     });
   });

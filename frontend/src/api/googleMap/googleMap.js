@@ -23,7 +23,7 @@ export const initMap = async () => {
 
     const map = await initMapLoad(defaultAddress);
     GLOBAL_MAP = map;
-    console.log(GLOBAL_MAP, "GLOBAL_MAP")
+    // console.log(GLOBAL_MAP, "GLOBAL_MAP")
 
     await addMarkers(mapLocationData, map);
   } else {
