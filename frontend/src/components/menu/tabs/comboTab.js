@@ -32,6 +32,7 @@ export const checkboxLabels = [
     "Prikaži radno vreme i datum",
     "Prikaži grad"
 ]
+localStorage.setItem(ATTRIBUTE_FILTERS_STATE, [0,1]);
 export const createComboTab = () => {
     const menuTabBody = document.querySelector('.menu-tab-body');
 
@@ -95,7 +96,7 @@ const createComboPinsContainer = () => {
 
     if(mapLocations && typeof mapLocations === typeof []){
         // wrap into array 
-        const data = Array.from(mapLocations).sort( (locA, locB) => Number(locA["RB naloga"]) > Number(locB["RB naloga"]) );
+        const data = Array.from(mapLocations).sort( (locA, locB) => Number(locA["RB naloga"]) - Number(locB["RB naloga"]));
 
         data.forEach((locationInfo) => {
             const rowItem = document.createElement('div');
@@ -160,38 +161,53 @@ const createComboPinsContainer = () => {
             const showThird = comboAttributeFiltersState && comboAttributeFiltersState.includes(2);
             const showFourth = comboAttributeFiltersState && comboAttributeFiltersState.includes(3);
             if(showFirst){
-                label.innerHTML = `${locationInfo['Vrednost naloga']},
+                // label.innerHTML = 
+                let price = `${locationInfo['Vrednost naloga']}`;
+                if(price.length > 3){
+                    const index = price.length - 3;
+                    price = price.substring(0,index) + "." + price.substring(index);
+                }
+                const text = `${price},
                  ${locationInfo['Težina_kg']},
                  ${locationInfo['Gabarit_m3']},`
+                 insertSpan(text, label);
             }
 
             const showNone = !showFirst && !showSecond && !showThird && !showFourth;
-            if(showNone)
-                label.innerHTML += ` ${locationInfo['Adresa']}`;
+            if(showNone){
+                // label.innerHTML += 
+                const text = ` ${locationInfo['Adresa']}`;
+                insertSpan(text, label);
+            }
             if(showSecond){
                 const buyerName = String(locationInfo['Naziv kupca']);
-                const isLongerThanLimit = buyerName?.length > 20;
-                const shortenBuyer = isLongerThanLimit ? buyerName.substring(0,19) + '...' : buyerName;
+                const isLongerThanLimit = buyerName?.length > 30;
+                const shortenBuyer = isLongerThanLimit ? buyerName.substring(0,27) + '..' : buyerName;
                 // console.log("short buyer", shortenBuyer, shortenBuyer.length);
-                label.innerHTML += ` ${shortenBuyer}`;
+                // label.innerHTML += 
+                const text = ` ${shortenBuyer}`;
+                insertSpan(text, label);
             }
 
+            const workHours = locationInfo['Radno_vreme'];
+            const date = locationInfo['Datum_naloga'];
+            const daysPassed = daysPassedSinceGivenDate(date);
+            if(daysPassed >= 3 && daysPassed < 5)
+                label.classList.add("daysOverdue3");
+            if(daysPassed >= 5){
+                label.classList.add("daysOverdue5");
+            }
             if(showThird){
-                const workHours = locationInfo['Radno_vreme'];
-                const date = locationInfo['Datum_naloga'];
-                const daysPassed = daysPassedSinceGivenDate(date);
-                if(daysPassed >= 3 && daysPassed < 5)
-                    label.classList.add("daysOverdue3");
-                if(daysPassed >= 5){
-                    label.classList.add("daysOverdue5");
-                }
-                console.log("dayspassed", daysPassed);
-                label.innerHTML += ` ${workHours}, ${date}`;
+                // label.innerHTML += 
+                const text = ` ${workHours}, ${date}`; 
+                insertSpan(text, label);
             }
 
             if(showFourth){
                 const city = locationInfo['Mesto'];
-                label.innerHTML += ` ${city}`;
+                // label.innerHTML += 
+                const text = ` ${city}`;
+                insertSpan(text, label);
             }
 
             rowItem.appendChild(divInvoiceNum);
@@ -212,6 +228,16 @@ const redrawMenuTabBodyElemets = (menuTabBody) => {
     menuTabBody.removeChild(document.querySelector('.divPinsContainer'));
     menuTabBody.removeChild(document.querySelector('.divRouteConfirmationContainer'));
     console.log("uklonjen", menuTabBody)
+    const saved = localStorage.getItem(ATTRIBUTE_FILTERS_STATE);
+    if(saved && saved.length > 1){
+        const numOfFilters =  Array.from(saved.split(",")).length;
+        console.log("num of fil", numOfFilters, Array.from(saved));
+        pinsContainer.style.maxHeight = numOfFilters < 3 ? "558px" : "880px";
+        // special case - to be kept seperate from above condition.
+        if(pinsContainer.childElementCount > 44){
+            pinsContainer.style.maxHeight = "1080px"
+        }
+    }
     setTimeout(() => {
         menuTabBody.appendChild(pinsContainer);
         menuTabBody.appendChild(divRouteDataContainer);
@@ -269,15 +295,20 @@ const createRouteDataTable = () => {
         if(index === 0){
             const divColor = document.createElement('div');
             const savedRoutes = JSON.parse(localStorage.getItem("routesData"));
-            const indexRoute = savedRoutes.findIndex( route => route.routeName === "");
-            console.log("savedRoutes", indexRoute, savedRoutes, );
-            if(indexRoute !== -1) {     
-                const color =  colorPallet[indexRoute % colorPallet.length];
+            if(savedRoutes){
+                const indexRoute = savedRoutes.findIndex( route => route.routeName === "");
+                console.log("savedRoutes", indexRoute, savedRoutes, );
+                if(indexRoute !== -1) {     
+                    const color =  colorPallet[indexRoute % colorPallet.length];
+                    divColor.style.backgroundColor = color;
+                }
+            }else{
+                const color =  colorPallet[0];
                 divColor.style.backgroundColor = color;
-                divColor.className = 'divComboRouteColor';
-                td.appendChild(divColor);
-                td.className = 'tdRouteNameRouteColor';
             }
+            divColor.className = 'divComboRouteColor';
+            td.appendChild(divColor);
+            td.className = 'tdRouteNameRouteColor';
         }
         inputRow.appendChild(td);
     });
@@ -335,6 +366,8 @@ const createRouteDataTable = () => {
         additionalRow2.appendChild(td2);
 
 
+
+
         const PASSED_3_CRITERIA_GREEN = '#64e100';
         const PASSED_2_CRITERIA_ORANGE = '#FFA500';
         const FAILED_ONE_CRITERIA_RED = '#ff1400';
@@ -343,6 +376,32 @@ const createRouteDataTable = () => {
         const routeVehicle = storedVehicles.find((storedVehicle) =>
           storedVehicle?.vehicle?.includes(routeVehicleName)
         );
+
+
+           // Create another additional row with text labels
+           const additionalRow3 = document.createElement("tr");
+
+           const td3 = document.createElement("td");
+           td3.colSpan = 4; // Span the entire row
+           td3.style.textAlign = "justify"; // Justify the text evenly
+           const labels3 = [
+              "Ukupno", 
+              " ", 
+              " ",
+              (criteriaData.weight  + Number(routeVehicle.kg)) +"kg",
+              (criteriaData.gauge +  Number(routeVehicle.m3))  +"m3" 
+          ];
+           labels3.forEach(function (label) {
+               const span3 = document.createElement("span");
+               span3.textContent = label;
+               span3.style.display = "inline-block";
+               span3.style.width = "20%"; // Even distribution
+               td3.appendChild(span3);
+           });
+           additionalRow3.appendChild(td3);
+          
+
+
         const cardShouldBeGreen =
         criteriaData.weight <= +routeVehicle?.kg &&
         criteriaData.gauge <= +routeVehicle?.m3 &&
@@ -358,10 +417,11 @@ const createRouteDataTable = () => {
           : cardShouldBeOrange
           ? PASSED_2_CRITERIA_ORANGE
           : FAILED_ONE_CRITERIA_RED;
-
+         
           additionalRow.style.backgroundColor = cardBackgroundColor;
           additionalRow2.style.backgroundColor = cardBackgroundColor;
-        return [additionalRow, additionalRow2];
+          additionalRow3.style.backgroundColor = cardBackgroundColor;
+        return [additionalRow, additionalRow2, additionalRow3];
     }
 
     // Create buttons container
@@ -539,11 +599,13 @@ const createRouteDataTable = () => {
             const table = document.querySelector('.tableComboRouteData');
             const hasCriteria = table.childNodes.length > 3;
             if(hasCriteria){
+                table.removeChild(table.childNodes[4]);
                 table.removeChild(table.childNodes[3]);
                 table.removeChild(table.childNodes[2]);
             }
-            tableRouteData.appendChild(aditionalRows[0]);
             tableRouteData.appendChild(aditionalRows[1]);
+            tableRouteData.appendChild(aditionalRows[0]);
+            tableRouteData.appendChild(aditionalRows[2]);
             // window.location.reload();
             const enableButton = document.querySelector('.buttonComboCreateRoute');
             enableButton.disabled = false;
@@ -590,4 +652,11 @@ const daysPassedSinceGivenDate = (givenDateStr) => {
     // Convert milliseconds to days
     const daysPassed = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
     return daysPassed;
+}
+
+const insertSpan = (text, parent) => {
+    const span = document.createElement('span');
+    span.className = "spanComboDataLabel";
+    span.innerHTML = text + '\n';
+    parent.appendChild(span);
 }

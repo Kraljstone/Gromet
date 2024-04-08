@@ -4,6 +4,56 @@ import { routesHead } from './routesHead';
 import { directionsRenderers } from '../../../../api/googleMap/directions/directions';
 import { fetchDataAndDownloadExcel } from '../../../../utils/fetchDataAndDownloadExcel';
 
+const prevState = JSON.parse(localStorage.getItem("routesData"));
+const prevVehicleState = JSON.parse(localStorage.getItem("vehiclesData"));
+console.log("prevstate",prevVehicleState, prevState, !prevState || !Array.from(prevState).some(el => String(el.routeName).length > 0) )
+if(!prevVehicleState){
+  const newVehicle = 
+    '[{"vehicle":"jumper123","kg":"1500","m3":"15","cost":"120","averageSpeed":"60","deliveryTime":"15"}]';
+    localStorage.setItem("vehiclesData", newVehicle);
+}
+if(!prevState || !Array.from(prevState).some(el => String(el.routeName).length > 0)){
+  // localStorage.setItem("routesData",[{"routeName":"pr1","locationMapping":"0,1","selectedField":"asd","highwayCost":"55","datePicker":"2024-04-08","distance":59.225,"randomColor":"rgb(31, 119, 180)"}]);
+  const templateObject = {
+    "routeName": "",
+    "locationMapping": "",
+    "selectedField": "",
+    "highwayCost": "",
+    "datePicker": "",
+    "distance": "",
+    "randomColor": ""
+};
+
+// Create an array to store the objects
+const objectsArray = [];
+
+// Create the first object with provided values
+const firstObject = {
+    "routeName": "pr1",
+    "locationMapping": "0,1",
+    "selectedField": "jumper123",
+    "highwayCost": "55",
+    "datePicker": "2024-04-08",
+    "distance": 59.225,
+    "randomColor": "rgb(31, 119, 180)"
+};
+
+// Push the first object to the array
+objectsArray.push(firstObject);
+
+// Create 19 more objects with empty attributes
+for (let i = 1; i < 20; i++) {
+    const newObj = {};
+    for (let key in templateObject) {
+        newObj[key] = "";
+    }
+    objectsArray.push(newObj);  
+}
+console.log("obj", objectsArray);
+localStorage.setItem("routesData", JSON.stringify(objectsArray));
+}
+
+
 export const createRoutesTab = () => {
   const menuTabBody = document.querySelector('.menu-tab-body');
   const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
