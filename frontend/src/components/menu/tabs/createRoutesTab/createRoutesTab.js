@@ -3,6 +3,7 @@ import { routesReset } from './routesReset';
 import { routesHead } from './routesHead';
 import { directionsRenderers } from '../../../../api/googleMap/directions/directions';
 import { fetchDataAndDownloadExcel } from '../../../../utils/fetchDataAndDownloadExcel';
+import MCDatepicker from 'mc-datepicker';
 
 const prevState = JSON.parse(localStorage.getItem("routesData"));
 const prevVehicleState = JSON.parse(localStorage.getItem("vehiclesData"));
@@ -197,48 +198,34 @@ export const createRoutesTab = () => {
 
     const datePickContainer = document.createElement('div');
     datePickContainer.classList = 'datePickerContainer';
-    const datePicker = createInputElement('date', 'datePicker');
-    datePicker.setAttribute('class', 'datePicker');
+    const datePickerInput = createInputElement('text', 'datePicker');
+    datePickerInput.setAttribute('class', 'datePicker');
+    datePickerInput.id = "datepicker"+i;
+    datePickerInput.dataset.routeIndex = i;
     const datePickerIcon = document.createElement('i');
     datePickerIcon.setAttribute('class', 'fas fa-solid fa-calendar');
 
-  //   datePickerIcon.addEventListener('click', function(event) {
-  //     // Check if the clicked element is the icon
-  //     if (event.target === datePickerIcon) {
-  //       // If so, trigger a click event on the input element
-  //       datePicker.focus();
-  //       var event = new KeyboardEvent('keydown', {
-  //         target: datePicker,
-  //         key: ' ',
-  //         code: 'Space',
-  //         keyCode: 32,
-  //         which: 32,
-  //         bubbles: true
-  //       });
-  //       console.log("clicked pickerIcon", event.target === datePickerIcon, datePicker, event)
-  //       datePicker.focus();
-  //       document.dispatchEvent(event);
-  //       datePicker.focus();
-  //       datePicker.focus();
-  //       datePicker.focus();
+    const picker = MCDatepicker.create({
+      el: '#datepicker'+i,
+      dateFormat: "yyyy-mm-dd"
+    });
+
+    datePickerInput.addEventListener('click', (ev) => picker.open());
+    picker.onSelect((date, formatedDate) => 
+    {
+      console.log('Selected date: ' + date, formatedDate);
+      datePickerInput.value = formatedDate;
+      const routeIndex = datePickerInput.dataset.routeIndex;
+      const savedRoutes = localStorage.getItem("routesData");
+      if(savedRoutes){
+        const arr = JSON.parse(savedRoutes);
+        arr[routeIndex].datePicker = formatedDate;
+        // localStorage.setItem("routesData", JSON.stringify(arr));
+      }
+    });
 
 
-  //       datePicker.click();
-  //       datePicker.click();
-
-  //       datePicker.click();
-  //       datePicker.click();
-  //       datePicker.click();
-  //       datePicker.click();
-  //       datePicker.click();
-  //       datePicker.click();
-  //       datePicker.click();
-  //     }
-  // });
-
-    
-
-    datePickContainer.appendChild(datePicker);
+    datePickContainer.appendChild(datePickerInput);
     // datePickContainer.appendChild(datePickerIcon);
 
     const lockBtn = document.createElement('i');
