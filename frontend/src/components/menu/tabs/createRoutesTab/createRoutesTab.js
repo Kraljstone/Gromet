@@ -8,9 +8,9 @@ import MCDatepicker from 'mc-datepicker';
 const prevState = JSON.parse(localStorage.getItem("routesData"));
 const prevVehicleState = JSON.parse(localStorage.getItem("vehiclesData"));
 console.log("prevstate",prevVehicleState, prevState, !prevState || !Array.from(prevState).some(el => String(el.routeName).length > 0) )
-if(!prevVehicleState){
+if(!prevVehicleState || (prevVehicleState && prevVehicleState.length === 0)){
   const newVehicle = 
-    '[{"vehicle":"jumper123","kg":"1500","m3":"15","cost":"120","averageSpeed":"60","deliveryTime":"15"}]';
+    '[{"vehicle":"test","kg":"0","m3":"0","cost":"0","averageSpeed":"0","deliveryTime":"0"}]';
     localStorage.setItem("vehiclesData", newVehicle);
 }
 if(!prevState || !Array.from(prevState).some(el => String(el.routeName).length > 0)){
@@ -30,9 +30,9 @@ const objectsArray = [];
 
 // Create the first object with provided values
 const firstObject = {
-    "routeName": "pr1",
+    "routeName": "test",
     "locationMapping": "0,1",
-    "selectedField": "jumper123",
+    "selectedField": "test",
     "highwayCost": "55",
     "datePicker": "2024-04-08",
     "distance": 59.225,
@@ -204,19 +204,27 @@ export const createRoutesTab = () => {
     datePickerInput.dataset.routeIndex = i;
     const datePickerIcon = document.createElement('i');
     datePickerIcon.setAttribute('class', 'fas fa-solid fa-calendar');
+    datePickerIcon.id = "datepickerIcon"+i;
 
     const picker = MCDatepicker.create({
       el: '#datepicker'+i,
       dateFormat: "yyyy-mm-dd"
     });
 
+    const savedRoutes = localStorage.getItem("routesData");  
+    datePickerIcon.addEventListener('click', (ev) => picker.open());
     datePickerInput.addEventListener('click', (ev) => picker.open());
     picker.onSelect((date, formatedDate) => 
     {
       console.log('Selected date: ' + date, formatedDate);
       datePickerInput.value = formatedDate;
+      datePickerInput.style.zIndex = 10;
       const routeIndex = datePickerInput.dataset.routeIndex;
-      const savedRoutes = localStorage.getItem("routesData");
+      
+      const datePickerIcon = document.querySelector("#datepickerIcon"+routeIndex);
+      if(datePickerIcon){
+        datePickContainer.removeChild(datePickerIcon);
+      }
       if(savedRoutes){
         const arr = JSON.parse(savedRoutes);
         arr[routeIndex].datePicker = formatedDate;
@@ -226,7 +234,13 @@ export const createRoutesTab = () => {
 
 
     datePickContainer.appendChild(datePickerInput);
-    // datePickContainer.appendChild(datePickerIcon);
+ 
+    if(savedRoutes){
+      const arr = JSON.parse(savedRoutes);
+      const isFilled = arr[i]?.datePicker?.length > 0;
+      if(!isFilled)
+        datePickContainer.appendChild(datePickerIcon);
+    }
 
     const lockBtn = document.createElement('i');
     let locked = 'true';

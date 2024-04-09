@@ -16,7 +16,7 @@ export const vehicleTab = () => {
     'Nosivost (Kg)',
     'Gabarit (m³)',
     'Trošak (RSD)',
-    'Pročna brzina (km/h)',
+    'Prosečna brzina (km/h)',
     'Vreme istovara (min)',
   ];
 
