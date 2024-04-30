@@ -163,6 +163,23 @@ export const createRoutesTab = () => {
               routesData[index] = Object.fromEntries(
                 Object.keys(routesData[index]).map((key) => [key, ''])
               );
+              const isSortingNeeded = routesData[index + 1] && routesData[index + 1]?.routeName?.length > 1;
+              if(isSortingNeeded){
+                const sortingCondition =  (a, b) => {
+                  if (a.routeName === "" && b.routeName !== "") {
+                      return 1; // Move a to end
+                  } else if (a.routeName !== "" && b.routeName === "") {
+                      return -1; // Move b to end
+                  } else {
+                      return 0; // Maintain relative order
+                  }
+                }
+                routesData.sort(sortingCondition);
+                routesData.forEach((route, index) => route.randomColor = colorPallet[index])
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1000);
+              }
               localStorage.setItem('routesData', JSON.stringify(routesData));
             }
           }
@@ -302,3 +319,4 @@ export const createRoutesTab = () => {
 
   routesReset();
 };
+

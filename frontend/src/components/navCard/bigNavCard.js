@@ -149,11 +149,14 @@ export const bigNavCard = ({
   leftColumn.appendChild(gaugeElement);
 
   const unloadVehicleTotal = routeVehicle.deliveryTime * filteredAddresses.length;
+  const unloadHours = Math.floor(unloadVehicleTotal / 60);
+  const unloadMinutes = unloadVehicleTotal - (unloadHours*60);
+
   rightColumn.appendChild(
     createElement(
       'p',
       null,
-      `${routeDuration[0]?.hours}h ${routeDuration[0]?.minutes}min, ${unloadVehicleTotal}min`
+      `${routeDuration[0]?.hours}h ${routeDuration[0]?.minutes} minuta,  ${unloadHours}h ${unloadMinutes} minuta`
     )
   );
   rightColumn.appendChild(
