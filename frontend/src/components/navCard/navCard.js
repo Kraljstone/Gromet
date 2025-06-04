@@ -27,9 +27,9 @@ export const navCard = ({
   const mapLocationData = JSON.parse(localStorage.getItem('mapLocations'));
   const startingPin = locationMapping.split(',');
   const dateParts = datePicker ? datePicker.split('-') : [];
-  const filteredAddresses = mapLocationData.filter((data) => {
+  const filteredAddresses = mapLocationData ? mapLocationData.filter((data) => {
     return startingPin.includes(data['RB naloga']);
-  });
+  }) : [];
 
   // console.log("Loc invoice", locationInvoice);
   // const uniqueAddresses = [

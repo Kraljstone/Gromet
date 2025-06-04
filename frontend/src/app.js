@@ -15,6 +15,7 @@ if (isLoggedIn) {
 
   // Load Google Maps API and initialize the map
   loadGoogleMapsAPI();
+  console.log("loadGoogleMapsAPI() finished; initializing map...");
   initMap();
   menu();
   showNavCard();
