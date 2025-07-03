@@ -124,7 +124,16 @@ export const bigNavCard = ({
   const cardShouldBeOrange = (totalRouteLoad <= +routeVehicle?.kg && totalGauge <= +routeVehicle?.m3) ||
   (totalRouteLoad <= +routeVehicle?.kg && profitabilityRatio <= 2) ||
   (totalGauge <= +routeVehicle?.m3 && profitabilityRatio <= 2);
-    
+  
+  
+  console.log("totalrouteLoad", totalRouteLoad, +routeVehicle?.kg);
+  console.log("gauge", totalGauge, routeVehicle.m3);
+  console.log("prof", profitabilityRatio, 2);
+  console.log("card col", cardShouldBeGreen, cardShouldBeOrange);
+  console.log("first", (totalRouteLoad <= +routeVehicle?.kg && totalGauge <= +routeVehicle?.m3));
+  console.log("second",  (totalRouteLoad <= +routeVehicle?.kg && profitabilityRatio <= 2));
+  console.log("third", (totalGauge <= +routeVehicle?.m3 && profitabilityRatio <= 2));
+  
   const PASSED_3_CRITERIA_GREEN = '#64e100';
   const PASSED_2_CRITERIA_ORANGE = '#FFA500';
   const FAILED_ONE_CRITERIA_RED = '#ff1400';

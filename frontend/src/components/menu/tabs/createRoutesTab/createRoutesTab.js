@@ -1,17 +1,21 @@
 import { loadRoutesFromStorage } from '../../../../store/routesStore';
 import { routesReset } from './routesReset';
 import { routesHead } from './routesHead';
-import { directionsRenderers } from '../../../../api/googleMap/directions/directions';
+import { initMap } from '../../../../api/googleMap/googleMap'
+import { directionsRenderers, clearDirections } from '../../../../api/googleMap/directions/directions';
 import { fetchDataAndDownloadExcel } from '../../../../utils/fetchDataAndDownloadExcel';
 import MCDatepicker from 'mc-datepicker';
+
+export const MAX_NUMBER_OF_ROUTES = 16;
 
 const prevState = JSON.parse(localStorage.getItem("routesData"));
 const prevVehicleState = JSON.parse(localStorage.getItem("vehiclesData"));
 console.log("prevstate",prevVehicleState, prevState, !prevState || !Array.from(prevState).some(el => String(el.routeName).length > 0) )
 if(!prevVehicleState || (prevVehicleState && prevVehicleState.length === 0)){
-  const newVehicle = 
-    '[{"vehicle":"test","kg":"0","m3":"0","cost":"0","averageSpeed":"0","deliveryTime":"0"}]';
-    localStorage.setItem("vehiclesData", newVehicle);
+  // const newVehicle = 
+    // '[{"vehicle":"testVozilo","kg":"0","m3":"0","cost":"0","averageSpeed":"0","deliveryTime":"0"}]';
+    // localStorage.setItem("vehiclesData", newVehicle);
+    localStorage.setItem("vehiclesData", "[]");
 }
 if(!prevState || !Array.from(prevState).some(el => String(el.routeName).length > 0)){
   // localStorage.setItem("routesData",[{"routeName":"pr1","locationMapping":"0,1","selectedField":"asd","highwayCost":"55","datePicker":"2024-04-08","distance":59.225,"randomColor":"rgb(31, 119, 180)"}]);
@@ -27,28 +31,29 @@ if(!prevState || !Array.from(prevState).some(el => String(el.routeName).length >
 
 // Create an array to store the objects
 const objectsArray = [];
+// Create 15 more objects with empty attributes
+for (let i = 0; i < MAX_NUMBER_OF_ROUTES; i++) {
+  if (i === 0) {
+    // Create the first object with provided values
+    // const firstObject = {
+    //   "routeName": "test",
+    //   "locationMapping": "0,1",
+    //   "selectedField": "testVozilo",
+    //   "highwayCost": "55",
+    //   "datePicker": "2024-04-08",
+    //   "distance": 59.225,
+    //   "randomColor": "rgb(31, 119, 180)"
+    // };
 
-// Create the first object with provided values
-const firstObject = {
-    "routeName": "test",
-    "locationMapping": "0,1",
-    "selectedField": "test",
-    "highwayCost": "55",
-    "datePicker": "2024-04-08",
-    "distance": 59.225,
-    "randomColor": "rgb(31, 119, 180)"
-};
-
-// Push the first object to the array
-objectsArray.push(firstObject);
-
-// Create 19 more objects with empty attributes
-for (let i = 1; i < 20; i++) {
+    // // Push the first object to the array
+    // objectsArray.push(firstObject);
+  } else {
     const newObj = {};
     for (let key in templateObject) {
-        newObj[key] = "";
+      newObj[key] = "";
     }
-    objectsArray.push(newObj);  
+    objectsArray.push(newObj);
+  }
 }
 console.log("obj", objectsArray);
 localStorage.setItem("routesData", JSON.stringify(objectsArray));
@@ -92,7 +97,7 @@ export const createRoutesTab = () => {
     '#FFA833',
   ];
 
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < MAX_NUMBER_OF_ROUTES; i++) {
     // Create a table row
     const trBody = document.createElement('tr');
 
@@ -229,8 +234,20 @@ export const createRoutesTab = () => {
     });
 
     const savedRoutes = localStorage.getItem("routesData");  
-    datePickerIcon.addEventListener('click', (ev) => picker.open());
-    datePickerInput.addEventListener('click', (ev) => picker.open());
+    datePickerIcon.addEventListener('click', (ev) => {
+      const targetParent = ev?.target?.parentElement;
+      const isDisabled = targetParent?.childNodes[0]?.disabled === true;
+      if(!isDisabled){
+        picker.open();
+      }
+    });
+    datePickerInput.addEventListener('click', (ev) => {
+      const targetParent = ev?.target?.parentElement;
+      const isDisabled = targetParent?.childNodes[0]?.disabled === true;
+      if(!isDisabled){
+        picker.open();
+      }
+    });
     picker.onSelect((date, formatedDate) => 
     {
       console.log('Selected date: ' + date, formatedDate);
@@ -318,5 +335,9 @@ export const createRoutesTab = () => {
   loadRoutesFromStorage('.routesTableBody', 'routesData');
 
   routesReset();
+
+  // // redraw map
+  // clearDirections();
+  // initMap();
 };
 

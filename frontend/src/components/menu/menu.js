@@ -10,6 +10,7 @@ const menuBody = document.querySelector('.menu-tab-body');
 
 export const menu = () => {
   if (menuSelector.style.display === 'none' || !menuSelector.style.display) {
+    navBarSelector.innerHTML = '-';
     menuSelector.style.display = 'block';
     const routesTab = document.querySelector('.routes-tab');
     routesTab.classList.add('menu-active-tab');
@@ -17,12 +18,13 @@ export const menu = () => {
   }
 
   menuBody.innerHTML = '';
+  navBarSelector.innerHTML = '+';
   menuSelector.style.display = 'none';
   const tabs = document.querySelectorAll('.tabs');
   tabs.forEach((tab) => tab.classList.remove('menu-active-tab'));
 };
 
-navBarSelector.addEventListener('click', menu);
+navBarSelector?.addEventListener('click', menu);
 
 // Loading all Tabs
 menuTabs();

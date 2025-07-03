@@ -43,9 +43,14 @@ export const navCard = ({
   // console.log("filterADR", filteredAddresses);
   const invoiceValueSum = () => {
     let totalValue = 0;
+    console.log("invoice sum addr", filteredAddresses);
     filteredAddresses.forEach((invoiceValue) => {
-      totalValue += +invoiceValue['Vrednost naloga'];
+      const isStoragePlace = invoiceValue['RB naloga'] === '0' || invoiceValue['RB naloga'] === '1';
+      if(!isStoragePlace && invoiceValue['Vrednost naloga'] !== "/"){
+        totalValue += +invoiceValue['Vrednost naloga'];
+      }
     });
+    console.log("invoice sum addr", filteredAddresses, totalValue);
     return totalValue;
   };
 

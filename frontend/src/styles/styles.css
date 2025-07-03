@@ -13,7 +13,7 @@ body {
 #map {
   height: 100%;
   width: 100%;
-  height: 750px;
+  height: 650px;
 }
 
 .layout {
@@ -22,6 +22,7 @@ body {
   background-color: rgb(241, 241, 241);
   display: none;
   flex-direction: column;
+  overflow: auto;
 }
 .nav-bar {
   display: flex;
@@ -30,14 +31,12 @@ body {
 
 .nav-bar-btn {
   border: none;
-  font-size: 84px;
-  padding: 0 12px;
   color: rgb(186, 186, 186);
-  margin: 0;
-  cursor: default;
-  width: 50px;
-  user-select: none;
-  margin-top: 10px;
+  font-size: 50px;
+  height: 40px;
+  width: 40px;
+  margin: 10px;
+  text-align: center;
 }
 
 .nav-bar-btn:hover {
@@ -55,13 +54,13 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 42%;  
-  height: 928px;
-  padding: 0 16px;
+  width: 55%;  
+  height: 650px;
+  padding: 0 10px;
   z-index: 10;
   background-color: rgb(241, 241, 241);
-  overflow: scroll;
-  max-height: 750px;
+  overflow: auto;
+  max-height: 1550px;
 }
 
 .menu-tabs {
@@ -69,7 +68,14 @@ body {
   justify-content: space-evenly;
   border-bottom: 1px solid gray;
   cursor: default;
-  height: 60px;
+  height: 30px;
+}
+
+h3{
+  font-size: 18px;
+  max-height: 40px;
+  margin: 0px;
+  padding: 0px;
 }
 
 .menu-tabs h3:hover {
@@ -83,7 +89,7 @@ body {
 .menu-tab-body {
   /* padding-top: 16px; */
   max-width: 1100px;
-  height: 680px !important;
+  max-height: 1680px !important;
   overflow-y: scroll;
 }
 
@@ -112,9 +118,27 @@ body {
   justify-content: center;
   align-items: center;
   border: 1px solid gainsboro;
-  height: 40px;
-  padding: 16px 6px;
+  height: 18px;
+  padding: 8px 0px;
 }
+#vehicleTable th{
+  font-size: 15px;
+  height: 40px !important;
+}
+
+.routesTable > th {
+  height: 40px !important;
+}
+
+/* 
+.routesTableBody > input{
+  width: 89px !important;
+}
+
+.routesTableBody > select{
+  width: 91px !important;
+} */
+
 .routesTable,
 .routesTableBody {
   width: 100%;
@@ -128,27 +152,28 @@ body {
 .routesTableBody th,
 .routesTableBody div,
 .routesTableBody input {
-  width: 100%;
+  width: 106.5%;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid gainsboro;
-  height: 40px;
-  padding: 16px 0px;
+  height: 30px;
+  padding: 0px 0px;
 }
 
 .routesTable th:last-child,
 .routesTable div:last-child,
 .routesTableBody th:last-child,
 .routesTableBody div:last-child {
-  width: 300%;
+  width: 306%;
   display: flex;
   align-items: center;
 }
 .routeAndColor {
   height: 100%;
   width: 100%;
+  /* max-width: 111px; */
 }
 
 .pinConnectColor {
@@ -157,21 +182,52 @@ body {
   color: transparent;
 }
 
+button, div.addVehicleBtn{
+  height: 30px;
+  background-color: #4ab3f5;
+  cursor: pointer;
+  color: white;
+  border: 1px solid #ababab;
+  border-radius: 8px;
+  text-align: center;
+  align-items: center;
+}
+
+button:hover, div.addVehicleBtn:hover{
+  background-color: #0098f7;
+}
+
+button:disabled, div.addVehicleBtn:disabled{
+  background-color: rgb(218, 218, 218);
+}
+
+
 .addVehicleBtn {
   width: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  border: 1px solid gainsboro;
-  color: rgb(143, 143, 143);
   margin: 16px 16px;
-  padding: 8px 16px;
-  border-radius: 6px;
+  padding: 0px 16px;
+  border-radius: 8px;
 }
 
 .addVehicleBtn:hover {
-  background-color: #b9b9b9;
   color: white;
   cursor: pointer;
 }
+
+.vehicleBtnContainer > .addVehicleBtn:first-child{
+  background-color: #2ecc71;
+} 
+
+
+.vehicleBtnContainer > .addVehicleBtn:first-child:hover{
+  background-color: #27ae60;
+} 
+
+
 
 .resetButtonContainer {
   width: 100%;
@@ -180,21 +236,13 @@ body {
 }
 
 .resetRoutesBtn {
-  border: 1px solid black;
-  background: rgb(0, 0, 131);
-  color: white;
   width: 150px;
   text-align: center;
-  margin-top: 32px;
-  padding: 10px 4px;
-  border-radius: 6px;
-  font-size: 18px;
+  margin-top: 10px;
+  font-size: 16px;
 }
 
 .resetRoutesBtn:hover {
-  background-color: rgb(0, 0, 168);
-  color: white;
-  cursor: pointer;
   box-shadow: 2px 2px 2px rgb(133, 133, 133);
 }
 
@@ -204,7 +252,7 @@ body {
 }
 
 .gg-trash {
-  scale: 1.8;
+  scale: 1.5;
   margin-left: 5px;
 }
 
@@ -215,7 +263,7 @@ body {
 .dropdown-input {
   cursor: pointer;
   width: 100%;
-  height: 74px;
+  height: 30px;
   border: 1px solid #dcdcdc;
 }
 
@@ -223,7 +271,7 @@ body {
   color: white;
   background-color: rgb(0, 160, 255);
   font-size: 14px;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 6px 12px;
 }
 
@@ -244,7 +292,7 @@ input:disabled {
 .fa-lock,
 .fa-lock-open {
   width: 55px;
-  font-size: 35px;
+  font-size: 25px;
   margin-top: -2px;
 }
 
@@ -254,8 +302,9 @@ input:disabled {
 }
 
 .cardContainer {
-  overflow-y: scroll;
-  height: 270px;
+  overflow-y: auto;
+  height: 235px;
+  margin-left: 10px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
@@ -291,9 +340,10 @@ input:disabled {
 }
 
 .card {
+  height: 225px;
   width: 170px;
   text-align: center;
-  margin: 9px 5px 0px 0px;
+  margin: 5px 5px 0px 0px;
   border-radius: 10px;
   position: relative;
 }
@@ -347,7 +397,7 @@ input:disabled {
   font-size: 12px;
   margin-bottom: 0;
   margin-top: 0;
-  padding: 10px 0;
+  padding: 3px 0;
 }
 
 .resetRoutesBtn:disabled {
@@ -367,8 +417,7 @@ input:disabled {
 
 .datePickerContainer i {
   position: absolute;
-  top: 17px;
-  font-size: 35px;
+  font-size: 25px;
   color: gray;
 }
 
@@ -401,8 +450,9 @@ input:disabled {
 
 .nav {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: flex-start;
+  max-height: 200px;
 }
 
 .nav-btn-container {
@@ -437,16 +487,16 @@ input:disabled {
 }
 
 .bigCard {
-  margin: 5px;
+  margin: 3px;
   /* padding: 16px; */
-  height: 235px;
+  height: 215px;
   width: 180px;
 }
 
 .h2BigCardRouteName {
   margin: 0;
-  font-size: 16px;
-  padding: 8px;
+  font-size: 14px;
+  padding: 6px;
   text-align: center;
 }
 
@@ -532,7 +582,7 @@ tr td:first-child {
   color: white;
   padding: 10px 15px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -546,7 +596,7 @@ tr td:first-child {
 
 .info {
   padding-left: 20px;
-  font-size: 32px;
+  font-size: 25px;
 }
 
 .info:hover {
@@ -555,7 +605,7 @@ tr td:first-child {
 }
 
 .print {
-  font-size: 32px;
+  font-size: 25px;
   margin-left: 8px;
 }
 
@@ -571,9 +621,16 @@ tr td:first-child {
 }
 
 .labelForFileInput {
-  text-decoration: underline;
   color: blue;
   cursor: pointer;
+}
+
+.pCurrentFile{
+  text-decoration: underline;
+}
+
+.labelForFileInput > .pCurrentFile:last-child{
+  text-decoration: none !important;
 }
 
 .vehicleBtnContainer {
@@ -585,6 +642,14 @@ tr td:first-child {
   text-decoration: none !important;
 }
 
+.pCurrentFileGreen{
+  color:#2ecc71;
+}
+
+.pCurrentFileGreen:hover{
+  color: #27ae60;
+}
+
 /* styles for route combos */
 .divComboCheckboxContainer{
   display: flex;
@@ -594,17 +659,16 @@ tr td:first-child {
   align-items: center;
   text-align: center;
   margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .divPinsContainer{
   display: flex;
-  /* flex-direction: row; */
   flex-wrap: wrap;
-  column-gap: 2px;
-  row-gap: 6px;
-  max-height: 558px;
+  /* column-gap: 2px;
+  row-gap: 6px; */
+  max-height: 835px;
   max-width: 880px;
-  /* padding-right: 12px; */
   overflow-y: auto;
   flex-direction: column;
   align-content: flex-start;
@@ -698,5 +762,9 @@ tr td:first-child {
 }
 .inputVozilo{
   min-width: 80px;
+  cursor: pointer;
+  border: 1px solid #dcdcdc;
+  width: 100%;
+  background-color: white;
 }
 /* END styles for route combos */

@@ -10,31 +10,36 @@ export const routesReset = () => {
   resetButton.setAttribute('class', 'resetRoutesBtn');
   resetButton.setAttribute('disabled', 'disabled');
   resetButton.addEventListener('click', () => {
-    const rows = document.querySelectorAll('.routesTableBody');
+    const isConfirmed = window.confirm(
+        'Da li ste sigurni da zelite da obrisete sve rute, čak i one zakljucane?'
+      );
+    if (isConfirmed) {
+      const rows = document.querySelectorAll('.routesTableBody');
 
-    rows.forEach((row) => {
-      const inputs = row.querySelectorAll('input[name], select[name]');
-      inputs.forEach((input) => {
-        if (input.nodeName.toLowerCase() === 'select') {
-          input.selectedIndex = 0;
-        } else {
-          input.value = '';
-        }
+      rows.forEach((row) => {
+        const inputs = row.querySelectorAll('input[name], select[name]');
+        inputs.forEach((input) => {
+          if (input.nodeName.toLowerCase() === 'select') {
+            input.selectedIndex = 0;
+          } else {
+            input.value = '';
+          }
+        });
       });
-    });
 
-    localStorage.removeItem('routesData');
-    clearDirections();
-    const card = document.querySelectorAll('.card');
-    const bigCard = document.querySelectorAll('.bigCard');
-    const availabilityTable = document.querySelector('.availabilityTable');
-    card.forEach((card) => (card.style.display = 'none'));
-    bigCard.forEach((bigCard) => (bigCard.style.display = 'none'));
-    availabilityTable?.remove();
-    const navBtn = document.querySelector('.nav-btn-container');
-    const nav = document.querySelector('.nav');
-    navBtn.style.height = 'auto';
-    nav.style.height = 'auto';
+      localStorage.removeItem('routesData');
+      clearDirections();
+      const card = document.querySelectorAll('.card');
+      const bigCard = document.querySelectorAll('.bigCard');
+      const availabilityTable = document.querySelector('.availabilityTable');
+      card.forEach((card) => (card.style.display = 'none'));
+      bigCard.forEach((bigCard) => (bigCard.style.display = 'none'));
+      availabilityTable?.remove();
+      const navBtn = document.querySelector('.nav-btn-container');
+      const nav = document.querySelector('.nav');
+      navBtn.style.height = 'auto';
+      nav.style.height = 'auto';
+    }
   });
 
   resetButtonContainer.appendChild(resetButton);

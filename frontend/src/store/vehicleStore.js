@@ -55,6 +55,14 @@ export const loadVehiclesFromStorage = (rowIndex, createInputElement) => {
         key
       );
       input.value = inputValue || '';
+      const elementsWithDefaultValues = ["kg", "m3", "cost", "averageSpeed", "deliveryTime"];
+      if (elementsWithDefaultValues.includes(key)) {
+        input.addEventListener('keydown', (e) => {
+          if (!/^\d$/.test(e.key))
+            if (e.key.length === 1)
+              e.preventDefault();
+        });
+      }
 
       vehicleBody.appendChild(input);
     });

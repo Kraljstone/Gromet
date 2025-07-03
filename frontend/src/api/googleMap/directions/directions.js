@@ -32,10 +32,10 @@ export const directions = (
   let destination;
   // console.log("pinNumbersToConnect", pinNumbersToConnect)
   const waypoints = pinNumbersToConnect.map((pinNumber, index) => {
-    // console.log("markerPositions", markerPositions);
     // const position = markerPositions[pinNumber];
     const storedData = JSON.parse(localStorage.getItem('mapLocations'));
     const dtoIndex = storedData.findIndex(dto => dto["RB naloga"] === String(pinNumber))
+    console.log("markerPositions", markerPositions,dtoIndex, pinNumber, storedData);
     // console.log("index and storedData", pinNumbersToConnect,dtoIndex, pinNumber, storedData, markerPositions);
     const position = markerPositions[dtoIndex];
     
@@ -47,8 +47,9 @@ export const directions = (
     }
 
 
+    console.log("positions of directionns:", position);
     return {
-      location: new google.maps.LatLng(position.lat, position.lng),
+      location: new google.maps.LatLng(position?.lat, position?.lng),
       stopover: true,
     };
   });

@@ -31,5 +31,22 @@ export const initMap = async () => {
     setTimeout(() => {
       alert('Nema prethodno ucitanih podataka');
     }, 1000);
+
+     // Fallback to Dobanovci, Belgrade Gromet magacin
+    const fallbackAddress = {lat:44.822679748679825, lng:20.236433548011924};
+    
+    const initMapLoad = async (addressCoordinates) => {
+      const { Map } = await google.maps.importLibrary('maps');
+      let map = new Map(document.getElementById('map'), {
+        zoom: 20,
+        center: addressCoordinates,
+        mapId: '3eecad6d62fb1776',
+      });
+
+      return map;
+    };
+
+    const map = await initMapLoad(fallbackAddress);
+    GLOBAL_MAP = map;
   }
 };

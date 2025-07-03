@@ -65,6 +65,17 @@ export const vehicleTab = () => {
     const averageSpeed = createInputElement('text', 'averageSpeed');
     const deliveryTime = createInputElement('text', 'deliveryTime');
 
+
+   const elementsWithDefaultValues = [kg,m3,cost,averageSpeed, deliveryTime];
+   elementsWithDefaultValues.forEach(el => {
+    el.value = 1;
+    el.addEventListener('keydown',(e) =>{
+      if (!/^\d$/.test(e.key))
+        if (e.key.length === 1)
+          e.preventDefault();
+    });
+  });
+
     vehicleBody.appendChild(deleteBtn);
     vehicleBody.appendChild(vehicle);
     vehicleBody.appendChild(kg);

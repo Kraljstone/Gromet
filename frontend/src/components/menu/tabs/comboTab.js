@@ -1,7 +1,9 @@
 import {directions} from '../../../api/googleMap/directions/directions';
-import {GLOBAL_MAP} from '../../../api/googleMap/googleMap';
+import {GLOBAL_MAP, initMap} from '../../../api/googleMap/googleMap';
+import { clearDirections } from '../../../api/googleMap/directions/directions';
 import { getCoordinates } from '../../../api/googleMap/getCoordinates';
 import { calculateTotal } from '../../../utils/calculateTotal';
+
 const colorPallet = [
     '#1f77b4',
     '#ff7f0e',
@@ -24,8 +26,10 @@ const colorPallet = [
     '#A833FF',
     '#FFA833',
 ];
-
+export const MAX_NUMBER_OF_COMBO_PINS_COLUMNS = 3;
 export const ATTRIBUTE_FILTERS_STATE = "attributeFiltersState";
+export const LAST_TEMP_ROUTE_CREATED = "lastTempRoute";
+
 export const checkboxLabels = [
     "Prikaži vrednost, kg i gabarit",
     "Prikaži skraćeni naziv kupca",
@@ -74,8 +78,13 @@ export const createComboTab = () => {
     const pinsContainer = createComboPinsContainer();
     menuTabBody.appendChild(pinsContainer);
     // finalize route combo container
-   const divFinalContainer = createRouteDataTable();
+    const divFinalContainer = createRouteDataTable();
     menuTabBody.appendChild(divFinalContainer);
+
+    fillPreviousInputValues();
+    // // redraw map
+    // clearDirections();
+    // initMap();
 
 };
 
@@ -210,6 +219,11 @@ const createComboPinsContainer = () => {
                 insertSpan(text, label);
             }
 
+            if(!showNone){
+                const text = ` , ${locationInfo['Adresa']}`;
+                insertSpan(text, label);
+            }
+
             rowItem.appendChild(divInvoiceNum);
             rowItem.appendChild(checkbox);
             // rowItem.appendChild(pinGlyph);
@@ -229,8 +243,10 @@ const redrawMenuTabBodyElemets = (menuTabBody) => {
     menuTabBody.removeChild(document.querySelector('.divRouteConfirmationContainer'));
     console.log("uklonjen", menuTabBody)
     const saved = localStorage.getItem(ATTRIBUTE_FILTERS_STATE);
+    
     if(saved && saved.length > 1){
         const numOfFilters =  Array.from(saved.split(",")).length;
+       
         console.log("num of fil", numOfFilters, Array.from(saved));
         pinsContainer.style.maxHeight = numOfFilters < 3 ? "558px" : "880px";
         // special case - to be kept seperate from above condition.
@@ -241,6 +257,11 @@ const redrawMenuTabBodyElemets = (menuTabBody) => {
     setTimeout(() => {
         menuTabBody.appendChild(pinsContainer);
         menuTabBody.appendChild(divRouteDataContainer);
+        let height = 0;
+        pinsContainer.childNodes.forEach(el => height += el.clientHeight);
+        const DEFAULT_CONSTANT_HEIGHT = 100;
+        const realHeight= DEFAULT_CONSTANT_HEIGHT+ height/MAX_NUMBER_OF_COMBO_PINS_COLUMNS;
+        pinsContainer.style.maxHeight = realHeight+"px";
     }, 300);
 
 }
@@ -275,6 +296,9 @@ const createRouteDataTable = () => {
         input.className = `input${headerTitles[index]?.replace(" ", "")}`
         if(index !== 1){
             input.type = type;
+            if(type === "number"){
+                input.value = 1;
+            }
         }
         if(index === 1){
             const savedVehicles = localStorage.getItem("vehiclesData");
@@ -456,7 +480,10 @@ const createRouteDataTable = () => {
         const invoiceValueSum = () => {
             let totalValue = 0;
             filteredAddresses.forEach((invoiceValue) => {
-              totalValue += +invoiceValue['Vrednost naloga'];
+                const isStoragePlace = invoiceValue['RB naloga'] === '0' || invoiceValue['RB naloga'] === '1';
+                if (!isStoragePlace && invoiceValue['Vrednost naloga'] !== "/") {
+                    totalValue += +invoiceValue['Vrednost naloga'];
+                }
             });
             return totalValue;
           };
@@ -466,6 +493,7 @@ const createRouteDataTable = () => {
           );
           const vehicleCost = +routeVehicle?.cost;
           const routeCost = Math.round(distance) * vehicleCost + +highwayCost;
+          console.log("highway cost is", routeCost, highwayCost, vehicleCost, Math.round(distance));
           const routeInvoiceSum = invoiceValueSum();
           console.log("routeInvoiceSum:", routeInvoiceSum);
           const profitabilityPercentage = Math.trunc(
@@ -609,12 +637,20 @@ const createRouteDataTable = () => {
             // window.location.reload();
             const enableButton = document.querySelector('.buttonComboCreateRoute');
             enableButton.disabled = false;
-        }
+
+            localStorage.setItem(LAST_TEMP_ROUTE_CREATED, JSON.stringify({
+                routeName: routeName.value,
+                vehicle: routeVehicle.value,
+                highwayCost: routePayTollCost.value,
+                routePoints: routeSelectedLocations.value,
+            }))
+        };
     })
 
     kreirajButton.addEventListener('click', () => {
         const savedRoutes = localStorage.getItem("tempRoutesData");
         localStorage.setItem("routesData", savedRoutes);
+        localStorage.removeItem(LAST_TEMP_ROUTE_CREATED);
         window.location.reload();
     })
     buttonsContainer.appendChild(primeniButton);
@@ -625,6 +661,60 @@ const createRouteDataTable = () => {
     divFinalContainer.appendChild(tableRouteData);
     divFinalContainer.appendChild(buttonsContainer);
     return divFinalContainer;
+}
+
+const fillPreviousInputValues = () => {
+    const previousData = localStorage.getItem(LAST_TEMP_ROUTE_CREATED);
+    const savedVehicles = localStorage.getItem("vehiclesData");
+    if(previousData){
+        const inputValues = JSON.parse(previousData);
+        const { routeName, vehicle, highwayCost, routePoints} = inputValues;
+        if(routeName){
+            const nameInput = document.querySelector(".inputNazivrute");
+            if(nameInput){
+                nameInput.value = routeName;
+            }
+        }
+
+        if(vehicle){
+            const vehicleInput = document.querySelector(".inputVozilo");
+            vehicleInput.value = vehicle;
+        }
+
+        const highwayCostInput = document.querySelector(".inputUnesiputarinu");
+        if(highwayCost !== undefined){
+            highwayCostInput.value = Number(highwayCost);
+        }else{
+            highwayCostInput.value = 1;
+        }
+
+        if(routePoints){
+            const routePointsInput = document.querySelector(".inputOdabraninalozi");
+            routePointsInput.value = routePoints;
+
+            const checkboxIds = routePoints.split(",");
+            const checkboxes = Array.from(document.querySelectorAll(".checkboxSelectMapLocation"));
+            if(checkboxes){
+
+                checkboxIds.forEach(id => {
+                    const cbx = checkboxes.find(ch => ch.dataset.id === id);
+                    if(cbx){
+                        cbx.checked = true;
+                    }
+                })
+            }
+        }
+    }
+
+    /*
+    routeName: routeName.value,
+    vehicle: routeVehicle.value,
+    highwayCost: routePayTollCost.value,
+    routePoints: routeSelectedLocations.value,
+    */
+    // if(savedVehicles){
+    //     const vehiclesData = JSON.parse(savedVehicles);
+    // }
 }
 
 

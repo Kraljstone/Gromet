@@ -14,7 +14,8 @@ export const readDocsTab = () => {
     const label = document.querySelector('.labelForFileInput');
     if(label){
       const mapLocationData = mapLocations;
-      label.innerHTML =  `<p class='pCurrentFile'>Trenutno učitan: ${fileName} </p>`;
+      label.innerHTML = `<p class='pCurrentFile pCurrentFileGreen'> Kliknite za ucitavanje novog excel-a</p>`;
+      label.innerHTML +=  `<p class='pCurrentFile'>Trenutno učitan: ${fileName} </p>`;
       label.innerHTML +=   mapLocationData ? 
                 `<p class='pCurrentFile'>Broj ucitanih naloga: ${mapLocationData?.length} </p>`
                 : `<p class='pCurrentFileFailed'>Nema ucitanih naloga / doslo je do greske prilikom ucitavanja </p>`;
@@ -30,7 +31,7 @@ export const readDocsTab = () => {
           multipleInvoices.push(additionalInvoices);
         }
       })
-      label.innerHTML +=  `<p class='pCurrentFile'>Pinovi sa vise naloga: ${multipleInvoices.map(grp => `[${grp.map(el => `${el['RB naloga']}`)}]`).toString()} </p>`;
+      label.innerHTML +=  `<p class='pCurrentFile'>(${multipleInvoices.length}) Grupa pinova sa vise naloga: [${multipleInvoices.map(grp => `[${grp.map(el => `${el['RB naloga']}`)}]`).toString()}] </p>`;
       localStorage.setItem('previouslyLoadedFileData', label.innerHTML.toString());
     }
   }
@@ -62,7 +63,7 @@ export const readDocsTab = () => {
     draggableArea.setAttribute('class', 'droppable-area');
     draggableArea.addEventListener('drop', handleDrop);
     draggableArea.addEventListener('dragover', handleDragOver);
-    draggableArea.innerHTML = 'Prevucite excel ovde';
+    draggableArea.innerHTML = 'Prevucite novi excel ovde';
     return draggableArea;
   };
 
